@@ -1,0 +1,156 @@
+<!--The content below is only a placeholder and can be replaced.-->
+<app-header></app-header>
+<div class="FoodListPage">
+   <!-- pge Identity -->
+   <div class="PageIdentity container-fluid">
+      <div class="row">
+         <div class="col-sm-12 text-right">
+            <p class="Identity">
+            <span class="link">Home</span> / Settings</p>
+         </div>
+      </div>
+   </div>
+   <!-- left Section -->
+   <div class="container-fluid">
+      <div class="Main_section">
+         <span class="Left_Section">
+            <ul class="List">
+               <li class="Item" [ngClass]="{'active': Active_Tab === 'Technical_Institution' }" (click)="Active_Tab_Change('Technical_Institution')"> <span> SNS Technical Institutions </span>  </li>
+               <li class="Item" [ngClass]="{'active': Active_Tab === 'Arts_and_Science' }" (click)="Active_Tab_Change('Arts_and_Science')"> <span> SNS College of Arts & Science </span>  </li>
+               <li class="Item" [ngClass]="{'active': Active_Tab === 'College_Of_Education' }" (click)="Active_Tab_Change('College_Of_Education')"> <span> SNS College of Education </span>  </li>
+               <li class="Item" [ngClass]="{'active': Active_Tab === 'Academy' }" (click)="Active_Tab_Change('Academy')"> <span> SNS Academy </span>  </li>
+            </ul>
+         </span>
+         <!-- right Section -->
+         <span class="Right_Section">
+            <!-- Header Part -->
+            <div class="row header_part">
+               <div class="col-sm-6">
+                  <button class="Create_Button" mat-button (click)="CreatePost()"> + Create </button>
+               </div>
+               <div class="col-sm-6">
+                  <div class="Search_Section">
+                  <input type="text" placeholder="Search.." name="search">
+                  <i class="material-icons">search</i>
+                  </div>
+               </div>
+            </div>
+            <!-- Table Section -->
+            <div class="Table_Section">
+               <table>
+                  <thead>
+                     <tr>
+                        <th>S.no</th>
+                        <th>Post</th>
+                        <th>Created By</th>
+                        <th>Last Modification Date</th>
+                        <th>Action</th>
+                     </tr>
+                  </thead>
+                  <tbody>
+                     <tr>
+                        <td>
+                           <span class="S_no"> 1 </span>
+                        </td>
+                        <td>
+                           <span class="Style_1">  
+                           Professor</span>
+                        </td>
+                        <td>
+                           <span class="Style_1">admin</span>
+                        </td>
+                        <td>
+                           <span class="Style_1">28-9-2008</span>
+                        </td>
+                        <td>
+                        <button (click)="CreatePost()" class="Table_Action_mini Bg_warning" mat-mini-fab color="primary">
+                              <i class="material-icons">edit</i>
+                           </button>
+                           <button (click)="DeletePost()" class="Table_Action_mini Bg_Danger" mat-mini-fab color="primary">
+                              <i class="material-icons">delete_forever</i>
+                           </button>
+                        </td>
+                     </tr>
+                     <tr>
+                        <td>
+                           <span class="S_no"> 2 </span>
+                        </td>
+                        <td>
+                           <span class="Style_1">  
+                           Professor</span>
+                        </td>
+               
+                        <td>
+                           <span class="Style_1">admin</span>
+                        </td>
+                        <td>
+                           <span class="Style_1">28-9-2008</span>
+                        </td>
+                        <td>
+                        <button (click)="CreatePost()"  class="Table_Action_mini Bg_warning" mat-mini-fab color="primary">
+                              <i class="material-icons">edit</i>
+                           </button>
+                           <button (click)="DeletePost()" class="Table_Action_mini Bg_Danger" mat-mini-fab color="primary">
+                              <i class="material-icons">delete_forever</i>
+                           </button>
+                        </td>
+                     </tr>
+                     <tr>
+                        <td>
+                           <span class="S_no"> 3 </span>
+                        </td>
+                        <td>
+                           <span class="Style_1">  
+                           Professor</span>
+                        </td>
+                        <td>
+                           <span class="Style_1">admin</span>
+                        </td>
+                        <td>
+                           <span class="Style_1">28-9-2008</span>
+                        </td>
+                        <td>
+                           <button (click)="CreatePost()" class="Table_Action_mini Bg_warning" mat-mini-fab color="primary">
+                              <i class="material-icons">edit</i>
+                           </button>
+                           <button (click)="DeletePost()" class="Table_Action_mini Bg_Danger" mat-mini-fab color="primary">
+                              <i class="material-icons">delete_forever</i>
+                           </button>
+                        </td>
+                     </tr>
+                     <tr>
+                        <td>
+                           <span class="S_no"> 4 </span>
+                        </td>
+                        <td>
+                           <span class="Style_1">  
+                           Professor</span>
+                        </td>
+               
+                        <td>
+                           <span class="Style_1">admin</span>
+                        </td>
+                        <td>
+                           <span class="Style_1">28-9-2008</span>
+                        </td>
+                        <td>
+                           <button (click)="CreatePost()" class="Table_Action_mini Bg_warning " mat-mini-fab color="primary">
+                              <i class="material-icons">edit</i>
+                           </button>
+                           <button (click)="DeletePost()" class="Table_Action_mini Bg_Danger" mat-mini-fab color="primary">
+                              <i class="material-icons">delete_forever</i>
+                           </button>
+                        </td>
+                     </tr>
+                  </tbody>
+               </table>
+            </div>
+         </span>
+      </div>
+   </div>
+</div>
+  
+
+
+
+

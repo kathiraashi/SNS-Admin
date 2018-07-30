@@ -1,1 +1,44 @@
 /* You can add global styles to this file, and also import other style files */
+@import '../node_modules/font-awesome/css/font-awesome.min.css';
+@import '../node_modules/primeng/resources/themes/omega/theme.css';
+@import '../node_modules/primeng/resources/primeng.min.css';
+
+@import "~@angular/material/prebuilt-themes/indigo-pink.css";
+
+@import './assets/Overwrite-Css/ngx-bootstrap-OverWrite.css';
+@import './assets/Overwrite-Css/Primeng-Overwrite.css';
+@import './assets/Overwrite-Css/material-overwrite.css';
+
+
+*{
+    outline:none;
+}
+button:focus{
+    outline:none;
+}
+
+.Bg_Success{
+    background-color: #06a92c !important;
+ }
+ .Bg_warning{
+     background-color: #ff9b05 !important;
+ }
+ .Bg_Info{
+     background-color: #00a0ff !important;
+ }
+ .Bg_Danger{
+     background-color: rgb(221, 10, 10) !important;
+ }
+ ._Success{
+     color: #06a92c !important;
+ }
+ ._warning{
+   color: #ff9b05 !important;
+ }
+ ._Info{
+   color: #00a0ff !important;
+ }
+ ._Danger{
+     color: rgb(221, 10, 10) !important;
+ }
+ 

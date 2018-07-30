@@ -1,0 +1,120 @@
+/* Header Design Css */
+   .Header{
+      width: 100%;
+      height: 96px;
+   }
+/* Logo */
+   .Header .HeaderLogo{
+      width: 100%;
+      height: 55px;
+      background-color:#f1f4f7;
+   }
+   .Header .HeaderLogo .header-logo{
+    height: 50px;
+    margin-left: 10px;
+    float: left;
+    margin-top: 3px;
+   }
+/* Logout */
+   .Header .HeaderLogo .logout h5{
+      color: #ffffff;
+      line-height: 50px;
+      float: right;
+      font-size: 18px;
+      margin-right: 20px;
+   }
+   .Header .HeaderLogo .logout h5 a{
+      text-decoration: none;
+      color: #4f6a7a;
+   }
+   .Header .HeaderLogo .logout h5 a:hover{
+      background-color: transparent;
+      color: #4f6a7a;
+   }
+/* Menus */
+   .Header .HeaderMenu{
+      width: 100%;
+      height: 40px;
+      background-color: #4e6a7a;
+      box-shadow: 0 3px 1px -6px rgba(0,0,0,.2), 0 2px 2px 0 rgba(0,0,0,.14), 0 1px 5px 0 rgba(0,0,0,.12);
+   }
+   .Header .HeaderMenu .menus{
+      height: 40px;
+      list-style: none;
+      display: inline-block;
+      padding: 0px;
+   }
+   .Header .HeaderMenu .menus .menu-list{
+      height: 40px;
+      line-height: 40px;
+      float: left;
+      min-width: 100px;
+   }
+   .Header .HeaderMenu .menus .menu-list a{
+      color:#ffffff;
+      cursor: pointer;
+      text-decoration: none;
+      font-weight: 600;
+      padding: 0px 10px;
+      display: inline-block;
+      font-size: 15px;
+      min-width: 100px;
+      height: 40px;
+      line-height: 40px;
+      text-align: center;
+   }
+   .Header .HeaderMenu .menus .menu-list a:hover, 
+   .Header .HeaderMenu .menus .menu-list a:active, 
+   .Header .HeaderMenu .menus .menu-list a:focus,
+   .Header .HeaderMenu .menus .menu-list.active>a{
+      color: #ffffff;
+      line-height: 40px;
+      background-color:#2d3e48;
+      width: 100%;
+   }
+   .Header .tree-menus{
+      position: relative;
+      display: inline-block;
+   }
+   .Header .tree-menus .tree-view{
+      position: absolute;
+      display:none;
+      list-style: none;
+      min-width: 150px;
+      left: 0px;
+      padding-left: 0px;
+      padding-top:2px;
+      z-index: 1;
+      margin-top:-12px;
+   }
+   .Header .tree-menus .tree-view .tree-list{
+      height: 40px;
+      float: left;
+      background-color: #4e6a7a;
+      outline:none;
+   }
+   .Header .tree-menus .tree-view .tree-list a{
+      color: #ffffff;
+      text-decoration: none;
+      font-weight: 600;
+      line-height: 40px;
+      text-align: left;
+      width: 150px !important;
+   }
+   .Header .tree-menus .tree-view .tree-list a:hover,
+   {
+      color: #ffffff;
+      background-color: #4f6a7a;
+   }
+   .Header .tree-menus:hover>.tree-view {
+      display: block;
+   }
+   .Header .tree-menus .tree-view .tree-list .tree-menus .tree-view{
+      left: 102%;
+      top: 0px;
+   }
+   .Header .tree-menus .tree-view .tree-list .tree-menus{
+      padding-top: 0px;
+   }
+
+

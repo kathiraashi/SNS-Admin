@@ -1,0 +1,103 @@
+/* Login Section */
+   .login-section
+   {
+      position:absolute;
+      width:100%;
+      height:100%;
+      left: 0px;
+      right:0px;
+      top: 0px;
+      bottom: 0px;
+   }
+   .over{
+      background-color: #2b2b2b;
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      z-index: 1;
+      opacity: 0.7;
+   }
+/* Form Section */
+   .form-section{
+      position:absolute;
+      background-color: #EBEDF3;
+      width:50%;
+      height:100%;
+      left:50%;
+   }
+   .form-section .form{
+      position:absolute;
+      height:340px;
+      width:340px;
+      text-align:center;
+      background-color:#FFFFFF;
+      left: 0px;
+      right:0px;
+      top: 0px;
+      bottom: 0px;
+      margin:auto;
+   }
+   .form-section input[type="text"]{
+      outline:none;
+      color:black;
+      padding:5px; 
+      width: 85%;
+      height: 40px;
+      border:none;
+
+   }
+   .form-section input[type="password"]{
+      outline:none;
+      color:black;
+      padding:5px;
+      width: 85%;
+      height: 35px;
+      border:none;
+   }
+   .form-section input::placeholder{
+      color:#c1baba;
+   }
+   .login-design{
+      font-size: 20px;
+      background-color: #1D943B;
+      color: white;
+      width: 80%;
+      font-weight: 600;
+      height: 40px;
+      outline: none;
+      border: 1px solid #1D943B;
+      margin-top: 30px;
+      cursor: pointer;
+   }
+/* Image Section */
+   .image-section img{
+      width:100%;
+      height:100%;
+   }
+   .icon{
+      background-color: #FFFFFF;
+      border: 1px solid #dcd6d6;
+      width: 80%;
+      margin-left: 10%;
+      display: flex;
+      align-items: center;
+      padding: 0px 6px;
+   }
+   .icon .material-icons{
+      color:#C1BAC0;
+   }
+   .image-section{
+      position:absolute;
+   width:50%;
+      height:100%; 
+   }
+   .image-section img{
+      position: absolute;
+      width: 100%;
+      height: 100%;
+   }
+   .image-section h2{
+      position:absolute;
+      right: 170px;
+      bottom: 350px;
+   }

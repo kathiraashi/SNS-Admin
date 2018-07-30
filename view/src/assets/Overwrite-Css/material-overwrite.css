@@ -1,0 +1,23 @@
+
+/* Button Color Overwrite */
+
+.mat-raised-button.mat-primary, .mat-fab.mat-primary, .mat-mini-fab.mat-primary {
+   background-color: #49b660;
+   color: #ffffff;
+}
+.mat-button.mat-primary, .mat-icon-button.mat-primary, .mat-stroked-button.mat-primary{
+   color: #49b660;
+}
+.mat-button.mat-primary .mat-button-focus-overlay, .mat-icon-button.mat-primary .mat-button-focus-overlay, .mat-stroked-button.mat-primary .mat-button-focus-overlay{
+   background-color: rgba(74, 182, 95, 0.1);
+}
+
+/* Table Action Button Style Change */
+.Table_Action_mini.mat-mini-fab{
+   height: 35px;
+   width: 35px;
+   margin-right: 7px;
+}
+.Table_Action_mini.mat-mini-fab .mat-button-wrapper{
+   padding: 5px 0px;
+}

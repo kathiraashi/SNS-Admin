@@ -1,0 +1,84 @@
+/* Body Design Css */
+   .FoodListPage{
+      padding:0;
+      margin:0;
+      background-color:#f1f1f1;
+      min-height: 500px;
+   }
+/* page identity */
+   .PageIdentity{
+      height:40px;
+      line-height:40px;
+      margin-top:3px;
+      margin-bottom:5px;
+   }
+   .PageIdentity .Identity{
+      color: #777777;
+      font-size: 13px;
+      font-weight: 600;
+   }
+   .PageIdentity .Identity span{
+      cursor: pointer;
+      color: #4e6a7a;
+      font-weight: 600;
+      font-size: 15px;
+   }
+/* page Section */
+   .Page_Section{
+      background-color:#fff;
+      border:1px solid #fff;
+      border-radius:3px;
+      width:100%;
+      height:100%;
+      box-shadow: 2px 2px 3px #bfb8b8;
+      padding: 15px;
+      border-top:3px solid #4E6A7A;
+   }
+   .Page_Section h5{
+      font-size: 18px;
+      font-weight: 700;
+      color: #2b373e;
+      letter-spacing: 0.8px;
+   }
+/* Options */
+   .Page_Section .Options{
+      margin-left:20px;
+   }
+   .Page_Section .Options .option{
+      margin-right:30px;
+      font-size: 16px;
+      font-weight: 600;
+      color: #4e6a7a;
+   }
+   .Page_Section span{
+      font-size: 16px;
+      font-weight: 600;
+      color: #4e6a7a;
+   }
+   .Page_Section .edit{
+      margin-left: 10px;
+      color: #137fde;
+      font-size: 20px;
+      cursor:pointer;
+   }
+   .Page_Section .delete{
+      color: #e02222;
+      font-size: 23px;
+      cursor:pointer;
+      margin-left:15px;
+   }
+   .Page_Section .Options .ans{
+      color:#0a9235;
+      text-decoration: underline;
+   }
+   .Page_Section .Options .Differ{
+      color: #010206;
+      font-size: 15px;
+      font-weight: 700;
+   }
+   .Page_Section .Options .Differ1{
+      color: #0a9235;
+      font-size: 15px;
+      font-weight: 700;
+   }
+   

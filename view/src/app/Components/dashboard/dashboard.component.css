@@ -1,0 +1,246 @@
+/* Dashboard Page */
+   .Dashboard_Page {
+      width: 100%;
+      min-height: 666px;
+      background-color: #EBEDF3;
+   }
+/* Dashboard Cards */
+   .Card {
+      background: linear-gradient(229deg, #74da8b, #009e26);
+      box-shadow: 2px 2px 4px 0px rgba(0, 0, 0, 0.3);
+      height: 120px;
+   }
+   .Card .Card_Body {    
+      height: 85px;
+      display: flex;
+      align-items: center;
+   }
+   .Card .Card_Body .Card_Left {
+      width: 25%;
+      text-align: center;
+   }
+   .Card .Card_Body .Card_Left i {
+      font-size: 40px;
+      color: #017f1e;
+      line-height: 85px;
+   }
+   .Card .Card_Body .Card_Right {
+      text-align: center;
+      width: 75%;
+   }
+   .Card .Card_Body .Card_Right h5 {
+      color: #017f1e;
+      font-size: 20px;
+      line-height: 30px;
+      margin: 0px;
+   }
+   .Card .Card_Body .Card_Right h6 {
+      color: #ffffff;
+      font-size: 23px;
+   }
+   .Card .Card_Footer {
+      height: 35px;
+      background-color: #017f1e;
+      display: inline-block;
+      width: 100%;
+      align-items: center;
+      padding: 0px 10px;
+      line-height: 35px;
+      text-align: center;
+   }
+   .Card .Card_Footer .Card_Info {
+      font-size: 12px;
+      color: #ffffff;
+      font-weight: 500;
+   }
+
+   .card_bg_Liner_1{
+      background: linear-gradient(229deg, #fd9a77, #fb827a) !important;
+   }
+   .card_bg_1{
+      background-color: #d24330 !important;
+   }
+   .card_color_1{
+      color: #d2432f !important;
+   }
+
+   .card_bg_Liner_2{
+      background: linear-gradient(229deg, #8edead, #43c6ac) !important;
+   }
+   .card_bg_2{
+      background-color: #049870 !important;
+   }
+   .card_color_2{
+      color: #049870 !important;
+   }
+
+   .card_bg_Liner_3{
+      background: linear-gradient(248deg, #348ac7, #7474bf);
+   }
+   .card_bg_3{
+      background-color: #3957b5 !important;
+   }
+   .card_color_3{
+      color: #3957b5 !important;
+   }
+
+   .card_bg_Liner_4{
+      background: linear-gradient(67deg, #f15f79, #b24592);
+   }
+   .card_bg_4{
+      background-color: #af1437 !important;
+   }
+   .card_color_4{ 
+      color: #af1437 !important;
+   }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* Table Section */
+   .Table_Section table {
+   border: 1px solid lightgray;
+   width: 100%;
+   }
+   .Table_Section table thead {
+   border: 1px #08a92c;
+   line-height: 40px;
+   text-align: center;
+   background-color: #06a92c;
+   color: #ffffff;
+   font-size: 14px;
+   letter-spacing: 0.5px;
+   }
+   .Table_Section table tbody {
+   border: 1px solid #e8e8e8;
+   background-color: #ffffff;
+   }
+   .Table_Section table tbody tr {
+   line-height: 50px;
+   text-align: center;
+   align-items: center;
+   border-bottom: 1px solid #eaeaea;
+   }
+   .Table_Section table tbody tr:nth-child(even) {
+   background-color: #f1f1f185;
+   }
+   .Table_Section table tbody tr:hover {
+   background-color: #4f6a7a40;
+   }
+   .Table_Section table tbody tr td .S_no {
+   font-size: 14px;
+   color: #777;
+   }
+   .Table_Section table tbody tr td .Main_Id {
+   font-size: 14px;
+   color: #484848;
+   display: block;
+   font-weight: 700;
+   cursor: pointer;
+   }
+   .Table_Section table tbody tr td .Date {
+   display: block;
+   line-height: 16px;
+   font-size: 14px;
+   font-weight: 500;
+   color: #888888;
+   }
+   .Table_Section table tbody tr td .Time {
+   display: block;
+   line-height: 16px;
+   font-size: 13px;
+   color: #888888;
+   }
+   .Table_Section table tbody tr td .Name_Style {
+   color: #888888;
+   font-size: 14px;
+   font-weight: 500;
+   }
+   .Table_Section table tbody tr td .User_Style {
+   display: block;
+   line-height: 18px;
+   font-size: 14px;
+   font-weight: 500;
+   color: #888888;
+   }
+   .Table_Section table tbody tr td .Price_Tag {
+   font-size: 14px;
+   font-weight: 700;
+   color: #484848;
+   }
+   .Table_Section table tbody tr td .Status_Tag {
+   padding: 3px 7px;
+   border-radius: 2px;
+   font-size: 14px;
+   font-weight: 600;
+   color: #ffffff;
+   }
+   .Table_Section table tbody tr td .Action_Section{
+   color: #ffffff;
+   height: 35px;
+   width: 35px;
+   line-height: 30px;
+   display: flex;
+   border-radius: 5px;
+   cursor: pointer;
+   float: right;
+   margin-right: 10px;
+   }
+   .Table_Section table tbody tr td .Action_Section i {
+   width: 100%;
+   line-height: 35px;
+   }
+
+/* calender Section */
+   .Calender{
+   box-shadow: 2px 2px 4px 0px rgba(0, 0, 0, 0.3);
+   }
+
+   .Log_Section{
+   background-color: #ffffff;
+   box-shadow: 2px 2px 4px 0px rgba(0, 0, 0, 0.3);
+   }
+   .Log_Header {
+   background-color: #4e6a7a;
+   height: 40px;
+   }
+   .Log_Header h5 {
+   line-height: 40px;
+   text-align: center;
+   color: #ffffff;
+   }
+   .Log_List ul {
+   list-style-type: none;
+   padding: 0px;
+   }
+   .Log_List ul li {
+   border-bottom: 1px solid #efefef;
+   background-color: #f3f3f3;
+   padding: 0px 10px;
+   height: 45px;
+   padding: 5px 20px;
+   }
+   .Log_List ul li:nth-child(odd) {
+   background-color: #ffffff;
+   }
+   .Log_List ul li h5 {
+   margin: 0px;
+   font-size: 15px;
+   color: #888c90;
+   }
+   .Log_List ul li h6 {
+   font-weight: 400;
+   margin: 0px;
+   color: #afadad;
+   font-size: 12px;
+   }

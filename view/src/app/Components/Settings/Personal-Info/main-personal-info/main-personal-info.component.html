@@ -1,0 +1,42 @@
+<!--The content below is only a placeholder and can be replaced.-->
+<app-header></app-header>
+<div class="FoodListPage">
+   <!-- pge Identity -->
+   <div class="PageIdentity container-fluid">
+      <div class="row">
+         <div class="col-sm-12 text-right">
+            <p class="Identity">
+            <span class="link">Home</span> / Settings</p>
+         </div>
+      </div>
+   </div>
+   <!-- left Section -->
+   <div class="container-fluid">
+      <div class="Main_section">
+         <span class="Left_Section">
+            <ul class="List">
+               <li class="Item" [ngClass]="{'active': Active_Tab === 'Nationality' }" (click)="Active_Tab_Change('Nationality')"> <span> Nationality </span>  </li>
+               <li class="Item" [ngClass]="{'active': Active_Tab === 'Religion' }" (click)="Active_Tab_Change('Religion')"> <span> Religion</span>  </li>
+               <li class="Item" [ngClass]="{'active': Active_Tab === 'Community' }" (click)="Active_Tab_Change('Community')"> <span> Community </span>  </li>
+            </ul>
+         </span>
+         <!-- right Section -->
+         <span class="Right_Section">
+            <div *ngIf="Active_Tab === 'Nationality'">
+               <app-personal-info-nationality></app-personal-info-nationality>
+            </div> 
+            <div *ngIf="Active_Tab === 'Religion'">
+               <app-personal-info-religion></app-personal-info-religion>
+            </div> 
+            <div *ngIf="Active_Tab === 'Community'">
+               <app-personal-info-community></app-personal-info-community>
+            </div>   
+         </span>
+      </div>
+   </div>
+</div>
+  
+
+
+
+
