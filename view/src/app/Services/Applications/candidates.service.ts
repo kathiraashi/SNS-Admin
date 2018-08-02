@@ -23,4 +23,15 @@ export class CandidatesService {
       .pipe( map(response => response),  catchError(error => of(error)));
    }
 
+   public Questions_Create(Info: any): Observable<any[]> {
+      return this.http.post(API_URL + 'Questions_Create', Info)
+      .pipe( map(response => response),  catchError(error => of(error)));
+   }
+
+   public Questions_List(Info: any): Observable<any[]> {
+      return this.http.post(API_URL + 'Questions_List', Info)
+      .pipe( map(response => response),  catchError(error => of(error)));
+   }
+
+
 }

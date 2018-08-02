@@ -6,56 +6,87 @@
    </div>
    <!-- Model Body -->
    <div class="Model_Body">
+      <form [formGroup]="Form">
       <div class="row">
          <div class="col-sm-4 Form_Select">
             <label>College:</label>
-            <ng-select class="NgSelect ValueBold" [searchable]="true" placeholder="College">
+            <ng-select class="NgSelect ValueBold" formControlName="College" [searchable]="true" placeholder="College">
                <ng-option *ngFor="let College of _Colleges" [value]="College">{{ College }}</ng-option>
             </ng-select>
+            <p class="error" *ngIf="Form.controls['College'].errors && !Form.controls['College'].pristine">
+                  <span  *ngIf="Form.controls['College'].errors.required"> College is required</span>
+               </p>
          </div>
          <div class="col-sm-4 Form_Select">
             <label>Department:</label>
-            <ng-select class="NgSelect ValueBold" [searchable]="true" placeholder="Department">
+            <ng-select class="NgSelect ValueBold" formControlName="Department" [searchable]="true" placeholder="Department">
                <ng-option *ngFor="let Department of _Departments" [value]="Department">{{ Department }}</ng-option>
             </ng-select>
+            <p class="error" *ngIf="Form.controls['Department'].errors && !Form.controls['Department'].pristine">
+                  <span  *ngIf="Form.controls['Department'].errors.required"> Department is required</span>
+               </p>
          </div>
          <div class="col-sm-4 Form_Select">
             <label>Category:</label>
-            <ng-select class="NgSelect ValueBold" [searchable]="true" placeholder="Category">
+            <ng-select class="NgSelect ValueBold" formControlName="Category" [searchable]="true" placeholder="Category">
                <ng-option *ngFor="let Category of _Categories" [value]="Category">{{ Category }}</ng-option>
             </ng-select>
+            <p class="error" *ngIf="Form.controls['Category'].errors && !Form.controls['Category'].pristine">
+                  <span  *ngIf="Form.controls['Category'].errors.required"> Category is required</span>
+               </p>
          </div>
          <div class="col-sm-12">
             <div class="row">
-               <div class="col-sm-12 Form_TextArea">
+               <div class="col-sm-12 Form_TextArea" [ngClass]="{'Form_Err': Form.controls['Question'].errors && !Form.controls['Question'].pristine, 'Form_Success': Form.controls['Question'].valid && !Form.controls['Question'].pristine }">
                   <label>Question:</label>
-                  <textarea class="Question" rows="3"></textarea>
+                  <textarea class="Question" rows="3" formControlName="Question" > </textarea>
+                  <p class="error" *ngIf="Form.controls['Question'].errors && !Form.controls['Question'].pristine">
+                     <span  *ngIf="Form.controls['Question'].errors.required"> Question is required</span>
+                  </p>
                </div>
             </div>
             <div class="row">
-               <div class="col-sm-4 Form_Input">
+               <div class="col-sm-4 Form_Input" [ngClass]="{'Form_Err': Form.controls['Option_A'].errors && !Form.controls['Option_A'].pristine, 'Form_Success': Form.controls['Option_A'].valid && !Form.controls['Option_A'].pristine }">
                   <label>option A:</label>
-                  <input type="text">
+                  <input type="text" formControlName="Option_A">
+                  <p class="error" *ngIf="Form.controls['Option_A'].errors && !Form.controls['Option_A'].pristine">
+                     <span  *ngIf="Form.controls['Option_A'].errors.required"> Option A is required</span>
+                  </p>
                </div>
-               <div class="col-sm-4 Form_Input">
+               <div class="col-sm-4 Form_Input" [ngClass]="{'Form_Err': Form.controls['Option_B'].errors && !Form.controls['Option_B'].pristine, 'Form_Success': Form.controls['Option_B'].valid && !Form.controls['Option_B'].pristine }">
                   <label>option B:</label>
-                  <input type="text">
+                  <input type="text" formControlName="Option_B">
+                  <p class="error" *ngIf="Form.controls['Option_B'].errors && !Form.controls['Option_B'].pristine">
+                     <span  *ngIf="Form.controls['Option_B'].errors.required"> Option B is required</span>
+                  </p>
                </div>
-               <div class="col-sm-4 Form_Input">
+               <div class="col-sm-4 Form_Input" [ngClass]="{'Form_Err': Form.controls['Option_C'].errors && !Form.controls['Option_C'].pristine, 'Form_Success': Form.controls['Option_C'].valid && !Form.controls['Option_C'].pristine }">
                   <label>option C:</label>
-                  <input type="text"> 
+                  <input type="text" formControlName="Option_C"> 
+                  <p class="error" *ngIf="Form.controls['Option_C'].errors && !Form.controls['Option_C'].pristine">
+                     <span  *ngIf="Form.controls['Option_C'].errors.required"> Option C is required</span>
+                  </p>
                </div>
-               <div class="col-sm-4 Form_Input">
+               <div class="col-sm-4 Form_Input" [ngClass]="{'Form_Err': Form.controls['Option_D'].errors && !Form.controls['Option_D'].pristine, 'Form_Success': Form.controls['Option_D'].valid && !Form.controls['Option_D'].pristine }">
                   <label>option D:</label>
-                  <input type="text"> 
+                  <input type="text" formControlName="Option_D"> 
+                  <p class="error" *ngIf="Form.controls['Option_D'].errors && !Form.controls['Option_D'].pristine">
+                     <span  *ngIf="Form.controls['Option_D'].errors.required"> Option D is required</span>
+                  </p>
                </div>
-               <div class="col-sm-4 Form_Input">
+               <div class="col-sm-4 Form_Input"  [ngClass]="{'Form_Err': Form.controls['Option_E'].errors && !Form.controls['Option_E'].pristine, 'Form_Success': Form.controls['Option_E'].valid && !Form.controls['Option_E'].pristine }">
                   <label>option E:</label>
-                  <input type="text"> 
+                  <input type="text" formControlName="Option_E"> 
+                  <p class="error" *ngIf="Form.controls['Option_E'].errors && !Form.controls['Option_E'].pristine">
+                     <span  *ngIf="Form.controls['Option_E'].errors.required"> Option E is required</span>
+                  </p>
                </div>
-               <div class="col-sm-4 Form_Input">
+               <div class="col-sm-4 Form_Input" [ngClass]="{'Form_Err': Form.controls['Option_F'].errors && !Form.controls['Option_F'].pristine, 'Form_Success': Form.controls['Option_F'].valid && !Form.controls['Option_F'].pristine }">
                   <label>option F:</label>
-                  <input type="text"> 
+                  <input type="text" formControlName="Option_F"> 
+                  <p class="error" *ngIf="Form.controls['Option_F'].errors && !Form.controls['Option_F'].pristine">
+                     <span  *ngIf="Form.controls['Option_F'].errors.required"> Option F is required</span>
+                  </p>
                </div>
             </div>
             <!-- option design -->
@@ -64,7 +95,7 @@
                   <div class="Form_Input">
                      <label style="font-size: 15px; margin-bottom: 10px;"> Select Answer :</label>
                   </div>
-                  <mat-radio-group class="AnswerGroup">
+                  <mat-radio-group class="AnswerGroup" formControlName="Answer">
                      <mat-radio-button class="AnswerGroupOption" value="A"> A </mat-radio-button>
                      <mat-radio-button class="AnswerGroupOption" value="B"> B </mat-radio-button>
                      <mat-radio-button class="AnswerGroupOption" value="C"> C </mat-radio-button>
@@ -72,14 +103,22 @@
                      <mat-radio-button class="AnswerGroupOption" value="E"> E </mat-radio-button>
                      <mat-radio-button class="AnswerGroupOption" value="F"> F </mat-radio-button>
                   </mat-radio-group>
+                  <p class="error" *ngIf="Form.controls['Answer'].errors && !Form.controls['Answer'].pristine">
+                     <span  *ngIf="Form.controls['Answer'].errors.required"> Answer is required</span>
+                  </p>
                </div>
             </div>
             <br>
          </div>
       </div>
+      </form>
    </div>
    <!-- Model Footer -->
    <div class="Model_Footer">
-      <button mat-raised-button color="primary" > Submit </button>
+      <button mat-raised-button color="primary" (click)="Submit()" [disabled]="Form.invalid && !Form.valid || Uploading" > 
+         <span *ngIf="!Uploading"> Submit </span>
+         <span *ngIf="Uploading"> <i style="color: #4e6a7a" class="fa fa-refresh fa-spin"></i> Uploading </span>  
+      </button>
    </div>
 </div>
+   

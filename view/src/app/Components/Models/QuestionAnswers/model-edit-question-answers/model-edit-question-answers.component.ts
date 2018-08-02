@@ -1,4 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { Subject } from 'rxjs';
+
+import { CandidatesService } from './../../../../Services/Applications/candidates.service';
 
 import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
 
@@ -39,9 +43,43 @@ export class ModelEditQuestionAnswersComponent implements OnInit {
 
    Type: String;
 
-   constructor(public bsModalRef: BsModalRef) { }
+   onClose: Subject<any>;
+
+   Form: FormGroup;
+
+   Uploading: Boolean = false;
+
+   constructor(public bsModalRef: BsModalRef, public Service: CandidatesService) { }
 
    ngOnInit() {
+      this.onClose = new Subject();
+      this.Form = new FormGroup({
+         College: new FormControl(null, Validators.required),
+         Department: new FormControl(null, Validators.required),
+         Category: new FormControl(null, Validators.required),
+         Question: new FormControl('', Validators.required),
+         Option_A: new FormControl('', Validators.required),
+         Option_B: new FormControl('', Validators.required),
+         Option_C: new FormControl('', Validators.required),
+         Option_D: new FormControl('', Validators.required),
+         Option_E: new FormControl('', Validators.required),
+         Option_F: new FormControl('', Validators.required),
+         Answer: new FormControl('', Validators.required),
+        User_Id: new FormControl('123'),
+    });
    }
+
+   Submit() {
+    if (this.Form.valid && !this.Uploading) {
+       this.Uploading = true;
+       this.Service.Questions_Create(this.Form.value).subscribe( response => {
+          this.Uploading = false;
+          if (response['status'] === 200 ) {
+            this.onClose.next({Status: true, Response: JSON.parse(JSON.parse(response['_body'])['Response'])});
+            this.bsModalRef.hide();
+          }
+       });
+   }
+  }
 
 }

@@ -216,10 +216,28 @@ var CandidatesSchema = mongoose.Schema({
     Status: { type: String},
     Stage: { type: Number}
 }, { timestamps: true });
-
-
 var varCandidates_Data = mongoose.model('Candidates_Data', CandidatesSchema, 'Candidates_Data');
 
+
+var QuestionSchema = mongoose.Schema({
+    College: { type : String , required : true },
+    Department: { type : String , required : true },
+    Category: { type : String, required : true },
+    Question: { type : String, required : true },
+    Option_A: { type : String, required : true },
+    Option_B: { type : String, required : true },
+    Option_C: { type : String, required : true },
+    Option_D: { type : String, required : true },
+    Option_E: { type : String, required : true },
+    Option_F: { type : String, required : true },
+    Answer: { type : String, required : true },
+    User_Id: { type : String , required : true },
+    Status: { type : Boolean , required : true },
+}, { timestamps: true });
+var varQuestion_Answer = mongoose.model('Question_Answer', QuestionSchema, 'Question_Answer');
+
+
 module.exports = {
-    CandidatesSchema : varCandidates_Data
+    CandidatesSchema : varCandidates_Data,
+    QuestionSchema: varQuestion_Answer
 };
