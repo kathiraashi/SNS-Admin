@@ -1,12 +1,30 @@
 <!-- Model Content -->
 <div class="Modal_Content">
    <div class="Modal_Header">
-      <p>Edit Question Answers</p>
+      <p> {{Type}} Question & Answers</p>
       <span data-dismiss="modal" (click)="bsModalRef.hide()">&times;</span>
    </div>
    <!-- Model Body -->
    <div class="Model_Body">
       <div class="row">
+         <div class="col-sm-4 Form_Select">
+            <label>College:</label>
+            <ng-select class="NgSelect ValueBold" [searchable]="true" placeholder="College">
+               <ng-option *ngFor="let College of _Colleges" [value]="College">{{ College }}</ng-option>
+            </ng-select>
+         </div>
+         <div class="col-sm-4 Form_Select">
+            <label>Department:</label>
+            <ng-select class="NgSelect ValueBold" [searchable]="true" placeholder="Department">
+               <ng-option *ngFor="let Department of _Departments" [value]="Department">{{ Department }}</ng-option>
+            </ng-select>
+         </div>
+         <div class="col-sm-4 Form_Select">
+            <label>Category:</label>
+            <ng-select class="NgSelect ValueBold" [searchable]="true" placeholder="Category">
+               <ng-option *ngFor="let Category of _Categories" [value]="Category">{{ Category }}</ng-option>
+            </ng-select>
+         </div>
          <div class="col-sm-12">
             <div class="row">
                <div class="col-sm-12 Form_TextArea">
@@ -15,40 +33,45 @@
                </div>
             </div>
             <div class="row">
-               <div class="col-sm-6 Form_Input">
-                  <label>optionA:</label>
+               <div class="col-sm-4 Form_Input">
+                  <label>option A:</label>
                   <input type="text">
                </div>
-               <div class="col-sm-6 Form_Input">
-                  <label>optionB:</label>
+               <div class="col-sm-4 Form_Input">
+                  <label>option B:</label>
                   <input type="text">
                </div>
-               <div class="col-sm-6 Form_Input">
-                  <label>optionC:</label>
+               <div class="col-sm-4 Form_Input">
+                  <label>option C:</label>
                   <input type="text"> 
                </div>
-               <div class="col-sm-6 Form_Input">
-                  <label>optionD:</label>
+               <div class="col-sm-4 Form_Input">
+                  <label>option D:</label>
                   <input type="text"> 
                </div>
-               <div class="col-sm-6 Form_Input">
-                  <label>optionE:</label>
+               <div class="col-sm-4 Form_Input">
+                  <label>option E:</label>
                   <input type="text"> 
                </div>
-               <div class="col-sm-6 Form_Input">
-                     <label>optionF:</label>
+               <div class="col-sm-4 Form_Input">
+                  <label>option F:</label>
                   <input type="text"> 
                </div>
             </div>
             <!-- option design -->
             <div class="row">
-               <div class="col-sm-12 option_design">
-                  <span><input type="checkbox"> A</span>
-                  <span><input type="checkbox"> B</span>
-                  <span><input type="checkbox"> C</span>
-                  <span><input type="checkbox"> D</span>
-                  <span><input type="checkbox"> E</span>
-                  <span><input type="checkbox"> F</span>
+               <div class="col-sm-8 ">
+                  <div class="Form_Input">
+                     <label style="font-size: 15px; margin-bottom: 10px;"> Select Answer :</label>
+                  </div>
+                  <mat-radio-group class="AnswerGroup">
+                     <mat-radio-button class="AnswerGroupOption" value="A"> A </mat-radio-button>
+                     <mat-radio-button class="AnswerGroupOption" value="B"> B </mat-radio-button>
+                     <mat-radio-button class="AnswerGroupOption" value="C"> C </mat-radio-button>
+                     <mat-radio-button class="AnswerGroupOption" value="D"> D </mat-radio-button>
+                     <mat-radio-button class="AnswerGroupOption" value="E"> E </mat-radio-button>
+                     <mat-radio-button class="AnswerGroupOption" value="F"> F </mat-radio-button>
+                  </mat-radio-group>
                </div>
             </div>
             <br>

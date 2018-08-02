@@ -3,6 +3,11 @@
    <div class="HeaderLogo">
       <img src="./../../../../assets/images/basic/SNS (1).png" alt="Logo" class="header-logo">
       <!-- Logout -->
+      <div class="Form_Select" style="width: 500px; position: absolute; right: 150px; top: 8px;">
+         <ng-select class="NgSelect Special"  placeholder="Colleges">
+            <ng-option *ngFor="let College of _Colleges" [value]="College">{{ College }}</ng-option>
+         </ng-select>
+      </div>
       <div class="logout">
          <h5>
             <a [routerLink]="['/Login']"> Logout </a>
@@ -13,11 +18,11 @@
    <div class="HeaderMenu">
       <ul class="menus">
          <!-- DashBoard -->
-         <li class="menu-list" [routerLinkActive]="['active']">
+         <!-- <li class="menu-list" [routerLinkActive]="['active']">
             <a [routerLink]="['/Dashboard']">
                <span class="pull-left"> &nbsp; Dashboard </span>
             </a>
-         </li>
+         </li> -->
          <!-- Applications -->
          <li class="menu-list" [routerLinkActive]="['active']">
             <a [routerLink]="['/Applications']">
@@ -25,19 +30,19 @@
             </a>
          </li>
          <!-- Settings -->
-         <li class="menu-list" [routerLinkActive]="['active']">
-               <span class="tree-menus">
-                  <a [routerLink]="['/settings']">
-                     <span class="pull-left"> &nbsp; Settings </span>
-                  </a>
-                  <ul class="tree-view">
-                     <li class="tree-list"  [routerLink]="['/Post_Applied']"><a> Post Applied </a></li>
-                     <li class="tree-list"  [routerLink]="['/Department']"><a> Departments </a></li>
-                     <li class="tree-list"  [routerLink]="['/Personal_Info']"><a> Personal Info </a></li>
-                     <li class="tree-list"  [routerLink]="['/Educational_Info']"><a> Educational Info </a></li>
-                  </ul>
-               </span>
-            </li>
+         <!-- <li class="menu-list" [routerLinkActive]="['active']">
+            <span class="tree-menus">
+               <a [routerLink]="['/settings']">
+                  <span class="pull-left"> &nbsp; Settings </span>
+               </a>
+               <ul class="tree-view">
+                  <li class="tree-list"  [routerLink]="['/Post_Applied']"><a> Post Applied </a></li>
+                  <li class="tree-list"  [routerLink]="['/Department']"><a> Departments </a></li>
+                  <li class="tree-list"  [routerLink]="['/Personal_Info']"><a> Personal Info </a></li>
+                  <li class="tree-list"  [routerLink]="['/Educational_Info']"><a> Educational Info </a></li>
+               </ul>
+            </span>
+         </li> -->
          <!-- Q/A -->
          <li class="menu-list" [routerLinkActive]="['active']">
             <a [routerLink]="['/view_Q/A']" >

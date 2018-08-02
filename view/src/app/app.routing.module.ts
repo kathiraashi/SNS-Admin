@@ -2,7 +2,8 @@ import { RouterModule, Routes } from '@angular/router';
 import { NgModule } from '@angular/core';
 import { DashboardComponent } from './Components/dashboard/dashboard.component';
 import { LoginPageComponent } from './Components/login-page/login-page.component';
-import { MainApplicationComponent } from './Components/Applications/main-application/main-application.component';
+import { ApplicationsListComponent } from './Components/applications-list/applications-list.component';
+import { MainApplicationComponent } from './Components/Applications-View/main-application/main-application.component';
 import { ViewQuestionAnswersComponent } from './Components/Question-Answers/view-question-answers/view-question-answers.component';
 import { MainPostAppliedComponent } from './Components/Settings/Post-Applied/main-post-applied/main-post-applied.component';
 import { MainDepartmentComponent } from './Components/Settings/Department/main-department/main-department.component';
@@ -16,6 +17,12 @@ const appRoutes: Routes = [
          animation: { value: 'Login', }
       }
    },
+   { path: 'Login',
+      component: LoginPageComponent,
+      data: {
+         animation: { value: 'Login', }
+      }
+   },
    { path: 'Dashboard',
       component: DashboardComponent,
       data: {
@@ -23,6 +30,12 @@ const appRoutes: Routes = [
       }
    },
    { path: 'Applications',
+      component: ApplicationsListComponent,
+      data: {
+         animation: { value: 'Applications', }
+      }
+   },
+   { path: 'Applications/:Candidate_Id',
       component: MainApplicationComponent,
       data: {
          animation: { value: 'Applications', }

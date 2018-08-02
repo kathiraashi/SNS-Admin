@@ -54,7 +54,7 @@
       margin-bottom: 20px;
       border: 1px solid #e8e8e8;
       color: rgb(79, 107, 123);
-      font-weight: 400;
+      font-weight: 500;
       font-size: 14px;
       letter-spacing: 0.3px;
    }
@@ -71,7 +71,7 @@
       margin-bottom: 20px;
       border: 1px solid #e8e8e8;
       color: rgb(79, 107, 123);
-      font-weight: 400;
+      font-weight: 500;
       font-size: 14px;
       letter-spacing: 0.3px;
    }
@@ -90,6 +90,9 @@
    .Form_Input input:-ms-input-placeholder{
       color: #999999;
       font-weight: 400;
+   }
+   .Form_Select{
+      margin-bottom: 15px;
    }
    .Form_Select label {
       font-size: 14px;
@@ -125,4 +128,13 @@
       right: 0px;
    }
 
+   .AnswerGroup{
+      display: inline-flex;
+      flex-direction: row;
+      width: 98%;
+      margin-left: 2%;
+   }
+   .AnswerGroupOption{
+      width: 16.5%
+   }
    

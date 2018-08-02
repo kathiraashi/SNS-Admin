@@ -12,17 +12,18 @@ import { AgmCoreModule } from '@agm/core';
 import { AppRoutingModule } from './app.routing.module';
 import { ModalModule} from 'ngx-bootstrap';
 import {CalendarModule} from 'primeng/calendar';
-import {MatButtonModule, MatFormFieldModule, MatSelectModule} from '@angular/material';
+
+import {MatButtonModule, MatFormFieldModule, MatSelectModule, MatRadioModule} from '@angular/material';
+import { NgSelectModule } from '@ng-select/ng-select';
 
 import { HeaderComponent } from './Components/Common/header/header.component';
 import { LoginPageComponent } from './Components/login-page/login-page.component';
 import { DashboardComponent } from './Components/dashboard/dashboard.component';
-import { MainApplicationComponent } from './Components/Applications/main-application/main-application.component';
-import { BasicInfoApplicationComponent } from './Components/Applications/SubComponents/basic-info-application/basic-info-application.component';
-import { PersonalInfoApplicationComponent } from './Components/Applications/SubComponents/personal-info-application/personal-info-application.component';
-import { EducationInfoApplicationComponent } from './Components/Applications/SubComponents/education-info-application/education-info-application.component';
-import { ExperienceActivitiesApplicationComponent } from './Components/Applications/SubComponents/experience-activities-application/experience-activities-application.component';
-import { ReferenceDeclarationApplicationComponent } from './Components/Applications/SubComponents/reference-declaration-application/reference-declaration-application.component';
+import { MainApplicationComponent } from './Components/Applications-View/main-application/main-application.component';
+import { PersonalInfoApplicationComponent } from './Components/Applications-View/SubComponents/personal-info-application/personal-info-application.component';
+import { EducationInfoApplicationComponent } from './Components/Applications-View/SubComponents/education-info-application/education-info-application.component';
+import { ExperienceActivitiesApplicationComponent } from './Components/Applications-View/SubComponents/experience-activities-application/experience-activities-application.component';
+import { ReferenceDeclarationApplicationComponent } from './Components/Applications-View/SubComponents/reference-declaration-application/reference-declaration-application.component';
 import { ViewQuestionAnswersComponent } from './Components/Question-Answers/view-question-answers/view-question-answers.component';
 import { ModelEditQuestionAnswersComponent } from './Components/Models/QuestionAnswers/model-edit-question-answers/model-edit-question-answers.component';
 import { DeleteConfirmationComponent } from './Components/Common/delete-confirmation/delete-confirmation.component';
@@ -39,6 +40,7 @@ import { ModelDepartmentCreateComponent } from './Components/Models/Settings/Dep
 import { ModelPostCreateComponent } from './Components/Models/Settings/Post-Applied/model-post-create/model-post-create.component';
 import { MainEducationalInfoComponent } from './Components/Settings/Educational-Info/main-educational-info/main-educational-info.component';
 import { ModelEducationalCreateComponent } from './Components/Models/Settings/educational-info/model-educational-create/model-educational-create.component';
+import { ApplicationsListComponent } from './Components/applications-list/applications-list.component';
 
 
 
@@ -55,7 +57,6 @@ import { ModelEducationalCreateComponent } from './Components/Models/Settings/ed
    LoginPageComponent,
    DashboardComponent,
    MainApplicationComponent,
-   BasicInfoApplicationComponent,
    PersonalInfoApplicationComponent,
    EducationInfoApplicationComponent,
    ExperienceActivitiesApplicationComponent,
@@ -76,6 +77,7 @@ import { ModelEducationalCreateComponent } from './Components/Models/Settings/ed
    ModelPostCreateComponent,
    MainEducationalInfoComponent,
    ModelEducationalCreateComponent,
+   ApplicationsListComponent,
 
   ],
   imports: [
@@ -92,6 +94,8 @@ import { ModelEducationalCreateComponent } from './Components/Models/Settings/ed
     MatButtonModule,
     MatFormFieldModule,
     MatSelectModule,
+    MatRadioModule,
+    NgSelectModule,
     AgmCoreModule.forRoot({ apiKey: 'AIzaSyAKAH7vSuRjbTP16E9AFaUf6gDa69DZ4e8'}),
   ],
   providers: [],

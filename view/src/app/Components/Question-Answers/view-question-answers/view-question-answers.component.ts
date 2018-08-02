@@ -12,21 +12,34 @@ import { DeleteConfirmationComponent } from '../../../Components/Common/delete-c
   styleUrls: ['./view-question-answers.component.css']
 })
 export class ViewQuestionAnswersComponent implements OnInit {
+
+   Loader: Boolean = true;
+
    bsModalRef: BsModalRef;
    constructor(private modalService: BsModalService) { }
 
    ngOnInit() {
+      setTimeout(() => {
+         this.Loader = false;
+      }, 3000);
+   }
+
+   CreateQuestionAnswers() {
+      const initialState = {
+         Type: 'Create'
+      };
+      this.bsModalRef = this.modalService.show(ModelEditQuestionAnswersComponent, Object.assign({initialState}, { class: 'modal-lg max-width-70' }));
    }
    EditQuestionAnswers() {
       const initialState = {
-        Type: 'Edit'
+      Type: 'Edit'
       };
-      this.bsModalRef = this.modalService.show(ModelEditQuestionAnswersComponent, Object.assign({initialState}, { class: 'modal-lg' }));
-    }
-    DeleteQuestion() {
+      this.bsModalRef = this.modalService.show(ModelEditQuestionAnswersComponent, Object.assign({initialState}, { class: 'modal-lg max-width-70' }));
+   }
+   DeleteQuestion() {
       const initialState = {
-        Text: 'Question'
+      Text: 'Question'
       };
       this.bsModalRef = this.modalService.show(DeleteConfirmationComponent, Object.assign({initialState}, { class: 'modal-sm' }));
-    }
+   }
 }

@@ -1,0 +1,68 @@
+<app-header></app-header>
+<div class="Main_Section">
+   <!-- page section -->
+   <div class="Page_Section">
+      <div class="container-fluid">
+      <!-- page Identity -->
+         <div class="Page_Identity">
+            <div class="Page_Name">
+               <h5>APPLICATIONS VIEW</h5>
+            </div>
+            <div class="Page_Track">
+               <ul >
+                  <li class="HeaderName">Home </li>
+                  <li class="arrow">>></li>
+                  <li class="LinkName" [routerLink]="['/Applications']">Applications</li>
+                  <li class="arrow">>></li>
+                  <li>Application View</li>
+               </ul>
+            </div>
+         </div>
+         <div [ngClass]="{'Hide': !Loader}" class="DataLoaderStyle_1">
+            <div class="Loading">
+               <div class="spinner">
+                  <div class="rect1"></div>
+                  <div class="rect2"></div>
+                  <div class="rect3"></div>
+                  <div class="rect4"></div>
+                  <div class="rect5"></div>
+                  <div class="rect6"></div>
+               </div>
+            </div>
+         </div>
+         <div class="LoadedDataStyle_1" [ngClass]="{'Show': !Loader}">
+            <div class="container-fluid">
+               <div class="Main_section">
+                  <span class="Left_Section">
+                     <ul class="List">
+                        <li class="Item" [ngClass]="{'active': Active_Tab === 'Basic&Personal_info' }" (click)="Active_Tab_Change('Basic&Personal_info')"> <span> Basic and Personal Info </span>  </li>
+                        <li class="Item" [ngClass]="{'active': Active_Tab === 'educational_info' }" (click)="Active_Tab_Change('educational_info')"> <span> Educational Info </span>  </li>
+                        <li class="Item" [ngClass]="{'active': Active_Tab === 'experience&activities' }" (click)="Active_Tab_Change('experience&activities')"> <span> Experience & Activities </span>  </li>
+                        <li class="Item" [ngClass]="{'active': Active_Tab === 'reference&declaration' }" (click)="Active_Tab_Change('reference&declaration')"> <span> Reference & Declaration </span>  </li>
+                     </ul>
+                  </span>
+                  <!-- right Section -->
+                  <span class="Right_Section">
+                     <div *ngIf="Active_Tab === 'Basic&Personal_info'">
+                        <app-personal-info-application [CandidateData]="_Data"></app-personal-info-application>
+                     </div> 
+                     <div *ngIf="Active_Tab === 'educational_info'">
+                        <app-education-info-application [CandidateData]="_Data"></app-education-info-application>
+                     </div>   
+                     <div *ngIf="Active_Tab === 'experience&activities'">
+                        <app-experience-activities-application [CandidateData]="_Data"></app-experience-activities-application>
+                     </div>  
+                     <div *ngIf="Active_Tab === 'reference&declaration'">
+                        <app-reference-declaration-application [CandidateData]="_Data"></app-reference-declaration-application>
+                     </div>  
+                  </span>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+</div>
+  
+
+
+

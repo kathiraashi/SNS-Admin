@@ -1,26 +1,57 @@
-<div class="login-section">
-   <!-- Image Section -->
-	<div class="image-section">
-		<div class="over"></div>
-      <img src="assets/images/basic/login_background_promo.jpg">
-   </div>
-   <!-- Form Section -->
-   <div class="form-section">
-      <div class="form">
-         <h5 style="text-align:center;margin: 30px 0px;font-size: 25px;"> login</h5><br>
-         <div class="icon">
-            <i class="material-icons">
-               person
-            </i>
-            <input type="text" name="username" placeholder="username">
-         </div><br>
-         <div class="icon">
-            <i class="material-icons">
-               lock
-            </i>
-            <input type="password" name="password" placeholder="password">
-         </div><br>
-         <button class="login-design" [routerLink]="['/Dashboard']">login</button>
+<!-- Login Page Start -->
+<div class="Login_Page">
+   <div class="Login_Part">
+      <!-- Logo Section -->
+      <div class="row">
+         <div class="col-sm-4"></div>
+         <div class="col-sm-4">
+            <div class="Logo">
+               <img src="assets/images/basic/SNS.png" alt="">
+            </div>
+         </div>
+         <div class="col-sm-4"></div>
       </div>
-   </div>
+      <!-- Form Section -->
+      <div class="row">
+         <div class="col-sm-4"></div>
+         <div class="col-sm-4">
+            <div class="FormBox">
+               <div class="Identity_Box">
+                  <h5> Login Page</h5>
+               </div>
+               <div class="Form_Area">
+                  <!-- Form Group and Controllers -->
+                  <form [formGroup]="LoginForm">
+                     <!-- User_Name Form Controller  -->
+                     <p class="error" *ngIf="LoginForm.controls['User_Name'].errors && !LoginForm.controls['User_Name'].pristine">
+                        <span *ngIf="LoginForm.controls['User_Name'].errors.required">User Name is required</span>
+                     </p>
+                     <div class="Form_Field" [ngClass]="{'Form_Err': LoginForm.controls['User_Name'].errors && !LoginForm.controls['User_Name'].pristine, 'Form_Success': LoginForm.controls['User_Name'].valid && !LoginForm.controls['User_Name'].pristine }">
+                        <i class="material-icons">person_outline</i>
+                        <input type="text" formControlName="User_Name" placeholder="User Name">
+                     </div>
+                     <!-- User_Password Form Controller  -->
+                     <p class="error" *ngIf="LoginForm.controls['User_Password'].errors && !LoginForm.controls['User_Password'].pristine">
+                        <span *ngIf="LoginForm.controls['User_Password'].errors.required">Password is required</span>
+                     </p>
+                     <div class="Form_Field" [ngClass]="{'Form_Err': LoginForm.controls['User_Password'].errors && !LoginForm.controls['User_Password'].pristine, 'Form_Success': LoginForm.controls['User_Password'].valid && !LoginForm.controls['User_Password'].pristine }">
+                        <i class="material-icons">lock</i>
+                        <input type="password" formControlName="User_Password" placeholder="Password">
+                     </div>
+                     <!-- FormGroup Submit  -->
+                     <div class="Submit_Btn">
+                        <button type="submit" (click)="submit()" [disabled]="LoginForm.invalid" mat-raised-button color="primary"> Submit </button>
+                     </div>
+                  </form>
+               </div>
+               <!-- Form Section Footer Part  -->
+               <div class="Footer_Area">
+                  <h6> Forgot <span> Password? </span> </h6>
+               </div>
+            </div>
+         </div>
+         <div class="col-sm-4"></div>
+      </div>
+  </div>
 </div>
+<!-- Login Page End -->

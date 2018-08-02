@@ -1,0 +1,208 @@
+<!-- Main Section -->
+<div class="Main_Section">
+   <div class="row">
+      <div class="col-sm-12">
+         <div class="Section"> <!-- Section Start-->
+            <div class="Section_Identity"> <h5 class="Identity"> Education Details </h5> </div>
+            <div class="Section_Table">
+               <table>
+                  <thead>
+                     <tr>
+                        <th> Degree </th>
+                        <th> Specialization </th>
+                        <th> Name of the College </th>
+                        <th> Year of Passing </th>
+                        <th> CGPA </th>
+                        <th> Marks(%) </th>
+                        <th> Class </th>
+                        <th> Medium </th>
+                     </tr>
+                  </thead>
+                  <tbody>
+                     <tr *ngIf="UG_Course">
+                        <td> {{CandidateData.Education_Info?.UG_Course}} </td>
+                        <td> {{CandidateData.Education_Info?.UG_Department}} </td>
+                        <td> {{CandidateData.Education_Info?.UG_College_Name}} </td>
+                        <td> {{CandidateData.Education_Info?.UG_Year_Of_Passing}} </td>
+                        <td> {{CandidateData.Education_Info?.UG_CGPA}} </td>
+                        <td> {{CandidateData.Education_Info?.UG_Percentage}} </td>
+                        <td> {{CandidateData.Education_Info?.UG_Class}} </td>
+                        <td> {{CandidateData.Education_Info?.UG_Medium}} </td>
+                     </tr>
+                     <tr *ngIf="BED_Course">
+                        <td> {{CandidateData.Education_Info?.Bed_Course}} </td>
+                        <td> {{CandidateData.Education_Info?.Bed_Department}} </td>
+                        <td> {{CandidateData.Education_Info?.Bed_College_Name}} </td>
+                        <td> {{CandidateData.Education_Info?.Bed_Year_Of_Passing}} </td>
+                        <td> {{CandidateData.Education_Info?.Bed_CGPA}} </td>
+                        <td> {{CandidateData.Education_Info?.Bed_Percentage}} </td>
+                        <td> {{CandidateData.Education_Info?.Bed_Class}} </td>
+                        <td> {{CandidateData.Education_Info?.Bed_Medium}} </td>
+                     </tr>
+                     <tr *ngIf="PG_Course">
+                        <td> {{CandidateData.Education_Info?.PG_Course}} </td>
+                        <td> {{CandidateData.Education_Info?.PG_Department}} </td>
+                        <td> {{CandidateData.Education_Info?.PG_College_Name}} </td>
+                        <td> {{CandidateData.Education_Info?.PG_Year_Of_Passing}} </td>
+                        <td> {{CandidateData.Education_Info?.PG_CGPA}} </td>
+                        <td> {{CandidateData.Education_Info?.PG_Percentage}} </td>
+                        <td> {{CandidateData.Education_Info?.PG_Class}} </td>
+                        <td> {{CandidateData.Education_Info?.PG_Medium}} </td>
+                     </tr>
+                     <tr *ngIf="MED_Course">
+                        <td> {{CandidateData.Education_Info?.Med_Course}} </td>
+                        <td> {{CandidateData.Education_Info?.Med_Department}} </td>
+                        <td> {{CandidateData.Education_Info?.Med_College_Name}} </td>
+                        <td> {{CandidateData.Education_Info?.Med_Year_Of_Passing}} </td>
+                        <td> {{CandidateData.Education_Info?.Med_CGPA}} </td>
+                        <td> {{CandidateData.Education_Info?.Med_Percentage}} </td>
+                        <td> {{CandidateData.Education_Info?.Med_Class}} </td>
+                        <td> {{CandidateData.Education_Info?.Med_Medium}} </td>
+                     </tr>
+                     <tr *ngIf="MPHIL_Course">
+                        <td> {{CandidateData.Education_Info?.Mphil_Course}} </td>
+                        <td> {{CandidateData.Education_Info?.Mphil_Department}} </td>
+                        <td> {{CandidateData.Education_Info?.Mphil_College_Name}} </td>
+                        <td> {{CandidateData.Education_Info?.Mphil_Year_Of_Passing}} </td>
+                        <td> {{CandidateData.Education_Info?.Mphil_CGPA}} </td>
+                        <td> {{CandidateData.Education_Info?.Mphil_Percentage}} </td>
+                        <td> {{CandidateData.Education_Info?.Mphil_Class}} </td>
+                        <td> {{CandidateData.Education_Info?.Mphil_Medium}} </td>
+                     </tr>
+                     <tr *ngIf="PHD_Course">
+                        <td> {{CandidateData.Education_Info?.PHD_Course}} </td>
+                        <td> {{CandidateData.Education_Info?.PHD_Department}} </td>
+                        <td> {{CandidateData.Education_Info?.PHD_College_Name}} </td>
+                        <td> {{CandidateData.Education_Info?.PHD_Year_Of_Passing}} </td>
+                        <td> {{CandidateData.Education_Info?.PHD_CGPA}} </td>
+                        <td> {{CandidateData.Education_Info?.PHD_Percentage}} </td>
+                        <td> {{CandidateData.Education_Info?.PHD_Class}} </td>
+                        <td> {{CandidateData.Education_Info?.PHD_Medium}} </td>
+                     </tr>
+                     <tr *ngIf="OTHER1_Course">
+                        <td> {{CandidateData.Education_Info?.Other1_Course}} </td>
+                        <td> {{CandidateData.Education_Info?.Other1_Department}} </td>
+                        <td> {{CandidateData.Education_Info?.Other1_College_Name}} </td>
+                        <td> {{CandidateData.Education_Info?.Other1_Year_Of_Passing}} </td>
+                        <td> {{CandidateData.Education_Info?.Other1_CGPA}} </td>
+                        <td> {{CandidateData.Education_Info?.Other1_Percentage}} </td>
+                        <td> {{CandidateData.Education_Info?.Other1_Class}} </td>
+                        <td> {{CandidateData.Education_Info?.Other1_Medium}} </td>
+                     </tr>
+                     <tr *ngIf="OTHER2_Course">
+                        <td> {{CandidateData.Education_Info?.Other2_Course}} </td>
+                        <td> {{CandidateData.Education_Info?.Other2_Department}} </td>
+                        <td> {{CandidateData.Education_Info?.Other2_College_Name}} </td>
+                        <td> {{CandidateData.Education_Info?.Other2_Year_Of_Passing}} </td>
+                        <td> {{CandidateData.Education_Info?.Other2_CGPA}} </td>
+                        <td> {{CandidateData.Education_Info?.Other2_Percentage}} </td>
+                        <td> {{CandidateData.Education_Info?.Other2_Class}} </td>
+                        <td> {{CandidateData.Education_Info?.Other2_Medium}} </td>
+                     </tr>
+                  </tbody>
+               </table>
+            </div>
+         </div><!-- Section End -->
+         <div *ngIf="CandidateData.Personal_Info?.Marital_Status === 'Married' && CandidateData.Personal_Info?.No_Of_Kids > 0" class="Section"> <!-- Section Start-->
+            <div class="Section_Identity"> <h5 class="Identity"> Kids Details </h5> </div>
+            <div class="Section_Table">
+               <table>
+                  <thead>
+                     <tr>
+                        <th> Name </th>
+                        <th> Age </th>
+                        <th> Gender </th>
+                        <th> Class/Course </th>
+                        <th> School/College </th>
+                     </tr>
+                  </thead>
+                  <tbody>
+                     <tr *ngFor="let Kid of CandidateData.Personal_Info?.kids_List">
+                        <td> {{Kid.Kids_Name}} </td>
+                        <td> {{Kid.Kids_Age}} </td>
+                        <td> {{Kid.Kids_Gender?.name}} </td>
+                        <td> {{Kid.Kids_Class_Course}} </td>
+                        <td> {{Kid.Kids_School_College}} </td>
+                     </tr>
+                  </tbody>
+               </table>
+            </div>
+         </div><!-- Section End -->
+      </div>
+   </div>
+   <br>
+   <div class="row">
+      <div class="col-sm-6">
+         <div class="Section"> <!-- Section Start-->
+            <div class="Section_Identity"> <h5 class="Identity"> H.S.C Details</h5> </div>
+            <div class="Section_Data">
+               <div class="Data">
+                  <div class="Title"> School  <span> : </span> </div>
+                  <div class="Value"> {{CandidateData.Education_Info?.Hsc_School}} </div>
+               </div>
+               <div class="Data">
+                  <div class="Title"> Medium <span> : </span> </div>
+                  <div class="Value"> {{CandidateData.Education_Info?.Hsc_Medium}} </div>
+               </div>
+               <div class="Data">
+                  <div class="Title"> Year Of Passing <span> : </span> </div>
+                  <div class="Value"> {{CandidateData.Education_Info?.Hsc_Year_Of_Passing}} </div>
+               </div>
+               <div class="Data">
+                  <div class="Title"> Percentage <span> : </span> </div>
+                  <div class="Value"> {{CandidateData.Education_Info?.Hsc_Percentage}} </div>
+               </div>
+            </div>
+         </div><!-- Section End -->
+      </div>
+      <div class="col-sm-6">
+         <div class="Section"> <!-- Section Start-->
+            <div class="Section_Identity"> <h5 class="Identity"> S.S.L.C Details</h5> </div>
+            <div class="Section_Data">
+               <div class="Data">
+                  <div class="Title"> School  <span> : </span> </div>
+                  <div class="Value"> {{CandidateData.Education_Info?.Sslc_School}} </div>
+               </div>
+               <div class="Data">
+                  <div class="Title"> Medium <span> : </span> </div>
+                  <div class="Value"> {{CandidateData.Education_Info?.Sslc_Medium}} </div>
+               </div>
+               <div class="Data">
+                  <div class="Title"> Year Of Passing <span> : </span> </div>
+                  <div class="Value"> {{CandidateData.Education_Info?.Sslc_Year_Of_Passing}} </div>
+               </div>
+               <div class="Data">
+                  <div class="Title"> Percentage <span> : </span> </div>
+                  <div class="Value"> {{CandidateData.Education_Info?.Sslc_Percentage}} </div>
+               </div>
+            </div>
+         </div><!-- Section End -->
+      </div>
+      <div class="col-sm-9">
+         <div class="Section"> <!-- Section Start-->
+            <div class="Section_Identity"> <h5 class="Identity"> Other Details</h5> </div>
+            <div class="Section_Data">
+               <div class="Data">
+                  <div class="Title"> Phd Guide ship  <span> : </span> </div>
+                  <div class="Value"> {{CandidateData.Education_Info?.Guide_ship}} </div>
+               </div>
+               <div class="Data" *ngIf="CandidateData.Education_Info?.Guide_ship === 'Yes'">
+                  <div class="Title"> Guide ship Number <span> : </span> </div>
+                  <div class="Value"> {{CandidateData.Education_Info?.Guide_ship_No}} </div>
+               </div>
+               <div class="Data">
+                  <div class="Title"> NET/SET/SLET Qualified <span> : </span> </div>
+                  <div class="Value"> {{CandidateData.Education_Info?.SET_Qualified}} </div>
+               </div>
+               <div class="Data" *ngIf="CandidateData.Education_Info?.SET_Qualified === 'Yes'">
+                  <div class="Title"> Qualified Year <span> : </span> </div>
+                  <div class="Value"> {{CandidateData.Education_Info?.SET_QualifiedYear}} </div>
+               </div>
+            </div>
+         </div><!-- Section End -->
+      </div>
+   </div>
+</div>
+   
+   
+   

@@ -1,0 +1,90 @@
+<div class="Main_Section">
+   <div class="row">
+      <div class="col-sm-12">
+         <div class="Section"> <!-- Section Start-->
+            <div class="Section_Data">
+               <div class="Data">
+                  <div class="Title" style="width: 40%"> Any One Family Member Employed in SNS Group  <span> : </span> </div>
+                  <div class="Value"> {{CandidateData.Reference_Info?.Family_in_SNS}} </div>
+               </div>
+            </div>
+         </div><!-- Section End -->
+         <div *ngIf="CandidateData.Reference_Info?.Family_in_SNS === 'Yes'" class="Section"> <!-- Section Start-->
+            <div class="Section_Identity"> <h5 class="Identity"> Employee Details </h5> </div>
+            <div class="Section_Table">
+               <table>
+                  <thead>
+                     <tr>
+                        <th> Name </th>
+                        <th> Institute </th>
+                        <th> Designation </th>
+                        <th> Responsibilities </th>
+                     </tr>
+                  </thead>
+                  <tbody>
+                     <tr *ngFor="let Employee of CandidateData.Reference_Info?.Family_in_SNS_Details">
+                        <td> {{Employee.Name}} </td>
+                        <td> {{Employee.Institute}} </td>
+                        <td> {{Employee.Designation}} </td>
+                        <td> {{Employee.Responsibilities}} </td>
+                     </tr>
+                  </tbody>
+               </table>
+            </div>
+         </div><!-- Section End -->
+      </div>
+      <div class="col-sm-12">
+         <div class="Section"> <!-- Section Start-->
+            <div class="Section_Identity"> <h5 class="Identity"> Reference Details </h5> </div>
+            <div class="Section_Table">
+               <table>
+                  <thead>
+                     <tr>
+                        <th></th>
+                        <th> Name </th>
+                        <th> Designation </th>
+                        <th> Organization </th>
+                        <th> Contact Number </th>
+                        <th> Mail Id </th>
+                     </tr>
+                  </thead>
+                  <tbody>
+                     <tr>
+                        <td class="Special"> Reference 1 <span> : </span></td>
+                        <td> {{CandidateData.Reference_Info?.Reference1_Name}} </td>
+                        <td> {{CandidateData.Reference_Info?.Reference1_Designation}} </td>
+                        <td> {{CandidateData.Reference_Info?.Reference1_Organization}} </td>
+                        <td> {{CandidateData.Reference_Info?.Reference1_Contact_Number}} </td>
+                        <td> {{CandidateData.Reference_Info?.Reference1_Email_Id}} </td>
+                     </tr>
+                     <tr>
+                        <td class="Special"> Reference 2 <span> : </span> </td>
+                        <td> {{CandidateData.Reference_Info?.Reference2_Name}} </td>
+                        <td> {{CandidateData.Reference_Info?.Reference2_Designation}} </td>
+                        <td> {{CandidateData.Reference_Info?.Reference2_Organization}} </td>
+                        <td> {{CandidateData.Reference_Info?.Reference2_Contact_Number}} </td>
+                        <td> {{CandidateData.Reference_Info?.Reference2_Email_Id}} </td>
+                     </tr>
+                  </tbody>
+               </table>
+            </div>
+         </div><!-- Section End -->
+      </div>
+      <div class="col-sm-6">
+         <div class="Section"> <!-- Section Start-->
+            <br>
+            <br>
+            <div class="Section_Data">
+               <div class="Data">
+                  <div class="Title"> Place  <span> : </span> </div>
+                  <div class="Value"> {{CandidateData.Reference_Info?.Place}} </div>
+               </div>
+               <div class="Data">
+                  <div class="Title"> Date  <span> : </span> </div>
+                  <div class="Value"> {{CandidateData.Reference_Info?.Date | date:'dd/MM/yyyy'}} </div>
+               </div>
+            </div>
+         </div><!-- Section End -->
+      </div>
+   </div>
+</div>

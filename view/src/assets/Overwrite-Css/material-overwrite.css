@@ -2,14 +2,20 @@
 /* Button Color Overwrite */
 
 .mat-raised-button.mat-primary, .mat-fab.mat-primary, .mat-mini-fab.mat-primary {
-   background-color: #49b660;
+   background-color: #4d6a7a;
    color: #ffffff;
 }
 .mat-button.mat-primary, .mat-icon-button.mat-primary, .mat-stroked-button.mat-primary{
-   color: #49b660;
+   color: #4d6a7a;
 }
 .mat-button.mat-primary .mat-button-focus-overlay, .mat-icon-button.mat-primary .mat-button-focus-overlay, .mat-stroked-button.mat-primary .mat-button-focus-overlay{
    background-color: rgba(74, 182, 95, 0.1);
+}
+.mat-radio-button.mat-accent.mat-radio-checked .mat-radio-outer-circle {
+   border-color: #4c6a7a;
+}
+.mat-radio-button.mat-accent .mat-radio-inner-circle {
+   background-color: #4c6a7a;
 }
 
 /* Table Action Button Style Change */

@@ -1,0 +1,284 @@
+<!-- Main Section -->
+<div class="Main_Section">
+   <div class="row">
+      <div class="col-sm-6">
+         <div class="Section"> <!-- Section Start-->
+            <div class="Section_Data">
+               <div class="Data">
+                  <div class="Title"> Experience <span> : </span> </div>
+                  <div class="Value"> {{CandidateData.Activity_Info?.Experience}} </div>
+               </div>
+            </div>
+         </div><!-- Section End -->
+      </div>
+      <div *ngIf="CandidateData.Activity_Info?.Experience === 'Experienced'" class="col-sm-12">
+         <div class="Section"> <!-- Section Start-->
+            <div class="Section_Identity"> <h5 class="Identity"> Teaching Experience </h5> </div>
+            <div class="Section_Table">
+               <table>
+                  <thead>
+                     <tr>
+                        <th> Institute </th>
+                        <th> Department </th>
+                        <th> Designation </th>
+                        <th> Responsibilities </th>
+                        <th> Salary </th>
+                        <th> Working From </th>
+                        <th> Working To </th>
+                        <th> Working Duration </th>
+                     </tr>
+                  </thead>
+                  <tbody>
+                     <tr *ngFor="let Teaching of CandidateData.Activity_Info?.Teaching_Experience">
+                        <td> {{Teaching.Institute_Name}} </td>
+                        <td> {{Teaching.Department}} </td>
+                        <td> {{Teaching.Designation}} </td>
+                        <td> {{Teaching.Responsibilities}} </td>
+                        <td> {{Teaching.Salary}} </td>
+                        <td> {{Teaching.Working_Duration_From | date: 'dd/MM/yyyy'}} </td>
+                        <td> {{Teaching.Working_Duration_To | date: 'dd/MM/yyyy'}} </td>
+                        <td> {{Teaching.Working_Duration}} </td>
+                     </tr>
+                  </tbody>
+               </table>
+            </div>
+         </div><!-- Section End -->
+      </div>
+      <div *ngIf="CandidateData.Activity_Info?.Experience === 'Experienced'" class="col-sm-12">
+         <div class="Section"> <!-- Section Start-->
+            <div class="Section_Identity"> <h5 class="Identity"> Industry/Other Experience </h5> </div>
+            <div class="Section_Table">
+               <table>
+                  <thead>
+                     <tr>
+                        <th> Industry </th>
+                        <th> Department </th>
+                        <th> Designation </th>
+                        <th> Responsibilities </th>
+                        <th> Salary </th>
+                        <th> Working From </th>
+                        <th> Working To </th>
+                        <th> Working Duration </th>
+                     </tr>
+                  </thead>
+                  <tbody>
+                     <tr *ngFor="let Industry of CandidateData.Activity_Info?.Industry_Experience">
+                        <td> {{Industry.Industry_Name}} </td>
+                        <td> {{Industry.Department}} </td>
+                        <td> {{Industry.Designation}} </td>
+                        <td> {{Industry.Responsibilities}} </td>
+                        <td> {{Industry.Salary}} </td>
+                        <td> {{Industry.Working_Duration_From | date: 'dd/MM/yyyy'}} </td>
+                        <td> {{Industry.Working_Duration_To | date: 'dd/MM/yyyy'}} </td>
+                        <td> {{Industry.Working_Duration}} </td>
+                     </tr>
+                  </tbody>
+               </table>
+            </div>
+         </div><!-- Section End -->
+      </div>
+   </div>
+   <div class="row">
+      <div class="col-sm-6">
+         <div class="Section"> <!-- Section Start-->
+            <div class="Section_Identity"> <h5 class="Identity"> Program Attended</h5> </div>
+            <div class="Section_Data">
+               <div class="Data">
+                  <div class="Title"> No Of FDP <span> : </span> </div>
+                  <div class="Value"> {{CandidateData.Activity_Info?.No_Of_FDP_Attended}} </div>
+               </div>
+               <div class="Data">
+                  <div class="Title"> No Of Workshop <span> : </span> </div>
+                  <div class="Value"> {{CandidateData.Activity_Info?.No_Of_Workshop_Attended}} </div>
+               </div>
+               <div class="Data">
+                  <div class="Title"> No Of Conference <span> : </span> </div>
+                  <div class="Value"> {{CandidateData.Activity_Info?.No_Of_Conference_Attended}} </div>
+               </div>
+               <div class="Data">
+                  <div class="Title"> No Of Symposium <span> : </span> </div>
+                  <div class="Value"> {{CandidateData.Activity_Info?.No_Of_Symposium_Attended}} </div>
+               </div>
+            </div>
+         </div><!-- Section End -->
+         <div class="Section"> <!-- Section Start-->
+            <div class="Section_Identity"> <h5 class="Identity"> Program Organized</h5> </div>
+            <div class="Section_Data">
+               <div class="Data">
+                  <div class="Title"> No Of FDP <span> : </span> </div>
+                  <div class="Value"> {{CandidateData.Activity_Info?.No_Of_FDP_Organized}} </div>
+               </div>
+               <div class="Data">
+                  <div class="Title"> No Of Workshop <span> : </span> </div>
+                  <div class="Value"> {{CandidateData.Activity_Info?.No_Of_Workshop_Organized}} </div>
+               </div>
+               <div class="Data">
+                  <div class="Title"> No Of Conference <span> : </span> </div>
+                  <div class="Value"> {{CandidateData.Activity_Info?.No_Of_Conference_Organized}} </div>
+               </div>
+               <div class="Data">
+                  <div class="Title"> No Of Symposium <span> : </span> </div>
+                  <div class="Value"> {{CandidateData.Activity_Info?.No_Of_Symposium_Organized}} </div>
+               </div>
+            </div>
+         </div><!-- Section End -->
+         <div class="Section"> <!-- Section Start-->
+            <div class="Section_Identity"> <h5 class="Identity"> No of project guided </h5> </div>
+            <div class="Section_Data">
+               <div class="Data">
+                  <div class="Title"> Guided in UG <span> : </span> </div>
+                  <div class="Value"> {{CandidateData.Activity_Info?.No_Of_Project_Guided_UG}} </div>
+               </div>
+               <div class="Data">
+                  <div class="Title"> Guided in PG <span> : </span> </div>
+                  <div class="Value"> {{CandidateData.Activity_Info?.No_Of_Project_Guided_PG}} </div>
+               </div>
+               <div class="Data">
+                  <div class="Title"> Guided in PHD <span> : </span> </div>
+                  <div class="Value"> {{CandidateData.Activity_Info?.No_Of_Project_Guided_PHD}} </div>
+               </div>
+            </div>
+         </div><!-- Section End -->
+      </div>
+      <div class="col-sm-6">
+         <div class="Section"> <!-- Section Start-->
+            <div class="Section_Identity"> <h5 class="Identity"> Research Published Details</h5> </div>
+            <div class="Section_Data">
+               <div class="Data">
+                  <div class="Title Special"> No Of Monograph / Thesis Published<span> : </span> </div>
+                  <div class="Value"> {{CandidateData.Activity_Info?.No_Of_Monograph_Published}} </div>
+               </div>
+               <div class="Data">
+                  <div class="Title Special"> No Of Books Published <span> : </span> </div>
+                  <div class="Value"> {{CandidateData.Activity_Info?.No_Of_Books_Published}} </div>
+               </div>
+               <div class="Data">
+                  <div class="Title Special"> No Of Chapter in Edited Books <span> : </span> </div>
+                  <div class="Value"> {{CandidateData.Activity_Info?.No_Of_Chapter_in_Inherited_Books}} </div>
+               </div>
+               <div class="Data">
+                  <div class="Title Special"> No Of Paper Published in Journals <span> : </span> </div>
+                  <div class="Value"> {{CandidateData.Activity_Info?.No_Of_Paper_Published_InJournals}} </div>
+               </div>
+               <div class="Data">
+                  <div class="Title Special"> No Of Paper in Conference <span> : </span> </div>
+                  <div class="Value"> {{CandidateData.Activity_Info?.No_Of_Papers_InConference}} </div>
+               </div>
+               <div class="Data">
+                  <div class="Title Special"> No Of Citations <span> : </span> </div>
+                  <div class="Value"> {{CandidateData.Activity_Info?.No_Of_Citations}} </div>
+               </div>
+               <div class="Data">
+                  <div class="Title Special"> No Of h-Index <span> : </span> </div>
+                  <div class="Value"> {{CandidateData.Activity_Info?.No_Of_H_Index}} </div>
+               </div>
+               <div class="Data">
+                  <div class="Title Special"> No Of i10_Index <span> : </span> </div>
+                  <div class="Value"> {{CandidateData.Activity_Info?.No_Of_I10_Index}} </div>
+               </div>
+            </div>
+         </div><!-- Section End -->
+      </div>
+   </div>
+   <div class="row">
+      <div class="col-sm-12">
+         <div class="Section"> <!-- Section Start-->
+            <div class="Section_Identity"> <h5 class="Identity"> Teaching Experience </h5> </div>
+            <div class="Section_Table">
+               <table>
+                  <thead>
+                     <tr>
+                        <th> Title </th>
+                        <th> Investigators </th>
+                        <th> Patent No </th>
+                        <th> Status </th>
+                     </tr>
+                  </thead>
+                  <tbody>
+                     <tr *ngFor="let Patent of CandidateData.Activity_Info?.Patent">
+                        <td> {{Patent.Title}} </td>
+                        <td> {{Patent.Investigators}} </td>
+                        <td> {{Patent.Patent_No}} </td>
+                        <td> {{Patent.Status?.name}} </td>
+                     </tr>
+                  </tbody>
+               </table>
+            </div>
+         </div><!-- Section End -->
+      </div>
+   </div>
+   <div class="row">
+      <div class="col-sm-12">
+         <div class="Section"> <!-- Section Start-->
+            <div class="Section_Identity"> <h5 class="Identity"> Achievements & Awards </h5> </div>
+            <div class="Section_Table">
+               <table>
+                  <thead>
+                     <tr>
+                        <th> Category </th>
+                        <th> Award / Achievement </th>
+                        <th> Year </th>
+                     </tr>
+                  </thead>
+                  <tbody>
+                     <tr *ngFor="let Award of CandidateData.Activity_Info?.Achievements_Awards">
+                        <td> {{Award.Category}} </td>
+                        <td> {{Award.Award_Achievement}} </td>
+                        <td> {{Award.Year}} </td>
+                        <td> {{Award.Status?.name}} </td>
+                     </tr>
+                  </tbody>
+               </table>
+            </div>
+         </div><!-- Section End -->
+      </div>
+   </div>
+   <div class="row">
+      <div class="col-sm-10">
+         <div class="Section"> <!-- Section Start-->
+            <div class="Section_Identity"> <h5 class="Identity"> Other Details </h5> </div>
+            <div class="Section_Data">
+               <div class="Data">
+                  <div class="Title"> Research Funding <span> : </span> </div>
+                  <div class="Value"> {{CandidateData.Activity_Info?.Research_Found}} </div>
+               </div>
+               <div *ngIf="CandidateData.Activity_Info?.Research_Found === 'Yes'" class="Data">
+                  <div class="Title"> Funding Amount <span> : </span> </div>
+                  <div class="Value"> {{CandidateData.Activity_Info?.Research_Found_Amount}} </div>
+               </div>
+               <div class="Data">
+                  <div class="Title"> Contact with Industries <span> : </span> </div>
+                  <div class="Value"> {{CandidateData.Activity_Info?.Contact_Industries}} </div>
+               </div>
+               <div *ngIf="CandidateData.Activity_Info?.Contact_Industries === 'Yes'" class="Data">
+                  <div class="Title"> No of Industries <span> : </span> </div>
+                  <div class="Value"> {{CandidateData.Activity_Info?.Contact_Industries_Count}} </div>
+               </div>
+               <div class="Data">
+                  <div class="Title"> Interested Games <span> : </span> </div>
+                  <div class="Value"> {{CandidateData.Activity_Info?.Interested_Game}} </div>
+               </div>
+               <div class="Data">
+                  <div class="Title"> Activities in Previous Organization <span> : </span> </div>
+                  <div class="Value"> {{CandidateData.Activity_Info?.Activities}} </div>
+               </div>
+               <div class="Data">
+                  <div class="Title"> Special Achievements <span> : </span> </div>
+                  <div class="Value"> {{CandidateData.Activity_Info?.Special_Achievements}} </div>
+               </div>
+               <div class="Data">
+                  <div class="Title"> Joining Time <span> : </span> </div>
+                  <div class="Value"> {{CandidateData.Activity_Info?.Joining_Time}} </div>
+               </div>
+               <div class="Data">
+                  <div class="Title"> Expected Salary <span> : </span> </div>
+                  <div class="Value"> {{CandidateData.Activity_Info?.Expected_Salary}} </div>
+               </div>
+            </div>
+         </div><!-- Section End -->
+      </div>
+   </div>
+</div>
+   
+   
+   

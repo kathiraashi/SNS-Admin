@@ -7,6 +7,12 @@ import { Component, OnInit } from '@angular/core';
 })
 export class HeaderComponent implements OnInit {
 
+  _Colleges: any[] = [ 'SNS College of Technology',
+                        'SNS College of Engineering',
+                        'SNS College of Ars and Science',
+                        'SNS College of Education',
+                        'SNS Academy',
+                      ];
   constructor() { }
 
   ngOnInit() {

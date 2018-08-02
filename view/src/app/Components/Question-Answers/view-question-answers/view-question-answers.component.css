@@ -1,30 +1,69 @@
-/* Body Design Css */
-   .FoodListPage{
-      padding:0;
-      margin:0;
-      background-color:#f1f1f1;
-      min-height: 500px;
-   }
-/* page identity */
-   .PageIdentity{
-      height:40px;
-      line-height:40px;
-      margin-top:3px;
-      margin-bottom:5px;
-   }
-   .PageIdentity .Identity{
-      color: #777777;
-      font-size: 13px;
-      font-weight: 600;
-   }
-   .PageIdentity .Identity span{
-      cursor: pointer;
-      color: #4e6a7a;
-      font-weight: 600;
-      font-size: 15px;
-   }
 /* page Section */
-   .Page_Section{
+.Page_Section{
+   width:100%;
+   margin-top: 100px;
+   position: relative;
+ }
+ /* --------------   Page Identity Section  ----------------- */
+ .Page_Identity{
+   display: flex;
+   height:40px;
+   width: 100%;
+   margin-bottom: 5px;
+  }
+  .Page_Identity .Page_Name{
+   width:50%;
+  }
+  .Page_Identity .Page_Name h5{
+   color: #4f6a7a;
+   line-height: 35px;
+   font-size: 18px;
+   margin: 0px;
+   font-weight: 700;
+  }
+  .Page_Identity .Page_Track{
+   width:50%;
+   line-height: 35px;
+  }
+  .Page_Identity .Page_Track ul{
+   display: flex;
+   list-style-type: none;
+   padding: 0px;
+   margin: 0px;
+   align-items: center;
+   float: right;
+  }
+  .Page_Identity .Page_Track ul li {
+   color: #a5adb1;
+   font-size: 13px;
+   font-weight: 600;
+   margin-left: 5px;
+  }
+  .Page_Identity .Page_Track ul li.arrow{
+   letter-spacing: -4px;
+   font-size: 19px;
+   transform: scale(.6, 1);
+  }
+  .Page_Identity .Page_Track ul li.arrowGreen{
+   letter-spacing: -4px;
+   font-size: 19px;
+   transform: scale(.6, 1);
+   color: #4c6a7a;
+  }
+  .Page_Identity .Page_Track ul li.HeaderName{
+   color: #4c6a7a;
+  }
+  .Page_Identity .Page_Track ul li.LinkName{
+   color: #4c6a7a;
+   cursor: pointer;
+  }
+  
+
+
+
+
+/* page Section */
+   .Main_Section{
       background-color:#fff;
       border:1px solid #fff;
       border-radius:3px;
@@ -34,51 +73,61 @@
       padding: 15px;
       border-top:3px solid #4E6A7A;
    }
-   .Page_Section h5{
+   .Main_Section h5{
       font-size: 18px;
       font-weight: 700;
       color: #2b373e;
       letter-spacing: 0.8px;
+      margin-bottom: 20px;
    }
 /* Options */
-   .Page_Section .Options{
+   .Main_Section .Options{
       margin-left:20px;
+      display: flex;
    }
-   .Page_Section .Options .option{
+   .Main_Section .Options .option{
       margin-right:30px;
       font-size: 16px;
       font-weight: 600;
       color: #4e6a7a;
    }
-   .Page_Section span{
-      font-size: 16px;
-      font-weight: 600;
-      color: #4e6a7a;
-   }
-   .Page_Section .edit{
+   .Main_Section .edit{
       margin-left: 10px;
-      color: #137fde;
+      color: #4d6a7a;
       font-size: 20px;
       cursor:pointer;
    }
-   .Page_Section .delete{
-      color: #e02222;
+   .Main_Section .delete{
+      color: #4d6a7a;
       font-size: 23px;
       cursor:pointer;
       margin-left:15px;
    }
-   .Page_Section .Options .ans{
+   .Main_Section .Options .ans{
       color:#0a9235;
       text-decoration: underline;
    }
-   .Page_Section .Options .Differ{
-      color: #010206;
+   .Main_Section .Options .Differ{
+      color: #4d6a7a;
       font-size: 15px;
       font-weight: 700;
+      margin-right: 5px;
+      text-decoration: underline;
    }
-   .Page_Section .Options .Differ1{
+   .Main_Section .Options .Differ1{
       color: #0a9235;
       font-size: 15px;
       font-weight: 700;
    }
+
+   .Actions {
+      position: absolute;
+      right: 30px;
+   }
+   .Section {
+      background-color: #e6e6e6bd;
+      padding: 15px;
+      margin-bottom: 25px;
+      box-shadow: 2px 2px 3px #bfb8b8;
+  }
    

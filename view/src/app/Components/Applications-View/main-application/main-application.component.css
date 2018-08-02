@@ -1,0 +1,114 @@
+/* page Section */
+.Page_Section{
+   width:100%;
+   margin-top: 100px;
+   position: relative;
+ }
+ /* --------------   Page Identity Section  ----------------- */
+ .Page_Identity{
+   display: flex;
+   height:40px;
+   width: 100%;
+   margin-bottom: 5px;
+  }
+  .Page_Identity .Page_Name{
+   width:50%;
+  }
+  .Page_Identity .Page_Name h5{
+   color: #4f6a7a;
+   line-height: 35px;
+   font-size: 18px;
+   margin: 0px;
+   font-weight: 700;
+  }
+  .Page_Identity .Page_Track{
+   width:50%;
+   line-height: 35px;
+  }
+  .Page_Identity .Page_Track ul{
+   display: flex;
+   list-style-type: none;
+   padding: 0px;
+   margin: 0px;
+   align-items: center;
+   float: right;
+  }
+  .Page_Identity .Page_Track ul li {
+   color: #a5adb1;
+   font-size: 13px;
+   font-weight: 600;
+   margin-left: 5px;
+  }
+  .Page_Identity .Page_Track ul li.arrow{
+   letter-spacing: -4px;
+   font-size: 19px;
+   transform: scale(.6, 1);
+  }
+  .Page_Identity .Page_Track ul li.arrowGreen{
+   letter-spacing: -4px;
+   font-size: 19px;
+   transform: scale(.6, 1);
+   color: #4c6a7a;
+  }
+  .Page_Identity .Page_Track ul li.HeaderName{
+   color: #4c6a7a;
+  }
+  .Page_Identity .Page_Track ul li.LinkName{
+   color: #4c6a7a;
+   cursor: pointer;
+  }
+
+/* Main Section */
+   .Main_section{
+      width:100%;
+      display:flex;
+   }
+/* left section */
+   .Left_Section {
+      background-color: #fff;
+      width:20%;
+      height:50%;
+   }
+   .Left_Section .List {
+      padding: 0px;
+      margin: 0px;
+   }
+   .Left_Section .List .Item:first-child {
+      border-top: none;
+   }
+   .Left_Section .List .Item {
+      list-style: none;
+      padding: 15px 20px 12px 20px;
+      margin: 0px;
+      border-top: 1px solid #ebedf3;
+      line-height: 1;
+      box-shadow: none;
+      text-shadow: none;
+      display: block;
+      width: 100%;
+      cursor: pointer;
+   }
+   .Left_Section .List .Item span {
+      font-size: 15px;
+      color: #777777;
+      font-weight: 600;
+   }
+   .Left_Section .List .Item:hover span {
+      color: #4e6a7a
+   }
+   .Left_Section .List .Item.active {
+      background-color: #4e6a7a;
+   }
+   .Left_Section .List .Item.active span{
+      color: #ffffff;
+   }
+   .Right_Section{
+      width:80%;
+      margin-left: 1%;
+      margin-right: 1%;
+   }
+
+
+
+
+
