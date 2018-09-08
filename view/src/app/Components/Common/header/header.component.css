@@ -88,7 +88,7 @@
       padding-left: 0px;
       padding-top:2px;
       z-index: 1;
-      margin-top:-12px;
+      margin-top: 0px;
    }
    .Header .tree-menus .tree-view .tree-list{
       height: 40px;
@@ -102,7 +102,7 @@
       font-weight: 600;
       line-height: 40px;
       text-align: left;
-      width: 150px !important;
+      min-width: 175px !important;
    }
    .Header .tree-menus .tree-view .tree-list a:hover,
    {

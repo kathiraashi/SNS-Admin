@@ -1,0 +1,71 @@
+<div class="Page_Section">
+   <div class="Page_Identity">
+      <div class="Page_Name">
+         <h5>USER MANAGEMENT</h5>
+      </div>
+      <div class="Page_Track">
+         <ul >
+            <li class="HeaderName">Settings</li>
+            <li class="arrow">>></li>
+            <li>User Management </li>
+         </ul>
+      </div>
+   </div>
+   <div class="row header_part">
+      <div class="col-sm-8">
+      <button class="Create_Button" mat-raised-button (click)="CreateUser()"> + Create </button>
+      </div>
+      <div class="col-sm-4">
+         <div class="Search_Section">
+            <input type="text" placeholder="Search.." name="search">
+            <i class="material-icons">search</i>
+         </div>
+      </div>
+   </div>
+   <div class="Table_Section">
+      <table>
+         <thead>
+            <tr>
+               <th style="width: 80px;">S.no</th>
+               <th>Name</th>
+               <th>User Name</th>
+               <th>Email</th>
+               <th>Phone</th>
+               <th>User Type</th>
+               <th>Last Modified By</th>
+               <th>Status</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let item of _List; let i=index">
+               <td>
+                  <span class="S_no"> {{i + 1}} </span>
+               </td>
+               <td>
+                  <span class="Style_1"> {{item['Name']}} </span>
+               </td>
+               <td>
+                  <span class="Style_1"> {{item['User_Name']}} </span>
+               </td>
+               <td>
+                  <span class="Style_1"> {{item['Email']}} </span>
+               </td>
+               <td>
+                  <span class="Style_1"> {{item['Phone']}} </span>
+               </td>
+               <td>
+                  <span class="Style_1"> {{item['User_Type']}}  </span>
+               </td>
+               <td>
+                  <span class="Style_1"> {{item['updatedAt'] | date:'medium'}} </span>
+               </td>
+               <td>
+                  <span class="Style_1" *ngIf="item.Active_Status"> Active </span>
+                  <span class="Style_1" *ngIf="!item.Active_Status"> Inactive </span>
+               </td>
+            </tr>
+         </tbody>
+      </table>
+   </div>
+</div>
+ 

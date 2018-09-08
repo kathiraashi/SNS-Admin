@@ -1,0 +1,119 @@
+/* Model Content */
+.Modal_Content {
+   width: 100%;
+   height: 100%;
+   padding: 0px 10px;
+}
+/* Model Header */
+.Modal_Header {
+   position: relative;
+   display: flex;
+   align-items: center;
+   height: 45px;
+   border-bottom: 1px solid #e8e8e8;
+}
+.Modal_Header p {
+   margin: 0px;
+   font-weight: 700;
+   font-size: 24px;
+   color: #4f6a7a;
+   letter-spacing: 0.3px;
+   width: 100%;
+   text-align: center;
+}
+.Modal_Header span {
+   font-size: 30px;
+   position: absolute;
+   right: 0px;
+   font-weight: 900;
+   top: -4px;
+   cursor: pointer;
+}
+/* Model Body */
+.Model_Body {
+   padding: 20px;
+}
+/* Option Design */
+.option_design span{
+   margin-right: 50px;
+   font-size: 14px;
+   color: #242f35;
+}
+.Model_Footer {
+   border-top: 1px solid #e8e8e8;
+   height: 55px;
+   display: flex;
+   align-items: center;
+   position: relative;
+   justify-content: flex-end;
+}
+.Model_Footer button {
+   margin-right: 15px;
+}
+
+
+
+
+
+
+/* page Section */
+.Main_Section h5{
+   font-size: 18px;
+   font-weight: 700;
+   color: #2b373e;
+   letter-spacing: 0.8px;
+   margin-bottom: 20px;
+   display: grid;
+   margin-right: 70px;
+}
+/* Options */
+.Main_Section .Options{
+   margin-left:20px;
+   display: grid;
+   grid-template-columns: auto auto auto auto auto auto;
+}
+.Main_Section .Options .option{
+   margin-right:30px;
+   font-size: 16px;
+   font-weight: 600;
+   color: #4e6a7a;
+}
+.Main_Section .edit{
+   margin-left: 10px;
+   color: #4d6a7a;
+   font-size: 20px;
+   cursor:pointer;
+}
+.Main_Section .delete{
+   color: #4d6a7a;
+   font-size: 23px;
+   cursor:pointer;
+   margin-left:15px;
+}
+.Main_Section .Options .ans{
+   color:#0a9235;
+   text-decoration: underline;
+}
+.Main_Section .Options .Differ{
+   color: #4d6a7a;
+   font-size: 15px;
+   font-weight: 700;
+   margin-right: 5px;
+   text-decoration: underline;
+}
+.Main_Section .Options .ans .Differ{
+   color: #0a9235;
+   font-size: 15px;
+   font-weight: 700;
+}
+
+.Actions {
+   position: absolute;
+   right: 30px;
+}
+.Section {
+   background-color: #e6e6e6bd;
+   padding: 15px;
+   margin-bottom: 25px;
+   box-shadow: 2px 2px 3px #bfb8b8;
+}

@@ -5,7 +5,7 @@ import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
 
 
 
-import { ModelPersonalinfoCommunityComponent } from '../../../../../Components/Models/Settings/personal-info/model-personalinfo-community/model-personalinfo-community.component';
+import { ModelPersonalinfoCommunityComponent } from '../../../../../Models/Settings/personal-info/model-personalinfo-community/model-personalinfo-community.component';
 import { DeleteConfirmationComponent } from '../../../../../Components/Common/delete-confirmation/delete-confirmation.component';
 
 @Component({

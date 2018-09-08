@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
 
-import { ModelPostCreateComponent } from '../../../../Components/Models/Settings/Post-Applied/model-post-create/model-post-create.component';
+import { ModelPostCreateComponent } from '../../../../Models/Settings/Post-Applied/model-post-create/model-post-create.component';
 import { DeleteConfirmationComponent } from '../../../../Components/Common/delete-confirmation/delete-confirmation.component';
 
 

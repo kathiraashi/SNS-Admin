@@ -1,0 +1,93 @@
+<!-- Model Content -->
+<div class="Modal_Content">
+   <div class="Modal_Header">
+      <p> Excel File View </p>
+      <span data-dismiss="modal" (click)="bsModalRef.hide()">&times;</span>
+   </div>
+   <!-- Model Body -->
+   <div class="Model_Body">
+      <div class="Main_Section">
+         <form [formGroup]="Form">
+            <div class="row">
+               <div class="col-sm-4 Form_Select">
+                  <label>College:</label>
+                  <ng-select class="NgSelect ValueBold"
+                              formControlName="Institution"
+                              [items]="_Institutions"
+                              [bindLabel]="'Institution'"
+                              [bindValue]="'_id'"
+                              [searchable]="true"
+                              placeholder="Institution">
+                  </ng-select>
+                  <p class="error" *ngIf="Form.controls['Institution'].errors && !Form.controls['Institution'].pristine">
+                        <span  *ngIf="Form.controls['Institution'].errors.required"> Institution is required</span>
+                     </p>
+               </div>
+               <div class="col-sm-4 Form_Select">
+                  <label>Department:</label>
+                  <ng-select class="NgSelect ValueBold"
+                              formControlName="Department"
+                              [items]="_Departments"
+                              [bindLabel]="'Department'"
+                              [bindValue]="'_id'"
+                              [searchable]="true"
+                              placeholder="Department">
+                  </ng-select>
+                  <p class="error" *ngIf="Form.controls['Department'].errors && !Form.controls['Department'].pristine">
+                        <span  *ngIf="Form.controls['Department'].errors.required"> Department is required</span>
+                     </p>
+               </div>
+               <div class="col-sm-4 Form_Select">
+                  <label>Category:</label>
+                  <ng-select class="NgSelect ValueBold" 
+                              formControlName="Category"
+                              [items]="_Categories"
+                              [bindLabel]="'Category'"
+                              [bindValue]="'_id'"
+                              [searchable]="true"
+                              placeholder="Category">
+                  </ng-select>
+                  <p class="error" *ngIf="Form.controls['Category'].errors && !Form.controls['Category'].pristine">
+                        <span  *ngIf="Form.controls['Category'].errors.required"> Category is required</span>
+                     </p>
+               </div>
+            </div>
+         </form>
+
+         <br>
+
+         <div class="row">
+            <div *ngFor="let Question of _Data; let i=index" class="col-sm-12">
+               <div class="Section">
+                  <h5> {{i + 1}}. {{Question.Question}} 
+                     <span class="Actions">
+                        <span (click)="DeleteQuestion(i)"><i class="material-icons delete"> delete </i></span>
+                     </span>
+                  </h5>
+                  <!-- Options -->
+                  <div class="Options">
+                     <span class="option" [ngClass]="{'ans': Question.Ans === 'A'}"> <span class="Differ"> A. </span> {{Question.Option_A}} </span>
+                     <span class="option" [ngClass]="{'ans': Question.Ans === 'B'}"> <span class="Differ"> B. </span> {{Question.Option_B}}  </span>
+                     <span class="option" [ngClass]="{'ans': Question.Ans === 'C'}"> <span class="Differ"> C. </span> {{Question.Option_C}}  </span>
+                     <span class="option" [ngClass]="{'ans': Question.Ans === 'D'}"> <span class="Differ"> D. </span> {{Question.Option_D}}  </span>
+                     <span class="option" [ngClass]="{'ans': Question.Ans === 'E'}"> <span class="Differ"> E. </span> {{Question.Option_E}}  </span>
+                     <span class="option" [ngClass]="{'ans': Question.Ans === 'F'}"> <span class="Differ"> F. </span> {{Question.Option_F}}  </span>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+   <!-- Model Footer -->
+   <div class="Model_Footer">
+      <button *ngIf="BtnReplace" mat-raised-button color="primary" (click)="Replace()" [disabled]="Form.invalid && !Form.valid || Uploading">
+         <span *ngIf="!Uploading"> Replace Old </span>
+         <span *ngIf="Uploading"> <i style="color: hsl(202, 22%, 39%)" class="fa fa-refresh fa-spin"></i> Replacing </span> 
+      </button>
+      <button *ngIf="BtnAppend" mat-raised-button color="primary" (click)="Append()" [disabled]="Form.invalid && !Form.valid || Uploading"> 
+         <span *ngIf="!Uploading"> Add to Old </span>
+         <span *ngIf="Uploading"> <i style="color: hsl(202, 22%, 39%)" class="fa fa-refresh fa-spin"></i> Adding </span> 
+      </button>
+   </div>
+</div>
+   

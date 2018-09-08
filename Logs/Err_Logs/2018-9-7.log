@@ -1,0 +1,22 @@
+[2018-09-07T15:17:07.636] [ERROR] Error - {"Error_Name":"","Error_Address":"","Error_Message":"Error: Cannot find module './server/web/routes/Settings/College.routes.js'"}
+[2018-09-07T15:17:35.306] [ERROR] Error - {"Error_Name":"","Error_Address":"","Error_Message":"Error: Cannot find module './server/web/routes/Settings/College.routes.js'"}
+[2018-09-07T15:17:43.875] [ERROR] Error - {"Error_Name":"","Error_Address":"","Error_Message":"Error: Cannot find module './server/web/routes/Settings/College.routes.js'"}
+[2018-09-07T15:17:46.484] [ERROR] Error - {"Error_Name":"","Error_Address":"","Error_Message":"Error: Cannot find module './server/web/routes/Settings/College.routes.js'"}
+[2018-09-07T15:18:13.912] [ERROR] Error - {"Error_Name":"","Error_Address":"","Error_Message":"Error: Cannot find module './server/web/routes/Settings/College.routes.js'"}
+[2018-09-07T15:18:16.495] [ERROR] Error - {"Error_Name":"","Error_Address":"","Error_Message":"Error: Cannot find module './server/web/routes/Settings/College.routes.js'"}
+[2018-09-07T19:03:46.562] [ERROR] Error - {"Error_Name":"","Error_Address":"","Error_Message":"ReferenceError: varCandidates_Data is not defined"}
+[2018-09-07T19:04:28.007] [ERROR] Error - {"Error_Name":"","Error_Address":"","Error_Message":"ReferenceError: varCandidates_Data is not defined"}
+[2018-09-07T19:05:44.985] [ERROR] Error - {"Error_Name":"","Error_Address":"","Error_Message":"ReferenceError: varCandidates_Data is not defined"}
+[2018-09-07T19:06:35.298] [ERROR] Error - {"Error_Name":"","Error_Address":"","Error_Message":"ReferenceError: varCandidates_Data is not defined"}
+[2018-09-07T19:07:09.973] [ERROR] Error - {"Error_Name":"","Error_Address":"","Error_Message":"ReferenceError: varCandidates_Data is not defined"}
+[2018-09-07T19:07:22.781] [ERROR] Error - {"Error_Name":"","Error_Address":"","Error_Message":"ReferenceError: varCandidates_Data is not defined"}
+[2018-09-07T19:08:17.982] [ERROR] Error - {"Error_Name":"","Error_Address":"","Error_Message":"ReferenceError: varCandidates_Data is not defined"}
+[2018-09-07T19:15:48.234] [ERROR] Error - {"Error_Name":"","Error_Address":"","Error_Message":"Error: Cannot find module './server/web/routes/Q&A/Q&A.routes.js'"}
+[2018-09-07T19:15:55.114] [ERROR] Error - {"Error_Name":"","Error_Address":"","Error_Message":"Error: Cannot find module './server/web/routes/Q&A/Q&A.routes.js'"}
+[2018-09-07T19:16:06.169] [ERROR] Error - {"Error_Name":"","Error_Address":"","Error_Message":"Error: Cannot find module './server/web/routes/Q&A/Q&A.routes.js'"}
+[2018-09-07T19:16:08.565] [ERROR] Error - {"Error_Name":"","Error_Address":"","Error_Message":"Error: Cannot find module './server/web/routes/Q&A/Q&A.routes.js'"}
+[2018-09-07T19:16:11.821] [ERROR] Error - {"Error_Name":"","Error_Address":"","Error_Message":"Error: Cannot find module './server/web/routes/Q&A/Q&A.routes.js'"}
+[2018-09-07T19:16:49.335] [ERROR] Error - {"Error_Name":"","Error_Address":"","Error_Message":"Error: Cannot find module './server/web/routes/Q&A/Q&A.routes.js'"}
+[2018-09-07T19:17:01.596] [ERROR] Error - {"Error_Name":"","Error_Address":"","Error_Message":"Error: Cannot find module './server/web/routes/Q&A/Q&A.routes.js'"}
+[2018-09-07T20:12:53.414] [ERROR] Error - {"Error_Name":"","Error_Address":"","Error_Message":"SyntaxError: Unexpected token }"}
+[2018-09-07T20:13:11.600] [ERROR] Error - {"Error_Name":"","Error_Address":"","Error_Message":"SyntaxError: Unexpected token }"}

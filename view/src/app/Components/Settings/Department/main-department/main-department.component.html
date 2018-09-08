@@ -1,156 +1,95 @@
-<!--The content below is only a placeholder and can be replaced.-->
-<app-header></app-header>
-<div class="FoodListPage">
-   <!-- pge Identity -->
-   <div class="PageIdentity container-fluid">
-      <div class="row">
-         <div class="col-sm-12 text-right">
-            <p class="Identity">
-            <span class="link">Home</span> / Settings</p>
+<!-- page section -->
+<div class="Page_Section">
+   <div class="container-fluid">
+      <!-- page Identity -->
+      <div class="Page_Identity">
+         <div class="Page_Name">
+            <h5> DEPARTMENTS</h5>
+         </div>
+         <div class="Page_Track">
+            <ul >
+               <li class="HeaderName">Settings </li>
+               <li class="arrow">>></li>
+               <li> Departments List </li>
+            </ul>
+         </div>
+      </div>
+      <div [ngClass]="{'Hide': !Loader}" class="DataLoaderStyle_1">
+         <div class="Loading">
+            <div class="spinner">
+               <div class="rect1"></div>
+               <div class="rect2"></div>
+               <div class="rect3"></div>
+               <div class="rect4"></div>
+               <div class="rect5"></div>
+               <div class="rect6"></div>
+            </div>
+         </div>
+      </div>
+      <div class="LoadedDataStyle_1" [ngClass]="{'Show': !Loader}">
+         <!-- Page Header Part -->
+         <div class="row header_part">
+            <div class="col-sm-6">
+               <button class="Create_Button" mat-raised-button (click)="CreateScheduleActivity()"> + Create </button>
+            </div>
+            <div class="col-sm-2"></div>
+            <div class="col-sm-4">
+               <div class="Search_Section">
+                  <input type="text" placeholder="Search.." name="search">
+                  <i class="material-icons">search</i>
+               </div>
+            </div>
+         </div>
+         <!-- Table Section -->
+         <div class="Table_Section">
+            <table >
+               <thead>
+                  <tr>
+                     <th>S.no</th>
+                     <th>Department Name</th>
+                     <th>Created By </th>
+                     <th>Last Modified By</th>
+                     <th>Action</th>
+                  </tr>
+               </thead>
+               <tbody>
+                  <tr *ngFor="let Item of _List; let i=index">
+                     <td>
+                        <span class="S_no"> {{ i + 1}} </span>
+                     </td>
+                     <td>
+                        <span class="Style_1"> {{Item.Department}} </span>
+                     </td>
+                     <td>
+                        <span class="Style_1"> {{Item.Created_By.Name}}
+                           <!-- <span class="Badge"> {{Item.Created_By.User_Type.User_Type}} </span> -->
+                           <br> 
+                           <span class="Time"> {{Item.createdAt | date:'medium'}}  </span>
+                        </span>
+                     </td>
+                     <td>
+                        <span class="Style_1"> 
+                           {{Item.Last_Modified_By.Name}} 
+                           <!-- <span class="Badge"> {{Item.Last_Modified_By.User_Type.User_Type}} </span>  -->
+                           <br> 
+                           <span class="Time"> {{Item.updatedAt | date:'medium'}}  </span>
+                        </span>
+                     </td>
+                     <td>
+                        <button (click)="ViewScheduleActivity(i)" class="Table_Action_mini Bg_Info" mat-mini-fab color="primary">
+                           <i class="material-icons">zoom_in</i>
+                        </button>
+                        <button (click)="EditScheduleActivity(i)" class="Table_Action_mini Bg_warning" mat-mini-fab color="primary">
+                           <i class="material-icons">edit</i>
+                        </button>
+                        <button (click)="DeleteScheduleActivity(i)" class="Table_Action_mini Bg_Danger" mat-mini-fab color="primary">
+                           <i class="material-icons">delete_forever</i>
+                        </button>
+                     </td>
+                  </tr>
+               </tbody>
+            </table>
          </div>
       </div>
    </div>
-   <!-- left Section -->
-   <div class="container-fluid">
-      <div class="Main_section">
-         <span class="Left_Section">
-            <ul class="List">
-               <li class="Item" [ngClass]="{'active': Active_Tab === 'Technical_Institution' }" (click)="Active_Tab_Change('Technical_Institution')"> <span> SNS Technical Institutions </span>  </li>
-               <li class="Item" [ngClass]="{'active': Active_Tab === 'Arts_and_Science' }" (click)="Active_Tab_Change('Arts_and_Science')"> <span> SNS College of Arts & Science </span>  </li>
-               <li class="Item" [ngClass]="{'active': Active_Tab === 'College_Of_Education' }" (click)="Active_Tab_Change('College_Of_Education')"> <span> SNS College of Education </span>  </li>
-               <li class="Item" [ngClass]="{'active': Active_Tab === 'Academy' }" (click)="Active_Tab_Change('Academy')"> <span> SNS Academy </span>  </li>
-            </ul>
-         </span>
-         <!-- right Section -->
-         <span class="Right_Section">
-            <!-- Header Part -->
-            <div class="row header_part">
-               <div class="col-sm-6">
-                  <button class="Create_Button" mat-button (click)="CreateDepartment()"> + Create </button>
-               </div>
-               <div class="col-sm-6">
-                  <div class="Search_Section">
-                     <input type="text" placeholder="Search.." name="search">
-                     <i class="material-icons">search</i>
-                  </div>
-               </div>
-            </div>
-            <!-- Table Section -->
-            <div class="Table_Section">
-               <table>
-                  <thead>
-                     <tr>
-                     <th>S.no</th>
-                     <th>Department</th>
-                     <th>Created By</th>
-                     <th>Last Modification Date</th>
-                     <th>Action</th>
-                     </tr>
-                  </thead>
-                  <tbody>
-                     <tr>
-                        <td>
-                           <span class="S_no"> 1 </span>
-                        </td>
-                        <td>
-                           <span class="Style_1">  
-                           Agriculture Engineering</span>
-                        </td>
-                        <td>
-                           <span class="Style_1">admin</span>
-                        </td>
-                        <td>
-                           <span class="Style_1">28-9-2008</span>
-                        </td>
-                        <td>
-                           <button  (click)="CreateDepartment()" class="Table_Action_mini Bg_warning" mat-mini-fab color="primary">
-                              <i class="material-icons">edit</i>
-                           </button>
-                           <button (click)="DeleteDepartment()" class="Table_Action_mini Bg_Danger" mat-mini-fab color="primary">
-                              <i class="material-icons">delete_forever</i>
-                           </button>
-                        </td>
-                     </tr>
-                     <tr>
-                        <td>
-                           <span class="S_no"> 2 </span>
-                        </td>
-                        <td>
-                           <span class="Style_1">  
-                                 Agriculture Engineering</span>
-                        </td>
-                  
-                        <td>
-                           <span class="Style_1">admin</span>
-                        </td>
-                        <td>
-                           <span class="Style_1">28-9-2008</span>
-                        </td>
-                        <td>
-                           <button (click)="CreateDepartment()"  class="Table_Action_mini Bg_warning" mat-mini-fab color="primary">
-                              <i class="material-icons">edit</i>
-                           </button>
-                           <button (click)="DeleteDepartment()" class="Table_Action_mini Bg_Danger" mat-mini-fab color="primary">
-                              <i class="material-icons">delete_forever</i>
-                           </button>
-                        </td>
-                     </tr>
-                     <tr>
-                        <td>
-                           <span class="S_no"> 3 </span>
-                        </td>
-                        <td>
-                           <span class="Style_1">  
-                                 Agriculture Engineering</span>
-                        </td>
-                        <td>
-                           <span class="Style_1">admin</span>
-                        </td>
-                        <td>
-                           <span class="Style_1">28-9-2008</span>
-                        </td>
-                        <td>
-                           <button (click)="CreateDepartment()"  class="Table_Action_mini Bg_warning" mat-mini-fab color="primary">
-                              <i class="material-icons">edit</i>
-                           </button>
-                           <button (click)="DeleteDepartment()" class="Table_Action_mini Bg_Danger" mat-mini-fab color="primary">
-                              <i class="material-icons">delete_forever</i>
-                           </button>
-                        </td>
-                     </tr>
-                     <tr>
-                        <td>
-                           <span class="S_no"> 4 </span>
-                        </td>
-                        <td>
-                           <span class="Style_1">  
-                                 Agriculture Engineering</span>
-                        </td>
-                  
-                        <td>
-                           <span class="Style_1">admin</span>
-                        </td>
-                        <td>
-                           <span class="Style_1">28-9-2008</span>
-                        </td>
-                        <td>
-                           <button  (click)="CreateDepartment()" class="Table_Action_mini Bg_warning" mat-mini-fab color="primary">
-                              <i class="material-icons">edit</i>
-                           </button>
-                           <button (click)="DeleteDepartment()" class="Table_Action_mini Bg_Danger" mat-mini-fab color="primary">
-                              <i class="material-icons">delete_forever</i>
-                           </button>
-                        </td>
-                     </tr>
-                  </tbody>
-               </table>
-            </div>
-         </span>
-      </div>
-   </div>
 </div>
-  
-
-
-
-

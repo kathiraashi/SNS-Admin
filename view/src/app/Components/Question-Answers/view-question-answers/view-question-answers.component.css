@@ -72,6 +72,8 @@
       box-shadow: 2px 2px 3px #bfb8b8;
       padding: 15px;
       border-top:3px solid #4E6A7A;
+      position: relative;
+      min-height: 65px;
    }
    .Main_Section h5{
       font-size: 18px;
@@ -79,11 +81,14 @@
       color: #2b373e;
       letter-spacing: 0.8px;
       margin-bottom: 20px;
+      display: grid;
+      margin-right: 70px;
    }
 /* Options */
    .Main_Section .Options{
       margin-left:20px;
-      display: flex;
+      display: grid;
+      grid-template-columns: auto auto auto auto auto auto;
    }
    .Main_Section .Options .option{
       margin-right:30px;
@@ -131,3 +136,28 @@
       box-shadow: 2px 2px 3px #bfb8b8;
   }
    
+
+
+  
+.Form_Select label {
+   font-size: 14px;
+   margin-bottom: 5px;
+   font-weight: 700;
+   color: #4e6a7a;
+}
+.Form_Select select{
+   width: 100%;
+   height: 37px;
+   outline: none;
+   padding: 0px 10px;
+   margin-bottom: 20px;
+   border: 1px solid #e8e8e8;
+   color: rgb(79, 107, 123);
+   font-weight: 400;
+   font-size: 14px;
+   letter-spacing: 0.3px;
+}
+.Form_Select select option{
+   color: rgb(79, 107, 123);
+   width: 100%;
+}

@@ -1,4 +1,0 @@
-[2018-08-01T12:36:54.874] [ERROR] Error - {"Error_Name":"","Error_Address":"","Error_Message":"ReferenceError: btoa is not defined"}
-[2018-08-01T12:38:53.853] [ERROR] Error - {"Error_Name":"","Error_Address":"","Error_Message":"ReferenceError: btoa is not defined"}
-[2018-08-01T12:55:50.955] [ERROR] Error - {"Error_Name":"","Error_Address":"","Error_Message":"ReferenceError: btoa is not defined"}
-[2018-08-01T12:57:50.397] [ERROR] Error - {"Error_Name":"","Error_Address":"","Error_Message":"ReferenceError: btoa is not defined"}

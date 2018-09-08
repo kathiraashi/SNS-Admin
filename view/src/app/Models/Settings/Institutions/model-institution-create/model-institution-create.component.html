@@ -1,0 +1,117 @@
+<!-- If Create Or Edit The Institution -->
+<div class="Modal_Content" *ngIf="Type && ( Type === 'Create' || Type === 'Edit')">
+   <div class="Modal_Header">
+      <p> {{Type}} Institution </p>
+      <span  *ngIf="!Uploading" data-dismiss="modal" (click)="bsModalRef.hide()">&times;</span>
+   </div>
+   <form [formGroup]="Form" (ngSubmit)="onSubmit()">
+      <div class="Model_Body">
+         <div class="row">
+            <div class="col-sm-6 Form_Input" [ngClass]="{'Form_Err': Form.controls['Institution'].errors && !Form.controls['Institution'].pristine, 'Form_Success': Form.controls['Institution'].valid && !Form.controls['Institution'].pristine }">
+               <label>Institution:</label>
+               <input type="text" formControlName="Institution">
+               <p class="error" *ngIf="Form.controls['Institution'].errors && !Form.controls['Institution'].pristine">
+                  <span *ngIf="Form.controls['Institution'].errors.required"> Institution is required</span>
+                  <span *ngIf="Form.controls['Institution'].errors.Institution_NotAvailable"> Institution Already Exist</span>
+               </p>
+            </div>
+            <div class="col-sm-6 Form_Select">
+               <label>Institution Category:</label>
+               <ng-select class="NgSelect ValueBold"
+                           formControlName="Institution_Category"
+                           [items]="_InstitutionCategory"
+                           [bindLabel]="'Category'"
+                           [searchable]="true"
+                           placeholder="Institution Category">
+               </ng-select>
+               <p class="error" *ngIf="Form.controls['Institution_Category'].errors && !Form.controls['Institution_Category'].pristine">
+                  <span *ngIf="Form.controls['Institution_Category'].errors.required"> Institution Category is required</span>
+               </p>
+            </div>
+            <div class="col-sm-12 Form_Select">
+               <label> Departments: </label>
+               <ng-select class="NgSelect ValueBold"
+                           formControlName="Departments"
+                           [items]="_Departments"
+                           bindLabel="Department"
+                           bindValue="_id"
+                           [hideSelected]="true"
+                           [multiple]="true"
+                           [searchable]="true"
+                           placeholder="Departments">
+               </ng-select>
+               <p class="error" *ngIf="Form.controls['Departments'].errors && !Form.controls['Departments'].pristine">
+                  <span *ngIf="Form.controls['Departments'].errors.required"> Departments is required</span>
+               </p>
+            </div>
+         </div>
+      </div>
+      <div class="Model_Footer">
+         <button type="submit" [disabled]="Form.status !== 'VALID' || Uploading" mat-raised-button color="primary">
+            <span *ngIf="Type === 'Create' && !Uploading">Submit</span>
+            <span *ngIf="Type === 'Edit' && !Uploading">Update</span>
+            <span *ngIf="Uploading" class="UploadingBtn"> <i class="fa fa-refresh fa-spin"></i> Loading... </span>
+         </button>
+      </div>
+   </form>
+</div>
+
+<!-- If View The Institution -->
+<div class="Modal_Content" *ngIf=" Type && Type === 'View'">
+   <div class="Modal_Header">
+      <p>View Institution</p>
+      <span data-dismiss="modal" (click)="bsModalRef.hide()">&times;</span>
+   </div>
+   <div class="Model_Body">
+      <div class="row">
+         <div class="col-sm-5">
+            <div class="view_item">
+               <div class="Static">Institution </div>
+               <div class="dots"> : </div>
+               <div class="Data"> {{Data.Institution}}</div>
+            </div>
+            <div class="view_item">
+               <div class="Static">Institution Category </div>
+               <div class="dots"> : </div>
+               <div class="Data"> {{Data['Institution_Category']?.Category}}</div>
+            </div>
+            <div class="view_item">
+               <div class="Static">Created By </div>
+               <div class="dots"> : </div>
+               <div class="Data"> {{Data.Created_By.Name}} 
+                  <!-- <span class="Badge"> {{Data.Created_By.User_Type.User_Type}} </span> -->
+               </div>
+            </div>
+            <div class="view_item">
+               <div class="Static">Last Modified By </div>
+               <div class="dots"> : </div>
+               <div class="Data"> {{Data.Last_Modified_By.Name}}
+                  <!-- <span class="Badge"> {{Data.Last_Modified_By.User_Type.User_Type}} </span> -->
+               </div>
+            </div>
+            <div class="view_item">
+               <div class="Static"> Created Date </div>
+               <div class="dots"> : </div>
+               <div class="Data"> {{Data.createdAt | date:'medium'}}</div>
+            </div>
+            <div class="view_item">
+               <div class="Static">Last Modified Date  </div>
+               <div class="dots"> : </div>
+               <div class="Data"> {{Data.updatedAt | date:'medium'}}</div>
+            </div>
+         </div>
+         <div class="col-sm-7">
+            <div class="view_item">
+               <div class="Static"> Departments </div>
+               <div class="dots"> : </div>
+               <div class="Data"> 
+                  <span class="Badge" *ngFor="let Department of Data.Departments; let j=index"> {{Department?.Department}} </span> 
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+</div>
+
+
+

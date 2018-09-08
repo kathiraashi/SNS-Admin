@@ -1,4 +1,4 @@
-<app-header></app-header>
+
 <!-- page section -->
 <div class="Page_Section">
    <div class="container-fluid">
@@ -29,13 +29,65 @@
       </div>
       <div class="LoadedDataStyle_1" [ngClass]="{'Show': !Loader}">
          <div class="row" style="margin-bottom: 15px;">
-            <div class="col-sm-12">
-               <button  mat-raised-button color="primary" (click)="CreateQuestionAnswers()" > + Create </button>
+            <div class="col-sm-3">
+               <button mat-raised-button color="primary" (click)="CreateQuestionAnswers()" > + Create </button>
+               &nbsp; &nbsp;
+               <button mat-raised-button color="primary"> 
+                  <label style="margin: 0px; cursor: pointer;"> 
+                     <input type="file" style="display: none" (change)="onUploadFileChange($event)" #fileInputFile/>
+                     + Excel Import 
+                  </label>
+               </button>
+            </div>
+            <div class="col-sm-3 Form_Select">
+               <ng-select class="NgSelect ValueBold"
+                           [(ngModel)]="Institution"
+                           [items]="_Institutions"
+                           [bindLabel]="'Institution'"
+                           [bindValue]="'_id'"
+                           [searchable]="true"
+                           placeholder="Institution"
+                           (ngModelChange)="FilterChange()">
+               </ng-select>
+            </div>
+            <div class="col-sm-3 Form_Select">
+               <ng-select class="NgSelect ValueBold"
+                           [(ngModel)]="Department"
+                           [items]="_Departments"
+                           [bindLabel]="'Department'"
+                           [bindValue]="'_id'"
+                           [searchable]="true"
+                           placeholder="Department"
+                           (ngModelChange)="FilterChange()">
+               </ng-select>
+            </div>
+            <div class="col-sm-3 Form_Select">
+               <ng-select class="NgSelect ValueBold"
+                           [(ngModel)]="Category"
+                           [items]="_Categories"
+                           [bindLabel]="'Category'"
+                           [bindValue]="'_id'"
+                           [searchable]="true"
+                           placeholder="Category"
+                           (ngModelChange)="FilterChange()">
+               </ng-select>
             </div>
          </div>
-         <div class="Main_Section">
+         <div class="Main_Section" [ngClass]="{'FilterLoading': FilterLoading}">
+            <div class="DataLoaderStyle_1" style="background: rgba(255, 255, 255, 0.5); min-height: 60px;" [ngStyle]="{'display' : (FilterLoading) ? 'block' : 'none'}">
+               <div class="Loading">
+                  <div class="spinner">
+                     <div class="rect1"></div>
+                     <div class="rect2"></div>
+                     <div class="rect3"></div>
+                     <div class="rect4"></div>
+                     <div class="rect5"></div>
+                     <div class="rect6"></div>
+                  </div>
+               </div>
+            </div>
             <div class="row">
-               <div *ngFor="let Question of _List; let i=index" class="col-sm-12">
+               <div *ngFor="let Question of _FilteredList; let i=index" class="col-sm-12">
                   <div class="Section">
                      <h5> {{i + 1}}. {{Question.Question}} 
                         <span class="Actions">

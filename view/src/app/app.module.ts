@@ -8,7 +8,6 @@ import { HttpModule } from '@angular/http';
 import { HttpClientModule } from '@angular/common/http';
 import { RouterModule, Routes } from '@angular/router';
 import { AppComponent } from './app.component';
-import { AgmCoreModule } from '@agm/core';
 import { AppRoutingModule } from './app.routing.module';
 import { ModalModule} from 'ngx-bootstrap';
 import {CalendarModule} from 'primeng/calendar';
@@ -17,15 +16,15 @@ import {MatButtonModule, MatFormFieldModule, MatSelectModule, MatRadioModule} fr
 import { NgSelectModule } from '@ng-select/ng-select';
 
 import { HeaderComponent } from './Components/Common/header/header.component';
-import { LoginPageComponent } from './Components/login-page/login-page.component';
+import { LoginPageComponent } from './Components/Common/login-page/login-page.component';
 import { DashboardComponent } from './Components/dashboard/dashboard.component';
-import { MainApplicationComponent } from './Components/Applications-View/main-application/main-application.component';
-import { PersonalInfoApplicationComponent } from './Components/Applications-View/SubComponents/personal-info-application/personal-info-application.component';
-import { EducationInfoApplicationComponent } from './Components/Applications-View/SubComponents/education-info-application/education-info-application.component';
-import { ExperienceActivitiesApplicationComponent } from './Components/Applications-View/SubComponents/experience-activities-application/experience-activities-application.component';
-import { ReferenceDeclarationApplicationComponent } from './Components/Applications-View/SubComponents/reference-declaration-application/reference-declaration-application.component';
+import { MainApplicationComponent } from './Components/Applications/applications-view/main-application/main-application.component';
+import { PersonalInfoApplicationComponent } from './Components/Applications/applications-view/SubComponents/personal-info-application/personal-info-application.component';
+import { EducationInfoApplicationComponent } from './Components/Applications/applications-view/SubComponents/education-info-application/education-info-application.component';
+import { ExperienceActivitiesApplicationComponent } from './Components/Applications/applications-view/SubComponents/experience-activities-application/experience-activities-application.component';
+import { ReferenceDeclarationApplicationComponent } from './Components/Applications/applications-view/SubComponents/reference-declaration-application/reference-declaration-application.component';
 import { ViewQuestionAnswersComponent } from './Components/Question-Answers/view-question-answers/view-question-answers.component';
-import { ModelEditQuestionAnswersComponent } from './Components/Models/QuestionAnswers/model-edit-question-answers/model-edit-question-answers.component';
+import { ModelEditQuestionAnswersComponent } from './Models/QuestionAnswers/model-edit-question-answers/model-edit-question-answers.component';
 import { DeleteConfirmationComponent } from './Components/Common/delete-confirmation/delete-confirmation.component';
 import { MainPostAppliedComponent } from './Components/Settings/Post-Applied/main-post-applied/main-post-applied.component';
 import { MainDepartmentComponent } from './Components/Settings/Department/main-department/main-department.component';
@@ -33,15 +32,21 @@ import { MainPersonalInfoComponent } from './Components/Settings/Personal-Info/m
 import { PersonalInfoNationalityComponent } from './Components/Settings/Personal-Info/SubComponents/personal-info-nationality/personal-info-nationality.component';
 import { PersonalInfoReligionComponent } from './Components/Settings/Personal-Info/SubComponents/personal-info-religion/personal-info-religion.component';
 import { PersonalInfoCommunityComponent } from './Components/Settings/Personal-Info/SubComponents/personal-info-community/personal-info-community.component';
-import { ModelPersonalinfoCommunityComponent } from './Components/Models/Settings/personal-info/model-personalinfo-community/model-personalinfo-community.component';
-import { ModelPersonalinfoReligionComponent } from './Components/Models/Settings/personal-info/model-personalinfo-religion/model-personalinfo-religion.component';
-import { ModelPersonalinfoNationalityComponent } from './Components/Models/Settings/personal-info/model-personalinfo-nationality/model-personalinfo-nationality.component';
-import { ModelDepartmentCreateComponent } from './Components/Models/Settings/Department/model-department-create/model-department-create.component';
-import { ModelPostCreateComponent } from './Components/Models/Settings/Post-Applied/model-post-create/model-post-create.component';
+import { ModelPersonalinfoCommunityComponent } from './Models/Settings/personal-info/model-personalinfo-community/model-personalinfo-community.component';
+import { ModelPersonalinfoReligionComponent } from './Models/Settings/personal-info/model-personalinfo-religion/model-personalinfo-religion.component';
+import { ModelPersonalinfoNationalityComponent } from './Models/Settings/personal-info/model-personalinfo-nationality/model-personalinfo-nationality.component';
+import { ModelDepartmentCreateComponent } from './Models/Settings/Department/model-department-create/model-department-create.component';
+import { ModelPostCreateComponent } from './Models/Settings/Post-Applied/model-post-create/model-post-create.component';
 import { MainEducationalInfoComponent } from './Components/Settings/Educational-Info/main-educational-info/main-educational-info.component';
-import { ModelEducationalCreateComponent } from './Components/Models/Settings/educational-info/model-educational-create/model-educational-create.component';
-import { ApplicationsListComponent } from './Components/applications-list/applications-list.component';
-
+import { ModelEducationalCreateComponent } from './Models/Settings/educational-info/model-educational-create/model-educational-create.component';
+import { ApplicationsListComponent } from './Components/Applications/applications-list/applications-list.component';
+import { ModelExcelUploadsViewComponent } from './Models/QuestionAnswers/model-excel-uploads-view/model-excel-uploads-view.component';
+import { UserManagementListComponent } from './Components/Settings/UserManagement/user-management-list/user-management-list.component';
+import { ModelUserCreateUserManagementComponent } from './Models/Settings/UserManagement/model-user-create-user-management/model-user-create-user-management.component';
+import { InstitutionListComponent } from './Components/Settings/Institutions/institution-list/institution-list.component';
+import { ModelInstitutionCreateComponent } from './Models/Settings/Institutions/model-institution-create/model-institution-create.component';
+import { CategoriesListComponent } from './Components/Settings/Categories/categories-list/categories-list.component';
+import { ModelCategoryCreateComponent } from './Models/Settings/Categories/model-category-create/model-category-create.component';
 
 
 
@@ -78,6 +83,13 @@ import { ApplicationsListComponent } from './Components/applications-list/applic
    MainEducationalInfoComponent,
    ModelEducationalCreateComponent,
    ApplicationsListComponent,
+   ModelExcelUploadsViewComponent,
+   UserManagementListComponent,
+   ModelUserCreateUserManagementComponent,
+   InstitutionListComponent,
+   ModelInstitutionCreateComponent,
+   CategoriesListComponent,
+   ModelCategoryCreateComponent
 
   ],
   imports: [
@@ -95,8 +107,7 @@ import { ApplicationsListComponent } from './Components/applications-list/applic
     MatFormFieldModule,
     MatSelectModule,
     MatRadioModule,
-    NgSelectModule,
-    AgmCoreModule.forRoot({ apiKey: 'AIzaSyAKAH7vSuRjbTP16E9AFaUf6gDa69DZ4e8'}),
+    NgSelectModule
   ],
   providers: [],
   entryComponents: [ModelEditQuestionAnswersComponent,
@@ -106,7 +117,11 @@ import { ApplicationsListComponent } from './Components/applications-list/applic
     ModelPersonalinfoNationalityComponent,
     ModelDepartmentCreateComponent,
     ModelPostCreateComponent,
-    ModelEducationalCreateComponent
+    ModelEducationalCreateComponent,
+    ModelExcelUploadsViewComponent,
+    ModelUserCreateUserManagementComponent,
+    ModelInstitutionCreateComponent,
+    ModelCategoryCreateComponent
   ],
   bootstrap: [AppComponent]
 })
