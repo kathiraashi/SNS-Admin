@@ -27,3 +27,36 @@
 .Table_Action_mini.mat-mini-fab .mat-button-wrapper{
    padding: 5px 0px;
 }
+
+
+.MenuStyleOne .mat-menu-item-highlighted:not([disabled]),
+.MenuStyleOne .mat-menu-item.cdk-keyboard-focused:not([disabled]),
+.MenuStyleOne .mat-menu-item.cdk-program-focused:not([disabled]),
+.MenuStyleOne .mat-menu-item:hover:not([disabled]) {
+   background: #4E6A7A !important;
+   color: #ffffff;
+}
+
+.MenuStyleOne .mat-menu-content:not(:empty) {
+   padding-top: 0px !important;
+   padding-bottom: 0px !important;
+}
+.MenuStyleOne .mat-menu-item{
+   line-height: 35px !important;
+   height: 35px !important;
+}
+
+
+
+.mat-calendar-body-selected{
+   background-color: #4E6A7A !important;
+}
+
+.mat-datepicker-content-touch .mat-calendar {
+   width: 370px !important;
+   height: 425px !important;
+}
+
+.cdk-overlay-container{
+   z-index: 1052 !important;
+}

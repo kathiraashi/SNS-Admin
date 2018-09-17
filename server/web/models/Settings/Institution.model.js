@@ -6,6 +6,7 @@ var Schema = mongoose.Schema;
       Institution: { type : String , required : true},
       Departments: [ { type: Schema.Types.ObjectId, ref: 'Department', required : true } ],
       Institution_Category: { type : Object , required : true},
+      Image: { type : Object , required : true},
       Created_By : { type: Schema.Types.ObjectId, ref: 'User_Management', required : true },
       Last_Modified_By: { type: Schema.Types.ObjectId, ref: 'User_Management', required : true },
       Active_Status: { type : Boolean , required : true},

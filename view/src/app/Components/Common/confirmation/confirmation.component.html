@@ -1,0 +1,22 @@
+<!-- Model Content -->
+<div class="Modal_Content">
+   <!-- Model Header -->
+   <div class="Modal_Header">
+         <p> {{Header}} </p>
+   </div>
+   <!-- Model Body -->
+   <div class="Model_Body">
+      <p style="white-space: pre-wrap;"> {{LineOne}} <br> {{LineTwo}}</p>
+   </div>
+   <!-- Model Footer -->
+   <div class="Model_Footer">
+      <ng-container *ngIf="Type === 'Alert'">
+         <button class="Bg_warning" mat-raised-button color="primary" (click)="Close()"> Close </button>
+      </ng-container>
+      <ng-container *ngIf="Type === 'Confirmation'">
+         <button class="Bg_Danger" mat-raised-button color="primary" (click)="Cancel()"> No </button>
+         <button mat-raised-button color="primary" (click)="Proceed()"> Yes </button>
+      </ng-container>
+
+   </div>
+</div>

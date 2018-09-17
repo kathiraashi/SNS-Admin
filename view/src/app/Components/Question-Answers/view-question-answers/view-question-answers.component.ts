@@ -199,17 +199,35 @@ export class ViewQuestionAnswersComponent implements OnInit {
       });
    }
 
-   EditQuestionAnswers(_index) {
-      const initialState = {
-      Type: 'Edit'
-      };
-      this.bsModalRef = this.modalService.show(ModelEditQuestionAnswersComponent, Object.assign({initialState}, { class: 'modal-lg max-width-70' }));
-   }
+   // EditQuestionAnswers(_index) {
+   //    const initialState = {
+   //    Type: 'Edit'
+   //    };
+   //    this.bsModalRef = this.modalService.show(ModelEditQuestionAnswersComponent, Object.assign({initialState}, { class: 'modal-lg max-width-70' }));
+   // }
 
-   DeleteQuestion() {
-      const initialState = {
-      Text: 'Question'
-      };
-      this.bsModalRef = this.modalService.show(DeleteConfirmationComponent, Object.assign({initialState}, { class: 'modal-sm' }));
+   DeleteQuestion(_index) {
+      const initialState = { Text: ' Question ' };
+      this.bsModalRef = this.modalService.show(DeleteConfirmationComponent, Object.assign({initialState}, {ignoreBackdropClick: true, class: 'modal-sm' }));
+      this.bsModalRef.content.onClose.subscribe(response => {
+         if (response.Status) {
+            const Data = { 'Question_Id' :  this._List[_index]._id, 'Modified_By' : this.User_Id };
+            let Info = CryptoJS.AES.encrypt(JSON.stringify(Data), 'SecretKeyIn@123');
+            Info = Info.toString();
+            this.Service.Question_Delete({'Info': Info}).subscribe( returnResponse => {
+               const ResponseData = JSON.parse(returnResponse['_body']);
+               if (returnResponse['status'] === 200 && ResponseData['Status'] ) {
+                  this._List.splice(_index, 1);
+                  this.Toastr.NewToastrMessage( { Type: 'Warning', Message: 'Question Successfully Deleted'} );
+               } else if (returnResponse['status'] === 400 || returnResponse['status'] === 417 && !ResponseData['Status']) {
+                  this.Toastr.NewToastrMessage( { Type: 'Error', Message: ResponseData['Message'] } );
+               } else if (returnResponse['status'] === 401 && !ResponseData['Status']) {
+                  this.Toastr.NewToastrMessage( { Type: 'Error', Message: ResponseData['Message'] } );
+               } else {
+                  this.Toastr.NewToastrMessage( { Type: 'Error', Message: 'Some Error Occurred!, But not Identify!' } );
+               }
+            });
+         }
+      });
    }
 }

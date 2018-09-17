@@ -52,23 +52,27 @@
                   <span *ngIf="Form.controls['User_Type'].errors.required"> User Type is required</span>
                </p>
             </div>
-            <div *ngIf="ShowCollege" class="col-sm-6 Form_Select">
-               <label>College :</label>
+            <div *ngIf="ShowInstitution" class="col-sm-6 Form_Select">
+               <label>Institution :</label>
                <ng-select class="NgSelect"
+                           [items]="_Institutions"
+                           [bindLabel]="'Institution'"
+                           [bindValue]="'_id'"
                            [searchable]="true"
-                           formControlName="College">
-                  <ng-option *ngFor="let College of _Colleges" [value]="College">{{College}}</ng-option>
+                           formControlName="Institution">
                </ng-select>
-               <p class="error" *ngIf="Form.controls['College'].errors && !Form.controls['College'].pristine">
-                  <span *ngIf="Form.controls['College'].errors.required"> College is required</span>
+               <p class="error" *ngIf="Form.controls['Institution'].errors && !Form.controls['Institution'].pristine">
+                  <span *ngIf="Form.controls['Institution'].errors.required"> Institution is required</span>
                </p>
             </div>
             <div *ngIf="ShowDepartment"  class="col-sm-6 Form_Select">
                <label>Department :</label>
                <ng-select class="NgSelect"
+                           [items]="_Departments"
+                           [bindLabel]="'Department'"
+                           [bindValue]="'_id'"
                            [searchable]="true"
                            formControlName="Department">
-                  <ng-option *ngFor="let Department of _Departments" [value]="Department">{{Department}}</ng-option>
                </ng-select>
                <p class="error" *ngIf="Form.controls['Department'].errors && !Form.controls['Department'].pristine">
                   <span *ngIf="Form.controls['Department'].errors.required"> Department is required</span>

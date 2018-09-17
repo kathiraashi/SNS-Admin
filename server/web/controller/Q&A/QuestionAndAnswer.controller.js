@@ -202,3 +202,37 @@ exports.Questions_List = function(req, res) {
       });
    }
 };
+
+
+exports.Question_Delete = function(req, res) {
+   var CryptoBytes  = CryptoJS.AES.decrypt(req.body.Info, 'SecretKeyIn@123');
+   var ReceivingData = JSON.parse(CryptoBytes.toString(CryptoJS.enc.Utf8));
+
+   if(!ReceivingData.Question_Id || ReceivingData.Question_Id === '' ) {
+      res.status(400).send({Status: false, Message: "Question Id can not be empty" });
+   } else if (!ReceivingData.Modified_By || ReceivingData.Modified_By === ''  ) {
+      res.status(400).send({Status: false, Message: "Modified User Details can not be empty" });
+   }else {
+      QA_Model.QuestionSchema.findOne({'_id': ReceivingData.Question_Id}, {}, {}, function(err, result) {
+         if(err) {
+            ErrorManagement.ErrorHandling.ErrorLogCreation(req, 'Question Answer FindOne Query Error', 'QuestionAndAnswer.controller.js', err);
+            res.status(417).send({status: false, Error:err, Message: "Some error occurred while Find The Question Answer!."});
+         } else {
+            if (result !== null) {
+               result.If_Deleted = true;
+               result.Last_Modified_By = mongoose.Types.ObjectId(ReceivingData.Modified_By);
+               result.save(function(err_1, result_1) { // Department Delete Query
+                  if(err_1) {
+                     ErrorManagement.ErrorHandling.ErrorLogCreation(req, 'Question Answer Delete Query Error', 'QuestionAndAnswer.controller.js');
+                     res.status(417).send({Status: false, Error: err_1, Message: "Some error occurred while Delete the Question Answer!."});
+                  } else {
+                     res.status(200).send({Status: true, Message: 'Successfully Deleted' });
+                  }
+               });
+            } else {
+               res.status(400).send({Status: false, Message: "Question Id can not be valid!" });
+            }
+         }
+      });
+   }
+};

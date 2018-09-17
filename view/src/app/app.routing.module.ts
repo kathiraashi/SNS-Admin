@@ -12,6 +12,7 @@ import { MainEducationalInfoComponent } from './Components/Settings/Educational-
 import { UserManagementListComponent } from './Components/Settings/UserManagement/user-management-list/user-management-list.component';
 import { InstitutionListComponent } from './Components/Settings/Institutions/institution-list/institution-list.component';
 import { CategoriesListComponent } from './Components/Settings/Categories/categories-list/categories-list.component';
+import { ExamConfigListComponent } from './Components/Settings/ExamConfig/exam-config-list/exam-config-list.component';
 
 
 
@@ -74,6 +75,12 @@ const appRoutes: Routes = [
       component: CategoriesListComponent,
       data: {
          animation: { value: 'Categories', }
+      }
+   },
+   { path: 'ExamConfig',
+      component: ExamConfigListComponent,
+      data: {
+         animation: { value: 'ExamConfig', }
       }
    },
    { path: 'Personal_Info',

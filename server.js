@@ -27,7 +27,8 @@ var app = express();
 
 
 // DB Connection
-   mongoose.connect('mongodb://kathiraashi:kathir143@ds263161.mlab.com:63161/sns');
+   // mongoose.connect('mongodb://kathiraashi:kathir143@ds263161.mlab.com:63161/sns');
+   mongoose.connect('mongodb://kathiraashi:kathir143@ds245532.mlab.com:45532/sns-local');
    mongoose.connection.on('error', function(err) {
       ErrorManagement.ErrorHandling.ErrorLogCreation('', 'Mongodb Connection Error', 'Server.js', err);
    });
@@ -39,6 +40,8 @@ var app = express();
 app.use(cors());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+
+app.use('/API/Uploads', express.static('Uploads'));
 
 // Every request Log Creation
 // app.use('/API/', function (req, res, next) {
@@ -96,6 +99,8 @@ app.use(bodyParser.json());
    require('./server/web/routes/Settings/Department.routes.js')(app);
    require('./server/web/routes/Settings/Category.routes.js')(app);
    require('./server/web/routes/Settings/Institution.routes.js')(app);
+   require('./server/web/routes/Settings/ExamConfig.routes.js')(app);
+
 
    // app.use(express.static(__dirname + '/view/dist/view/'));
 

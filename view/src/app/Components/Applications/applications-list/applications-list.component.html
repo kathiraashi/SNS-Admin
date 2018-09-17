@@ -56,22 +56,30 @@
                            <span class="Style_1"> {{Candidate.Personal_Info?.Gender}} ({{Candidate.Personal_Info?.Age}})</span>
                         </td>
                         <td>
-                           <span class="Style_1"> SNS College Of {{Candidate.FormType}} </span>
+                           <span class="Style_1"> {{Candidate.Basic_Info?.Institution?.Institution}} </span>
                         </td>
                         <td>
                            <span class="Style_1"> {{Candidate.Basic_Info?.Post_Applied}} </span>
                         </td>
                         <td>
-                           <span class="Style_1">{{Candidate.Basic_Info?.Department}}</span>
+                           <span class="Style_1"> {{Candidate.Basic_Info?.Department?.Department}} </span>
                         </td>
                         <td>
-                           <span class="Style_1">{{Candidate.Status}}</span>
+                           <span class="Style_1"> {{Candidate.Current_Status}}</span>
                         </td>
                         <td>
-                           <span class="Style_1">{{Candidate.createdAt | date:'medium'}}</span>
+                           <span class="Style_1"> {{Candidate.createdAt | date:'medium'}}</span>
                         </td>
-                        <td>
-                           <button mat-raised-button color="primary" [routerLink]="['/Applications', Candidate._id]"> View </button>
+                        <td *ngIf="Candidate.Current_Stage !== 'Stage_1' && Candidate.Current_Stage !== 'Stage_2'">
+                              <button mat-raised-button color="primary" (click)="SetActionId(i)" [matMenuTriggerFor]="menu" (click)="View()"> View </button>
+                        </td>
+                        <td *ngIf="Candidate.Current_Stage === 'Stage_1' || Candidate.Current_Stage === 'Stage_2'">
+                           <ng-container *ngIf="!Candidate.BtnLoading">
+                              <button mat-raised-button color="primary" (click)="SetActionId(i)" [matMenuTriggerFor]="menu" > Action </button>
+                           </ng-container>
+                           <ng-container *ngIf="Candidate.BtnLoading">
+                              <button [disabled]="true" mat-raised-button color="primary" class="UploadingBtn"> <i class="fa fa-refresh fa-spin"></i> Loading... </button>
+                           </ng-container>
                         </td>
                      </tr>
                   </tbody>
@@ -81,3 +89,10 @@
       </div>
    </div>
 </div>
+
+<mat-menu #menu="matMenu" class="MenuStyleOne" [overlapTrigger]="false" yPosition="below" xPosition="after">
+   <button mat-menu-item (click)="View()"> View </button>
+   <ng-container *ngFor="let Menu of Temp_Menu; let i=index">
+      <button *ngIf="Menu.show" mat-menu-item (click)="Action(Menu.activity)"> {{Menu.name}} </button>
+   </ng-container>
+</mat-menu>

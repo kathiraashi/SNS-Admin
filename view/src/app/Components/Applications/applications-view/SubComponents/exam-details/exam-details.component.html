@@ -1,0 +1,259 @@
+<div class="Main_Section">
+   <div class="row">
+      <div class="col-sm-6">
+         <div class="Section" style="margin-bottom: 0px;">
+            <div class="Section_Data">
+               <div class="Data">
+                  <div class="Title" style="width: 210px;padding-left: 0px"> Application Applied Date <span> : </span> </div>
+                  <div class="Value"> {{CandidateData['createdAt'] | date:'medium'}} </div>
+               </div>
+            </div>
+         </div>
+      </div>
+      <div class="col-sm-6">
+            <div class="Section" style="margin-bottom: 0px;">
+               <div class="Section_Data">
+                  <div class="Data">
+                     <div class="Title" style="width: 210px;padding-left: 0px"> Application Accepted Date <span> : </span> </div>
+                     <div class="Value"> {{CandidateData['Accepted_Date'] | date:'medium'}} </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+      <div class="col-sm-12">
+         <hr>
+      </div>
+      <div class="col-sm-6">
+         <div class="Section"> <!-- Section Start-->
+            <div class="Section_Identity"> <h5 class="Identity"> Exam Details</h5> </div>
+            <div class="Section_Data">
+               <div class="Data">
+                  <div class="Title"> Assigned Date <span> : </span> </div>
+                  <div class="Value"> {{Exam_Data['createdAt'] | date:'medium'}} </div>
+               </div>
+               <div class="Data">
+                  <div class="Title"> Assigned By <span> : </span> </div>
+                  <div class="Value"> {{Exam_Data['User_Id']?.Name}} </div>
+               </div>
+               <div class="Data">
+                  <div class="Title"> No.Of Questions <span> : </span> </div>
+                  <div class="Value"> {{Exam_Data['TotalQuestions']}} </div>
+               </div>
+               <div class="Data">
+                  <div class="Title"> Exam Duration <span> : </span> </div>
+                  <div class="Value"> {{Exam_Data['ExamDuration']}} Minutes </div>
+               </div>
+               <div class="Data">
+                  <div class="Title"> Expired Date <span> : </span> </div>
+                  <div class="Value"> {{Exam_Data['UpToValid'] | date:'medium'}} </div>
+               </div>
+               <div class="Data">
+                  <div class="Title"> Exam Status <span> : </span> </div>
+                  <div class="Value"> 
+                     <span *ngIf="Exam_Data['If_Attended']"> Completed </span>
+                     <span *ngIf="!Exam_Data['If_Attended']"> Not Attended </span>
+                  </div>
+               </div>
+            </div>
+         </div><!-- Section End -->
+      </div>
+      <div class="col-sm-6">
+         <div class="Section"> <!-- Section Start-->
+            <div class="Section_Identity"> <h5 class="Identity"> Exam Result Details </h5> </div>
+            <div class="Section_Data">
+               <div class="Data">
+                  <div class="Title"> No.of Answers <span> : </span> </div>
+                  <div class="Value"> {{Exam_Data['AnsweredQuestions']}} </div>
+               </div>
+               <div class="Data">
+                  <div class="Title"> Correct Answers <span> : </span> </div>
+                  <div class="Value"> {{Exam_Data['CorrectAnsweredQuestions']}} </div>
+               </div>
+               <div class="Data">
+                  <div class="Title"> Completed Date  <span> : </span> </div>
+                  <div class="Value"> {{Exam_Data['SubmittedDate'] | date:'medium'}} </div>
+               </div>
+               <div class="Data">
+                  <div class="Title"> Exam Result <span> : </span> </div>
+                  <div class="Value"> {{Exam_Data['ExamResult'] }} </div>
+               </div>
+               <div class="Data">
+                  <div class="Title"> Exam Result Updated By<span> : </span> </div>
+                  <div class="Value"> {{Exam_Data['ExamResult_UpdateUser']?.Name }} </div>
+               </div>
+            </div>
+         </div>
+         <div *ngIf="Exam_Data['ExamResult'] === 'Pass'" class="Section"> <!-- Section Start-->
+            <div class="Section_Identity"> <h5 class="Identity"> Interview Result Details </h5> </div>
+            <div class="Section_Data">
+               <div class="Data">
+                  <div class="Title"> Interview Date <span> : </span> </div>
+                  <div class="Value"> {{Exam_Data['InterviewDate'] | date:'d/M/yyyy' }} </div>
+               </div>
+               <div class="Data">
+                  <div class="Title"> Interview Place <span> : </span> </div>
+                  <div class="Value"> {{Exam_Data['InterviewPlace'] }} </div>
+               </div>
+               <div class="Data">
+                  <div class="Title"> Interview Result <span> : </span> </div>
+                  <div class="Value"> {{Exam_Data['InterviewResult'] }} </div>
+               </div>
+               <div class="Data" *ngIf="Exam_Data['InterviewResult'] === 'Pass'">
+                  <div class="Title"> Interview Result Updated By<span> : </span> </div>
+                  <div class="Value"> {{Exam_Data['InterviewResult_UpdateUser']?.Name }} </div>
+               </div>
+               <div *ngIf="Exam_Data['InterviewResult'] === 'Pass'" class="Data">
+                  <div class="Title"> Joining Date <span> : </span> </div>
+                  <div class="Value"> {{Exam_Data['Joining_Date'] | date:'d/M/yyyy' }} </div>
+               </div>
+            </div>
+            <br>
+            <div class="row">
+               <div class="col-sm-12 text-right">
+                  <button *ngIf="CandidateData['Current_Stage'] === 'Stage_4'" mat-raised-button color="primary" (click)="openModal(template)"> Update Result </button>
+                  <!-- <button *ngIf="CandidateData['Current_Stage'] === 'Stage_5'" mat-raised-button color="primary" (click)="openModal(templateTwo)" style="float:left"> Change Interview Schedule </button> -->
+                  <button *ngIf="CandidateData['Current_Stage'] === 'Stage_5'" mat-raised-button color="primary" (click)="openModal(templateOne)"> Update Interview Result </button>
+               </div>
+            </div>
+         </div><!-- Section End -->
+      </div>
+   </div>
+</div>
+
+ 
+<ng-template #template>
+   <div class="Modal_Content">
+      <div class="Modal_Header">
+         <p> Update Result </p>
+         <span  *ngIf="!Uploading" data-dismiss="modal" (click)="modalRef.hide()">&times;</span>
+      </div>
+      <form [formGroup]="Form" (ngSubmit)="onSubmit()">
+         <div class="Model_Body">
+            <div class="row">
+               <div class="col-sm-10 Form_Input" [ngClass]="{'Form_Err': Form.controls['ExamResult'].errors && !Form.controls['ExamResult'].pristine, 'Form_Success': Form.controls['ExamResult'].valid && !Form.controls['ExamResult'].pristine }">
+                  <label> Exam Result :</label>
+                  <ng-select class="NgSelect"
+                           [items]="UpdateOptions"
+                           formControlName="ExamResult"
+                           [searchable]="true"
+                           (change)="ResultChange()"
+                           placeholder="Exam Result">
+                  </ng-select>
+                  <p class="error" *ngIf="Form.controls['ExamResult'].errors && !Form.controls['ExamResult'].pristine">
+                     <span *ngIf="Form.controls['ExamResult'].errors.required">Exam Result is required</span>
+                  </p>
+               </div>
+            </div>
+            
+            <div *ngIf="If_Pass" class="row">
+               <div class="col-sm-10 Form_Input" [ngClass]="{'Form_Err': Form.controls['InterviewDate'].errors && !Form.controls['InterviewDate'].pristine, 'Form_Success': Form.controls['InterviewDate'].valid && !Form.controls['InterviewDate'].pristine }">
+                  <label> Interview Date :</label>
+                  <input type="text" formControlName="InterviewDate" [min]="MinDate" [matDatepicker]="Datepicker" (click)="Datepicker.open()" (keypress)="NotAllow()" (keydown)="NotAllow()">
+                  <mat-datepicker touchUi #Datepicker></mat-datepicker>
+                  <p class="error" *ngIf="Form.controls['InterviewDate'].errors && !Form.controls['InterviewDate'].pristine">
+                     <span *ngIf="Form.controls['InterviewDate'].errors.required">Interview Date is required</span>
+                  </p>
+               </div>
+               <div class="col-sm-10 Form_Input" [ngClass]="{'Form_Err': Form.controls['Place'].errors && !Form.controls['Place'].pristine, 'Form_Success': Form.controls['Place'].valid && !Form.controls['Place'].pristine }">
+                  <label> Interview Place :</label>
+                  <input type="text" formControlName="Place">
+                  <p class="error" *ngIf="Form.controls['Place'].errors && !Form.controls['Place'].pristine">
+                     <span *ngIf="Form.controls['Place'].errors.required">Interview Place is required</span>
+                  </p>
+               </div>
+            </div>
+         </div>
+         <div class="Model_Footer">
+            <button type="submit" [disabled]="Form.status !== 'VALID' || Uploading" mat-raised-button color="primary">
+               <span *ngIf="!Uploading">Update</span>
+               <span *ngIf="Uploading" class="UploadingBtn"> <i class="fa fa-refresh fa-spin"></i> Loading... </span>
+            </button>
+         </div>
+      </form>
+   </div>
+ </ng-template>
+
+
+
+
+<ng-template #templateOne>
+   <div class="Modal_Content">
+      <div class="Modal_Header">
+         <p> Update Interview Result </p>
+         <span  *ngIf="!Uploading" data-dismiss="modal" (click)="modalRef.hide()">&times;</span>
+      </div>
+      <form [formGroup]="FormOne" (ngSubmit)="InterviewSubmit()">
+         <div class="Model_Body">
+            <div class="row">
+               <div class="col-sm-10 Form_Input" [ngClass]="{'Form_Err': FormOne.controls['InterviewResult'].errors && !FormOne.controls['InterviewResult'].pristine, 'Form_Success': FormOne.controls['InterviewResult'].valid && !FormOne.controls['InterviewResult'].pristine }">
+                  <label> Interview Result :</label>
+                  <ng-select class="NgSelect"
+                           [items]="UpdateOptions"
+                           formControlName="InterviewResult"
+                           [searchable]="true"
+                           (change)="InterviewResultChange()"
+                           placeholder="Interview Result">
+                  </ng-select>
+                  <p class="error" *ngIf="FormOne.controls['InterviewResult'].errors && !FormOne.controls['InterviewResult'].pristine">
+                     <span *ngIf="FormOne.controls['InterviewResult'].errors.required">Interview Result is required</span>
+                  </p>
+               </div>
+            </div>
+            
+            <div *ngIf="If_Pass" class="row">
+               <div class="col-sm-10 Form_Input" [ngClass]="{'Form_Err': FormOne.controls['JoinDate'].errors && !FormOne.controls['JoinDate'].pristine, 'Form_Success': FormOne.controls['JoinDate'].valid && !FormOne.controls['JoinDate'].pristine }">
+                  <label> Joining Date :</label>
+                  <input type="text" formControlName="JoinDate" [min]="MinDate" [matDatepicker]="DatepickerOne" (click)="DatepickerOne.open()" (keypress)="NotAllow()" (keydown)="NotAllow()">
+                  <mat-datepicker touchUi #DatepickerOne></mat-datepicker>
+                  <p class="error" *ngIf="FormOne.controls['JoinDate'].errors && !FormOne.controls['JoinDate'].pristine">
+                     <span *ngIf="FormOne.controls['JoinDate'].errors.required">Joining Date is required</span>
+                  </p>
+               </div>
+            </div>
+         </div>
+         <div class="Model_Footer">
+            <button type="submit" [disabled]="FormOne.status !== 'VALID' || Uploading" mat-raised-button color="primary">
+               <span *ngIf="!Uploading">Update</span>
+               <span *ngIf="Uploading" class="UploadingBtn"> <i class="fa fa-refresh fa-spin"></i> Loading... </span>
+            </button>
+         </div>
+      </form>
+   </div>
+</ng-template>
+
+ 
+<!-- <ng-template #templateTwo>
+   <div class="Modal_Content">
+      <div class="Modal_Header">
+         <p> Change Interview Schedule </p>
+         <span  *ngIf="!Uploading" data-dismiss="modal" (click)="modalRef.hide()">&times;</span>
+      </div>
+      <form [formGroup]="Form" (ngSubmit)="onSubmit()">
+         <div class="Model_Body">
+            <div class="row">
+               <div class="col-sm-10 Form_Input" [ngClass]="{'Form_Err': Form.controls['InterviewDate'].errors && !Form.controls['InterviewDate'].pristine, 'Form_Success': Form.controls['InterviewDate'].valid && !Form.controls['InterviewDate'].pristine }">
+                  <label> Interview Date :</label>
+                  <input type="text" formControlName="InterviewDate" [min]="MinDate" [matDatepicker]="Datepicker" (click)="Datepicker.open()" (keypress)="NotAllow()" (keydown)="NotAllow()">
+                  <mat-datepicker touchUi #Datepicker></mat-datepicker>
+                  <p class="error" *ngIf="Form.controls['InterviewDate'].errors && !Form.controls['InterviewDate'].pristine">
+                     <span *ngIf="Form.controls['InterviewDate'].errors.required">Interview Date is required</span>
+                  </p>
+               </div>
+               <div class="col-sm-10 Form_Input" [ngClass]="{'Form_Err': Form.controls['Place'].errors && !Form.controls['Place'].pristine, 'Form_Success': Form.controls['Place'].valid && !Form.controls['Place'].pristine }">
+                  <label> Interview Place :</label>
+                  <input type="text" formControlName="Place">
+                  <p class="error" *ngIf="Form.controls['Place'].errors && !Form.controls['Place'].pristine">
+                     <span *ngIf="Form.controls['Place'].errors.required">Interview Place is required</span>
+                  </p>
+               </div>
+            </div>
+         </div>
+         <div class="Model_Footer">
+            <button type="submit" [disabled]="Form.status !== 'VALID' || Uploading" mat-raised-button color="primary">
+               <span *ngIf="!Uploading"> Update </span>
+               <span *ngIf="Uploading" class="UploadingBtn"> <i class="fa fa-refresh fa-spin"></i> Loading... </span>
+            </button>
+         </div>
+      </form>
+   </div>
+</ng-template> -->

@@ -12,7 +12,7 @@ import { AppRoutingModule } from './app.routing.module';
 import { ModalModule} from 'ngx-bootstrap';
 import {CalendarModule} from 'primeng/calendar';
 
-import {MatButtonModule, MatFormFieldModule, MatSelectModule, MatRadioModule} from '@angular/material';
+import { MatButtonModule, MatFormFieldModule, MatSelectModule, MatRadioModule, MatMenuModule, MatDatepickerModule, MatNativeDateModule } from '@angular/material';
 import { NgSelectModule } from '@ng-select/ng-select';
 
 import { HeaderComponent } from './Components/Common/header/header.component';
@@ -47,6 +47,10 @@ import { InstitutionListComponent } from './Components/Settings/Institutions/ins
 import { ModelInstitutionCreateComponent } from './Models/Settings/Institutions/model-institution-create/model-institution-create.component';
 import { CategoriesListComponent } from './Components/Settings/Categories/categories-list/categories-list.component';
 import { ModelCategoryCreateComponent } from './Models/Settings/Categories/model-category-create/model-category-create.component';
+import { ExamConfigListComponent } from './Components/Settings/ExamConfig/exam-config-list/exam-config-list.component';
+import { ModelExamConfigCreateComponent } from './Models/Settings/ExamConfig/model-exam-config-create/model-exam-config-create.component';
+import { ConfirmationComponent } from './Components/Common/confirmation/confirmation.component';
+import { ExamDetailsComponent } from './Components/Applications/applications-view/SubComponents/exam-details/exam-details.component';
 
 
 
@@ -89,7 +93,11 @@ import { ModelCategoryCreateComponent } from './Models/Settings/Categories/model
    InstitutionListComponent,
    ModelInstitutionCreateComponent,
    CategoriesListComponent,
-   ModelCategoryCreateComponent
+   ModelCategoryCreateComponent,
+   ExamConfigListComponent,
+   ModelExamConfigCreateComponent,
+   ConfirmationComponent,
+   ExamDetailsComponent
 
   ],
   imports: [
@@ -107,6 +115,9 @@ import { ModelCategoryCreateComponent } from './Models/Settings/Categories/model
     MatFormFieldModule,
     MatSelectModule,
     MatRadioModule,
+    MatMenuModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
     NgSelectModule
   ],
   providers: [],
@@ -121,7 +132,9 @@ import { ModelCategoryCreateComponent } from './Models/Settings/Categories/model
     ModelExcelUploadsViewComponent,
     ModelUserCreateUserManagementComponent,
     ModelInstitutionCreateComponent,
-    ModelCategoryCreateComponent
+    ModelCategoryCreateComponent,
+    ModelExamConfigCreateComponent,
+    ConfirmationComponent
   ],
   bootstrap: [AppComponent]
 })

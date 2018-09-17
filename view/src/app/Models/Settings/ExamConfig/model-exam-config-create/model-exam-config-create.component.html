@@ -1,0 +1,185 @@
+<!-- If Create Or Edit The Institution -->
+<div class="Modal_Content" *ngIf="Type && ( Type === 'Create' || Type === 'Edit')">
+   <div class="Modal_Header">
+      <p> {{Type}} Exam Config </p>
+      <span  *ngIf="!Uploading" data-dismiss="modal" (click)="bsModalRef.hide()">&times;</span>
+   </div>
+   <form [formGroup]="Form" (ngSubmit)="onSubmit()">
+      <div class="Model_Body">
+         <div class="row">
+            <div class="col-sm-4 Form_Input" [ngClass]="{'Form_Err': Form.controls['Institution'].errors && !Form.controls['Institution'].pristine, 'Form_Success': Form.controls['Institution'].valid && !Form.controls['Institution'].pristine }">
+               <label>Institution:</label>
+               <ng-select class="NgSelect ValueBold"
+                           formControlName="Institution"
+                           [items]="_Institutions"
+                           [bindLabel]="'Institution'"
+                           [bindValue]="'_id'"
+                           [searchable]="true"
+                           (ngModelChange)="InstitutionChange()"
+                           placeholder="Institution">
+               </ng-select>
+               <p class="error" *ngIf="Form.controls['Institution'].errors && !Form.controls['Institution'].pristine">
+                  <span *ngIf="Form.controls['Institution'].errors.required"> Institution is required</span>
+               </p>
+            </div>
+            <div class="col-sm-4 Form_Select">
+               <label> Department:</label>
+               <ng-select class="NgSelect ValueBold"
+                           formControlName="Department"
+                           [items]="_Departments"
+                           [bindLabel]="'Department'"
+                           [bindValue]="'_id'"
+                           [searchable]="true"
+                           placeholder="Department">
+               </ng-select>
+               <p class="error" *ngIf="Form.controls['Department'].errors && !Form.controls['Department'].pristine">
+                  <span *ngIf="Form.controls['Department'].errors.required"> Department is required</span>
+                  <span *ngIf="Form.controls['Department'].errors.ExamConfig_NotAvailable"> Department is Already Exist</span>
+               </p>
+            </div>
+            <div class="col-sm-4 Form_Input" [ngClass]="{'Form_Err': !Form.controls['ExamDuration'].pristine && Form.controls['ExamDuration'].errors, 'Form_Success': Form.controls['ExamDuration'].valid && !Form.controls['ExamDuration'].pristine }">
+               <label> Exam Duration <small> ( in Minutes )</small> :</label>
+               <input formControlName="ExamDuration" type="number">
+               <p class="error" *ngIf="Form.controls['ExamDuration'].errors && !Form.controls['ExamDuration'].pristine">
+                  <span *ngIf="Form.controls['ExamDuration'].errors.required"> Exam Duration is required</span>
+               </p>
+            </div>
+         </div>
+         <hr>
+         <div class="row">
+            <div class="col-sm-12" style="margin-top: 30px;">
+               <div class="Company_Details">
+                  <h5 class="BoxHeader"> Categories 
+                     <button style="float: right" mat-raised-button color="primary" (click)="AddConfig()"> Add Category </button> 
+                  </h5>
+                  <!-- Table Section -->
+                  <form [formGroup]="Form">
+                     <div formArrayName="Config" *ngFor="let item of Form.controls['Config'].controls; let i = index;" class="Product_Details" >
+                        <div class="row" [formGroupName]="i">
+                           <div class="col-sm-1 Form_Input">
+                              <label style="line-height: 78px; text-align: center; width: 100%;"> {{i + 1}} ) </label>
+                           </div>
+                           <div class="col-sm-5 Form_Select">
+                              <label>Category:</label>
+                              <ng-select class="NgSelect"
+                                       [items]="Temp_Categories"
+                                       [bindLabel]="'Category'"
+                                       [bindValue]="'_id'"
+                                       [searchable]="true"
+                                       (ngModelChange)="Category_Change()"
+                                       formControlName="Category">
+                              </ng-select>
+                           </div>
+                           <div class="col-sm-4 Form_Input" >
+                              <label> No Of Question :</label>
+                              <input formControlName="NoOfQuestion" [min]="3" type="number">
+                           </div>
+                           <div class="col-sm-2 Form_Input">
+                              <button class="Table_Action_mini" (click)="Remove_Config(i)" mat-mini-fab color="primary" style="margin-top: 28px;">
+                                 <i class="material-icons"> remove </i>
+                              </button>
+                           </div>
+                        </div>
+                     </div>
+                  </form>
+               </div>
+            </div>
+         </div>
+      </div>
+      <div class="Model_Footer">
+         <button type="submit" [disabled]="Form.status !== 'VALID' || Uploading || Form.value.Config.length < 1" mat-raised-button color="primary">
+            <span *ngIf="Type === 'Create' && !Uploading">Submit</span>
+            <span *ngIf="Type === 'Edit' && !Uploading">Update</span>
+            <span *ngIf="Uploading" class="UploadingBtn"> <i class="fa fa-refresh fa-spin"></i> Loading... </span>
+         </button>
+      </div>
+   </form>
+</div>
+
+<!-- If View The Institution -->
+<div class="Modal_Content" *ngIf=" Type && Type === 'View'">
+   <div class="Modal_Header">
+      <p>View Exam Config</p>
+      <span data-dismiss="modal" (click)="bsModalRef.hide()">&times;</span>
+   </div>
+   <div class="Model_Body">
+      <div class="row">
+         <div class="col-sm-6">
+            <div class="view_item">
+               <div class="Static">Institution </div>
+               <div class="dots"> : </div>
+               <div class="Data"> {{Data['Institution']?.Institution}}</div>
+            </div>
+            <div class="view_item">
+               <div class="Static"> Department </div>
+               <div class="dots"> : </div>
+               <div class="Data"> {{Data['Department']?.Department}}</div>
+            </div>
+            <div class="view_item">
+               <div class="Static"> ExamDuration </div>
+               <div class="dots"> : </div>
+               <div class="Data"> {{Data['ExamDuration']}} Mins</div>
+            </div>
+            <div class="view_item">
+               <div class="Static">Created By </div>
+               <div class="dots"> : </div>
+               <div class="Data"> {{Data.Created_By.Name}}
+               </div>
+            </div>
+            <div class="view_item">
+               <div class="Static">Last Modified By </div>
+               <div class="dots"> : </div>
+               <div class="Data"> {{Data.Last_Modified_By.Name}}
+               </div>
+            </div>
+            <div class="view_item">
+               <div class="Static"> Created Date </div>
+               <div class="dots"> : </div>
+               <div class="Data"> {{Data.createdAt | date:'medium'}}</div>
+            </div>
+            <div class="view_item">
+               <div class="Static">Last Modified Date  </div>
+               <div class="dots"> : </div>
+               <div class="Data"> {{Data.updatedAt | date:'medium'}}</div>
+            </div>
+         </div>
+         <div class="col-sm-6">
+            <div class="view_item">
+               <div class="Static"> Categories : </div>
+            </div>
+            <div class="view_item" style="grid-template-columns: 10% 90%;">
+               <div></div>
+               <div>
+                  <div style="display:grid; grid-template-columns: 40px auto 125px;">
+                     <ng-container>
+                        <span class="Static" style="border:1px solid #b9b9b9 ;margin-bottom:0px;text-align:center; line-height: 28px;"> 
+                           S.No
+                        </span>
+                        <span class="Static" style="border:1px solid #b9b9b9; margin-bottom:0px;text-align:center; line-height: 28px;"> 
+                           Category 
+                        </span>
+                        <span class="Static" style="border:1px solid #b9b9b9; margin-bottom:0px;text-align:center; line-height: 28px;">
+                           No.Of Questions 
+                        </span>
+                     </ng-container>
+                     <ng-container *ngFor="let Con of Data.Config; let i=index">
+                        <span class="Data" style="border:1px solid #b9b9b9 ;margin-bottom:0px;text-align:center; line-height: 28px;"> 
+                           {{ i + 1 }}  
+                        </span>
+                        <span class="Data" style="border:1px solid #b9b9b9; margin-bottom:0px;text-align:center; line-height: 28px;"> 
+                           {{ Con.Category?.Category }} 
+                        </span>
+                        <span class="Data" style="border:1px solid #b9b9b9; margin-bottom:0px;text-align:center; line-height: 28px;">
+                           {{ Con.NoOfQuestion}} 
+                        </span>
+                     </ng-container>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+</div>
+
+
+

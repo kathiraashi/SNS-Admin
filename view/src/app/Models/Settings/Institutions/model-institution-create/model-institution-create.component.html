@@ -7,6 +7,14 @@
    <form [formGroup]="Form" (ngSubmit)="onSubmit()">
       <div class="Model_Body">
          <div class="row">
+            <div class="col-sm-3"></div>
+            <div class="col-sm-6 Form_Input text-center">
+               <ng-container *ngIf="Show_Img_Preview">
+                  <img style="max-height:100px; margin-bottom:10px" [src]="Preview_Img" alt="">
+               </ng-container>
+               <input type="file" (change)="onFileChange($event)" accept=".PNG, .png, JPEG, .jpeg, JPG, .jpg, .GIF, .gif" #fileInput>
+            </div>
+            <div class="col-sm-3"></div>
             <div class="col-sm-6 Form_Input" [ngClass]="{'Form_Err': Form.controls['Institution'].errors && !Form.controls['Institution'].pristine, 'Form_Success': Form.controls['Institution'].valid && !Form.controls['Institution'].pristine }">
                <label>Institution:</label>
                <input type="text" formControlName="Institution">
@@ -47,7 +55,7 @@
          </div>
       </div>
       <div class="Model_Footer">
-         <button type="submit" [disabled]="Form.status !== 'VALID' || Uploading" mat-raised-button color="primary">
+         <button type="submit" [disabled]="Form.status !== 'VALID' || Uploading || !Show_Img_Preview" mat-raised-button color="primary">
             <span *ngIf="Type === 'Create' && !Uploading">Submit</span>
             <span *ngIf="Type === 'Edit' && !Uploading">Update</span>
             <span *ngIf="Uploading" class="UploadingBtn"> <i class="fa fa-refresh fa-spin"></i> Loading... </span>
@@ -101,6 +109,13 @@
             </div>
          </div>
          <div class="col-sm-7">
+            <div class="view_item">
+               <div class="Static"> Image </div>
+               <div class="dots"> : </div>
+               <div class="Data"> 
+                  <img style="max-height: 120px" src="http://localhost:4000/API/Uploads/Institutions/{{Data?.Image?.filename}}" alt="">
+               </div>
+            </div>
             <div class="view_item">
                <div class="Static"> Departments </div>
                <div class="dots"> : </div>

@@ -172,4 +172,9 @@
        width: 100%;
        line-height: 35px;
    }
- 
+   .UploadingBtn{
+      color: #5a798c;
+   }
+   .UploadingBtn i{
+      color: #4f6a7a;
+   }

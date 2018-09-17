@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ElementRef, ViewChild  } from '@angular/core';
 import { Subject } from 'rxjs';
 import { FormGroup, Validators, FormControl, AbstractControl } from '@angular/forms';
 
@@ -19,6 +19,11 @@ import { LoginService } from './../../../../Services/LoginService/login.service'
 export class ModelInstitutionCreateComponent implements OnInit {
 
    onClose: Subject<any>;
+
+   @ViewChild('fileInput') fileInput: ElementRef;
+   FormData: FormData = new FormData;
+   Show_Img_Preview: Boolean = false;
+   Preview_Img: any ;
 
    Type: string;
    Data;
@@ -93,6 +98,8 @@ export class ModelInstitutionCreateComponent implements OnInit {
                Institution_Id: new FormControl(this.Data._id, Validators.required),
                Modified_By: new FormControl(this.User_Id, Validators.required)
             });
+            this.Show_Img_Preview = true ;
+            this.Preview_Img = 'http://localhost:4000/API/Uploads/Institutions/' + this.Data.Image.filename;
          }
    }
 
@@ -124,6 +131,21 @@ export class ModelInstitutionCreateComponent implements OnInit {
          }));
       }
 
+      onFileChange(event) {
+         if (event.target.files && event.target.files.length > 0) {
+           this.Show_Img_Preview = true ;
+           const reader = new FileReader();
+             reader.readAsDataURL(event.target.files[0]);
+             reader.onload = (events) => {
+               this.Preview_Img = events.target['result'];
+             };
+           const file = event.target.files[0];
+           this.FormData.set('image', file, file.name);
+         } else {
+           this.Show_Img_Preview = false ;
+         }
+       }
+
    // Submit New Institution
       submit() {
          if (this.Form.valid && !this.Uploading) {
@@ -131,7 +153,8 @@ export class ModelInstitutionCreateComponent implements OnInit {
             const Data = this.Form.value;
             let Info = CryptoJS.AES.encrypt(JSON.stringify(Data), 'SecretKeyIn@123');
             Info = Info.toString();
-            this.Service.Institution_Create({'Info': Info}).subscribe( response => {
+            this.FormData.set('Info', Info);
+            this.Service.Institution_Create(this.FormData).subscribe( response => {
                this.Uploading = false;
                const ReceivingData = JSON.parse(response['_body']);
                if (response['status'] === 200 && ReceivingData.Status) {
@@ -164,7 +187,8 @@ export class ModelInstitutionCreateComponent implements OnInit {
             const Data = this.Form.value;
             let Info = CryptoJS.AES.encrypt(JSON.stringify(Data), 'SecretKeyIn@123');
             Info = Info.toString();
-            this.Service.Institution_Update({'Info': Info}).subscribe( response => {
+            this.FormData.set('Info', Info);
+            this.Service.Institution_Update(this.FormData).subscribe( response => {
                this.Uploading = false;
                const ReceivingData = JSON.parse(response['_body']);
                if (response['status'] === 200 && ReceivingData.Status) {
