@@ -45,6 +45,7 @@ export class ModelDepartmentCreateComponent implements OnInit {
                Department: new FormControl( '', {  validators: Validators.required,
                                                       asyncValidators: [this.Department_AsyncValidate.bind(this)],
                                                       updateOn: 'blur' } ),
+               Department_Code: new FormControl('', Validators.required ),
                Created_By: new FormControl( this.User_Id, Validators.required ),
             });
          }
@@ -54,6 +55,7 @@ export class ModelDepartmentCreateComponent implements OnInit {
                Department: new FormControl(this.Data.Department, { validators: Validators.required,
                                                                         asyncValidators: [this.Department_AsyncValidate.bind(this)],
                                                                         updateOn: 'blur' }),
+               Department_Code: new FormControl(this.Data.Department_Code, Validators.required ),
                Department_Id: new FormControl(this.Data._id, Validators.required),
                Modified_By: new FormControl(this.User_Id, Validators.required)
             });

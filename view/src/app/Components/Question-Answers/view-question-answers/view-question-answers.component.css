@@ -161,3 +161,23 @@
    color: rgb(79, 107, 123);
    width: 100%;
 }
+
+
+
+
+
+
+
+.ImageZoom{
+   position: fixed;
+   left: 50%;
+   top: 50%;
+   transform: translate(-50%, -50%);
+}
+.ImageZoom .ImgSection{
+   background-color: #ffffff;
+}
+.ImageZoom img{
+   max-width: 100%;
+   max-height: 100%;
+}

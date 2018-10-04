@@ -4,6 +4,7 @@ var Schema = mongoose.Schema;
 // Institution Schema
    var InstitutionSchema = mongoose.Schema({
       Institution: { type : String , required : true},
+      Institution_Code: { type : String , required : true},
       Departments: [ { type: Schema.Types.ObjectId, ref: 'Department', required : true } ],
       Institution_Category: { type : Object , required : true},
       Image: { type : Object , required : true},

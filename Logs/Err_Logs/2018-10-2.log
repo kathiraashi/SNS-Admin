@@ -1,0 +1,2 @@
+[2018-10-02T15:56:39.836] [ERROR] Error - {"Error_Name":"","Error_Address":"","Error_Message":"SyntaxError: Invalid shorthand property initializer"}
+[2018-10-02T15:57:00.876] [ERROR] Error - {"Error_Name":"","Error_Address":"","Error_Message":"ReferenceError: Code is not defined"}

@@ -27,8 +27,8 @@ var app = express();
 
 
 // DB Connection
-   // mongoose.connect('mongodb://kathiraashi:kathir143@ds263161.mlab.com:63161/sns');
-   mongoose.connect('mongodb://kathiraashi:kathir143@ds245532.mlab.com:45532/sns-local');
+   mongoose.connect('mongodb://kathiraashi:kathir143@ds263161.mlab.com:63161/sns');
+   // mongoose.connect('mongodb://kathiraashi:kathir143@ds245532.mlab.com:45532/sns-local');
    mongoose.connection.on('error', function(err) {
       ErrorManagement.ErrorHandling.ErrorLogCreation('', 'Mongodb Connection Error', 'Server.js', err);
    });
@@ -56,20 +56,20 @@ app.use('/API/Uploads', express.static('Uploads'));
 
  require('./server/web/routes/Admin/RegisterAndLogin.routes.js')(app); // Without Company Id, User Id and Authorization
 
-   function AuthorizationValidate(AuthorizationKey, callback) {
-      var date = new Date(new Date() - 20 * 60 * 1000); // 20 minutes differ
-      AdminModel.User_Management.findOne({ 
-         '_id': mongoose.Types.ObjectId(AuthorizationKey.slice(0, -32)), 
-         'LoginToken': AuthorizationKey.slice(-32),
-         LastActiveTime: { $gte: date } }, {}, {}, function(err, response) {
-            if (!err && response !== null) {
-               AdminModel.User_Management.update({ _id: response._id }, { $set: { LastActiveTime: new Date() }}).exec();
-               return callback(true);
-            }else {
-               return callback(false);
-            }
-         });
-   }
+   // function AuthorizationValidate(AuthorizationKey, callback) {
+   //    var date = new Date(new Date() - 20 * 60 * 1000); // 20 minutes differ
+   //    AdminModel.User_Management.findOne({ 
+   //       '_id': mongoose.Types.ObjectId(AuthorizationKey.slice(0, -32)), 
+   //       'LoginToken': AuthorizationKey.slice(-32),
+   //       LastActiveTime: { $gte: date } }, {}, {}, function(err, response) {
+   //          if (!err && response !== null) {
+   //             AdminModel.User_Management.update({ _id: response._id }, { $set: { LastActiveTime: new Date() }}).exec();
+   //             return callback(true);
+   //          }else {
+   //             return callback(false);
+   //          }
+   //       });
+   // }
 //  // Every request Log Creation
    // app.use('/API/', function (req, res, next) {
    //    if (req.headers.authorization) {
@@ -102,11 +102,11 @@ app.use('/API/Uploads', express.static('Uploads'));
    require('./server/web/routes/Settings/ExamConfig.routes.js')(app);
 
 
-   // app.use(express.static(__dirname + '/view/dist/view/'));
+   app.use(express.static(__dirname + '/view/dist/view/'));
 
-   // app.use(function(req, res) {
-   //    res.sendFile(path.join(__dirname, '/view/dist/view', 'index.html'));
-   // });
+   app.use(function(req, res) {
+      res.sendFile(path.join(__dirname, '/view/dist/view', 'index.html'));
+   });
 
 
 app.get('*', function(req, res){

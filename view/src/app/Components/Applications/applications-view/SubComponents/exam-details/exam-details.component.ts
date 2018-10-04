@@ -38,6 +38,7 @@ export class ExamDetailsComponent implements OnInit {
    User_Type;
    Candidate_Id;
    If_Pass: Boolean = false;
+   If_PassOne: Boolean = false;
    MinDate: Date = new Date();
 
    Exam_Data = {};
@@ -121,10 +122,10 @@ export class ExamDetailsComponent implements OnInit {
    InterviewResultChange() {
       const Result = this.FormOne.value.InterviewResult;
       if (Result === 'Pass') {
-         this.If_Pass = true;
+         this.If_PassOne = true;
          this.FormOne.addControl('JoinDate', new FormControl(null, Validators.required));
       } else {
-         this.If_Pass = false;
+         this.If_PassOne = false;
          this.FormOne.removeControl('JoinDate');
       }
    }

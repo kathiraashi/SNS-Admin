@@ -43,6 +43,7 @@ var mongoose = require('mongoose');
       }else {
          var Create_Department = new DepartmentModel.DepartmentSchema({
             Department: ReceivingData.Department,
+            Department_Code: ReceivingData.Department_Code,
             Created_By: mongoose.Types.ObjectId(ReceivingData.Created_By),
             Last_Modified_By: mongoose.Types.ObjectId(ReceivingData.Created_By),
             Active_Status: true,
@@ -103,11 +104,18 @@ var mongoose = require('mongoose');
       if (!ReceivingData.User_Id || ReceivingData.User_Id === ''  ) {
          res.status(400).send({Status: false, Message: "User Details can not be empty" });
       }else {
-         DepartmentModel.DepartmentSchema.find({ 'If_Deleted': false }, { Department : 1 }, {sort: { updatedAt: -1 }}, function(err, result) { // Department FindOne Query
+         DepartmentModel.DepartmentSchema.find({ 'If_Deleted': false }, { Department : 1, Department_Code: 1 }, {sort: { updatedAt: -1 }}, function(err, result) { // Department FindOne Query
             if(err) {
                ErrorManagement.ErrorHandling.ErrorLogCreation(req, 'Settings Department Find Query Error', 'Department.controller.js', err);
                res.status(417).send({status: false, Error:err, Message: "Some error occurred while Find The Departments!."});
             } else {
+               result = result.map(obj => {
+                  const newObj = {
+                     _id : obj._id,
+                     Department : obj.Department + ' ('+ obj.Department_Code +') '
+                  }
+                  return newObj;
+               })
                var ReturnData = CryptoJS.AES.encrypt(JSON.stringify(result), 'SecretKeyOut@123');
                ReturnData = ReturnData.toString();
                res.status(200).send({Status: true, Response: ReturnData });
@@ -134,6 +142,7 @@ var mongoose = require('mongoose');
             } else {
                if (result !== null) {
                   result.Department = ReceivingData.Department;
+                  result.Department_Code = ReceivingData.Department_Code;
                   result.Last_Modified_By = mongoose.Types.ObjectId(ReceivingData.Modified_By);
                   result.save(function(err_1, result_1) { // Department Update Query
                      if(err_1) {

@@ -4,6 +4,7 @@ var Schema = mongoose.Schema;
 // Department Schema
    var DepartmentSchema = mongoose.Schema({
       Department: { type : String , required : true},
+      Department_Code: { type : String , required : true},
       Created_By : { type: Schema.Types.ObjectId, ref: 'User_Management', required : true },
       Last_Modified_By: { type: Schema.Types.ObjectId, ref: 'User_Management', required : true },
       Active_Status: { type : Boolean , required : true},

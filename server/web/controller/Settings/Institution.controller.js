@@ -58,6 +58,8 @@ var Institution_Image_Upload = multer({
 
          if(!ReceivingData.Institution || ReceivingData.Institution === '' ) {
             res.status(400).send({Status: false, Message: "Institution can not be empty" });
+         }else if(!ReceivingData.Institution_Code || ReceivingData.Institution_Code === '' ) {
+            res.status(400).send({Status: false, Message: "Institution Code can not be empty" });
          } else if (!ReceivingData.Departments || typeof ReceivingData.Departments !== 'object' || ReceivingData.Departments.length === 0 ) {
             res.status(400).send({Status: false, Message: "Departments can not be empty" });
          } else if (!ReceivingData.Institution_Category || typeof ReceivingData.Institution_Category !== 'object' || Object.keys(ReceivingData.Institution_Category).length !== 2 ) {
@@ -72,6 +74,7 @@ var Institution_Image_Upload = multer({
             ReceivingData.Departments.map(obj => mongoose.Types.ObjectId(obj));
             var Create_Institution = new InstitutionModel.InstitutionSchema({
                Institution: ReceivingData.Institution,
+               Institution_Code: ReceivingData.Institution_Code,
                Departments: ReceivingData.Departments,
                Image: _Image,
                Institution_Category: ReceivingData.Institution_Category,
@@ -138,11 +141,18 @@ var Institution_Image_Upload = multer({
       if (!ReceivingData.User_Id || ReceivingData.User_Id === ''  ) {
          res.status(400).send({Status: false, Message: "User Details can not be empty" });
       }else {
-         InstitutionModel.InstitutionSchema.find({ 'If_Deleted': false }, { Institution : 1 }, {sort: { updatedAt: -1 }}, function(err, result) { // Institution FindOne Query
+         InstitutionModel.InstitutionSchema.find({ 'If_Deleted': false }, { Institution : 1, Institution_Code : 1, }, {sort: { updatedAt: -1 }}, function(err, result) { // Institution FindOne Query
             if(err) {
                ErrorManagement.ErrorHandling.ErrorLogCreation(req, 'Settings Institution Find Query Error', 'Institution.controller.js', err);
                res.status(417).send({status: false, Error:err, Message: "Some error occurred while Find The Institutions!."});
             } else {
+               result = result.map(obj => {
+                  const newObj = {
+                     _id : obj._id,
+                     Institution : obj.Institution +' (' + obj.Institution_Code  + ') '
+                  }
+                  return newObj;
+               })
                var ReturnData = CryptoJS.AES.encrypt(JSON.stringify(result), 'SecretKeyOut@123');
                ReturnData = ReturnData.toString();
                res.status(200).send({Status: true, Response: ReturnData });
@@ -160,6 +170,8 @@ var Institution_Image_Upload = multer({
             res.status(400).send({Status: false, Message: "Institution Id can not be empty" });
          }else if(!ReceivingData.Institution || ReceivingData.Institution === '' ) {
             res.status(400).send({Status: false, Message: "Institution can not be empty" });
+         }else if(!ReceivingData.Institution_Code || ReceivingData.Institution_Code === '' ) {
+            res.status(400).send({Status: false, Message: "Institution Code can not be empty" });
          } else if (!ReceivingData.Departments || typeof ReceivingData.Departments !== 'object' || ReceivingData.Departments.length === 0 ) {
             res.status(400).send({Status: false, Message: "Departments can not be empty" });
          } else if (!ReceivingData.Institution_Category || typeof ReceivingData.Institution_Category !== 'object' || Object.keys(ReceivingData.Institution_Category).length !== 2 ) {
@@ -181,6 +193,7 @@ var Institution_Image_Upload = multer({
                      result.Departments = ReceivingData.Departments;
                      result.Institution_Category = ReceivingData.Institution_Category;
                      result.Institution = ReceivingData.Institution;
+                     result.Institution_Code = ReceivingData.Institution_Code;
                      result.Last_Modified_By = mongoose.Types.ObjectId(ReceivingData.Modified_By);
 
                      result.save(function(err_1, result_1) { // Institution Update Query

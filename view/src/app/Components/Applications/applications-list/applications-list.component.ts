@@ -55,6 +55,7 @@ export class ApplicationsListComponent implements OnInit {
                            obj.BtnLoading = false;
                            return obj;
                         });
+                        console.log(DecryptedData);
                      } else if (response['status'] === 400 || response['status'] === 417 && !ResponseData['Status']) {
                         this.Toastr.NewToastrMessage({ Type: 'Error', Message: ResponseData['Message'] });
                      } else if (response['status'] === 401 && !ResponseData['Status']) {

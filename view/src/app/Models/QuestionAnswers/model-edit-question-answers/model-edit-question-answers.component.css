@@ -164,3 +164,19 @@
 .AnswerGroupOption{
    width: 16.5%
 }
+
+
+
+.Tab h6 {
+   margin: 0px;
+   line-height: 35px;
+   color: #374c59;
+   background-color: #ffffff;
+   text-align: center;
+   cursor: pointer;
+   box-shadow: 1px 1px 1px 1px #d4d4d4;
+}
+.Tab h6.Selected {
+   color: #ffffff;
+   background-color: #374c59;
+}

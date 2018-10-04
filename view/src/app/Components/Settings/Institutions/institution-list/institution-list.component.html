@@ -47,9 +47,9 @@
                   <tr>
                      <th>S.no</th>
                      <th>Institution Name</th>
+                     <th>Institution Code</th>
                      <th>Institution Category</th>
                      <th> No.of Departments </th>
-                     <th>Created By </th>
                      <th>Last Modified By</th>
                      <th>Action</th>
                   </tr>
@@ -63,16 +63,13 @@
                         <span class="Style_1"> {{Item.Institution}} </span>
                      </td>
                      <td>
+                        <span class="Style_1"> {{Item.Institution_Code}} </span>
+                     </td>
+                     <td>
                         <span class="Style_1"> {{Item.Institution_Category?.Category}} </span>
                      </td>
                      <td>
                         <span class="Style_1"> {{Item.Departments.length}} </span>
-                     </td>
-                     <td>
-                        <span class="Style_1"> {{Item.Created_By.Name}}
-                           <br> 
-                           <span class="Time"> {{Item.createdAt | date:'medium'}}  </span>
-                        </span>
                      </td>
                      <td>
                         <span class="Style_1"> 

@@ -19,7 +19,7 @@ function TemplateOne(User, Applied, Department, Ref_Id) {
 function TemplateTwo(Candidate, Applied, Department, Ref_Id, Link_Id, OTP) {
 
    var Img = 'http://www.snsct.org/sites/snsct.org/themes/Montreal/img/sns_group_logo.png';
-   var Link = 'http://localhost:4200/Online_Exam/' + Link_Id;
+   var Link = 'http://localhost:5000/Online_Exam/' + Link_Id;
 
    return '<div style="background-color:#f6f6f6;font-size:14px;height:100%;line-height:1.6;margin:0;padding:0;width:100%" bgcolor="#f6f6f6" height="100%" width="100%"> <table style="background-color:#f6f6f6;border-collapse:separate;border-spacing:0;box-sizing:border-box;width:100%" width="100%" bgcolor="#f6f6f6"> <tbody> <tr> <td style="box-sizing:border-box;display:block;font-size:14px;font-weight:normal;margin:0 auto;max-width:600px;padding:10px;text-align:center;width:auto" valign="top" align="center" width="auto"> <div style="background-color:#dedede; box-sizing:border-box;display:block;margin:0 auto;max-width:600px;padding:10px;text-align:left" align="left"> <table style="background:#fff;border:1px solid #e9e9e9;border-collapse:separate;border-radius:3px;border-spacing:0;box-sizing:border-box;width:100%"> <tbody> <tr> <td style="box-sizing:border-box;font-size:14px;font-weight:normal;margin:0;padding:30px;vertical-align:top" valign="top"> <table style="border-collapse:separate;border-spacing:0;box-sizing:border-box;width:100%" width="100%"> <tbody> <tr style="font-family: sans-serif; line-height:20px"> <td style="box-sizing:border-box;font-size:14px;font-weight:normal;margin:0;vertical-align:top" valign="top"> <img src="' + Img + '" style="width:40%; margin-left:30%" alt="SNS Logo"> <p style="font-size:18px;font-weight:700;color:#717171;font-family: inherit;"> Dear <b> <i style="color: #f4962f; text-decoration: underline;"> ' + Candidate + ' </i> </b> </p> <p style="font-size:14px;color:#717171;font-family: inherit;"> Greetings from SNS Group of Institutions! </p> <p style="font-size:14px;color:#717171;font-family: inherit;"> This is in response to your application for vacancy position at  <b> SNS Institutions  </b> </p> <p style="font-size:14px;color:#717171;font-family: inherit;">   Your online application for the post of <b> <i style="color: #f4962f; text-decoration: underline;"> ' + Applied + ' </i> </b> in the department of <b> <i style="color: #f4962f; text-decoration: underline;"> ' + Department + ' </i> </b> is scrutinized and you are advised to take up the Online test in the link provided below.  </p> <p style="font-size:14px;color:#717171;font-family: inherit;">  <b> Link : <b> <a href=" '+ Link + ' " target="blank" style="color: #f4962f; text-decoration: underline;"> ' + Link + ' </a> </b>  </b> </p> <p style="font-size:14px;color:#717171;font-family: inherit;">  <b> Your Reference Id : <b> <i style="color: #f4962f; text-decoration: underline;"> ' + Ref_Id + ' </i> </b>  </b> </p> <p style="font-size:14px;color:#717171;font-family: inherit;">  <b> One Time Password : <b> <i style="color: #f4962f; text-decoration: underline;"> ' + OTP + ' </i> </b>  </b> </p> <p style="font-size:14px;color:#717171;font-family: inherit;">  <b> You will be notified the status of your application after publication of Online test results. </b> </p> <p style="font-size:14px;color:#717171;font-family: inherit;">  <b> Thanks for your interest in SNS Institutions. </b> </p> <br> <br> <p style="font-size:14px;font-weight:normal;margin:0;margin-bottom:15px;padding:0;color: #717171;font-family: inherit;text-align: right;">With Regards, <br> <b> HR Team </b> </p> </td> </tr> </tbody> </table> </td> </tr> </tbody> </table> </div> </td> </tr> </tbody> </table> </div>';
    
@@ -48,8 +48,8 @@ exports.CandidatesList = function(req, res) {
       res.status(400).send({Status: false, Message: "User Details can not be empty" });
    }else {
       CandidateModel.CandidatesSchema.find({ Status: 'Active' }, {Activity_Info: 0, Education_Info: 0, Files: 0, Reference_Info: 0}, {})
-      .populate({path: "Basic_Info.Department", select:"Department"})
-      .populate({path: "Basic_Info.Institution", select:"Institution"})
+      .populate({path: "Basic_Info.Department", select:["Department", 'Department_Code']})
+      .populate({path: "Basic_Info.Institution", select:["Institution", "Institution_Code"]})
       .exec(function(err, result) {
          if(err) {
             ErrorManagement.ErrorHandling.ErrorLogCreation(req, 'Candidates List Find Query Error', 'Candidates.controller.js', err);
@@ -74,8 +74,8 @@ exports.Candidate_View = function(req, res) {
    }else {
       CandidateModel.CandidatesSchema
       .findOne({_id: ReceivingData.Candidate_Id, Status: 'Active' }, {}, {})
-      .populate({path: "Basic_Info.Department", select:"Department"})
-      .populate({path: "Basic_Info.Institution", select:"Institution"})
+      .populate({path: "Basic_Info.Department", select:["Department", 'Department_Code']})
+      .populate({path: "Basic_Info.Institution", select:["Institution", "Institution_Code"]})
       .exec(function(err, result) {
          if(err) {
             ErrorManagement.ErrorHandling.ErrorLogCreation(req, 'Candidate Data Find Query Error', 'Candidates.controller.js', err);
@@ -107,7 +107,7 @@ exports.Accept_Candidate = function(req, res) {
             if (result !== null) {
                result.Current_Status = 'Accepted';
                result.Current_Stage = 'Stage_2';
-               Accepted_Date = new Date();
+               result.Accepted_Date = new Date();
                result.Last_Modified_By = mongoose.Types.ObjectId(ReceivingData.User_Id);
                result.save(function(err_1, result_1) { // Candidate Update Query
                   if(err_1) {
@@ -263,6 +263,8 @@ exports.AssignExam = function(req, res) {
                               Option_D: obj.Option_D,
                               Option_E: obj.Option_E,
                               Option_F: obj.Option_F,
+                              Type: obj.Type,
+                              Image: obj.Image,
                               Answer: obj.Answer,
                               CandidateAnswer: '',
                               Status: 'UnTouched',

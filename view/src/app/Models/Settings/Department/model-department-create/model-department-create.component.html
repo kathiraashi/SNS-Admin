@@ -15,6 +15,13 @@
                   <span *ngIf="Form.controls['Department'].errors.Department_NotAvailable">Department Already Exist</span>
                </p>
             </div>
+            <div class="col-sm-10 Form_Input" [ngClass]="{'Form_Err': Form.controls['Department_Code'].errors && !Form.controls['Department_Code'].pristine, 'Form_Success': Form.controls['Department_Code'].valid && !Form.controls['Department_Code'].pristine }">
+               <label>Department Code:</label>
+               <input type="text" formControlName="Department_Code">
+               <p class="error" *ngIf="Form.controls['Department_Code'].errors && !Form.controls['Department_Code'].pristine">
+                  <span *ngIf="Form.controls['Department_Code'].errors.required">Department Code is required</span>
+               </p>
+            </div>
          </div>
       </div>
       <div class="Model_Footer">
@@ -38,6 +45,11 @@
          <div class="Static">Department </div>
          <div class="dots"> : </div>
          <div class="Data"> {{Data.Department}}</div>
+      </div>
+      <div class="view_item">
+         <div class="Static">Department Code</div>
+         <div class="dots"> : </div>
+         <div class="Data"> {{Data.Department_Code}}</div>
       </div>
       <div class="view_item">
          <div class="Static">Created By </div>

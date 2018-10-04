@@ -66,6 +66,9 @@
       line-height: 40px;
       text-align: center;
    }
+   .Header .HeaderMenu .menus .menu-list.active{
+      background-color:#2d3e48;
+   }
    .Header .HeaderMenu .menus .menu-list a:hover, 
    .Header .HeaderMenu .menus .menu-list a:active, 
    .Header .HeaderMenu .menus .menu-list a:focus,
@@ -95,6 +98,9 @@
       float: left;
       background-color: #4e6a7a;
       outline:none;
+   }
+   .Header .tree-menus .tree-view .tree-list.active{
+      background-color: #2d3e48;
    }
    .Header .tree-menus .tree-view .tree-list a{
       color: #ffffff;

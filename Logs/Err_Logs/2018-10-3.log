@@ -1,0 +1,5 @@
+[2018-10-03T11:09:40.130] [ERROR] Error - {"Error_Name":"Mongodb Connection Error","Error_Address":"Server.js","Error_Message":{"name":"MongoNetworkError","message":"failed to connect to server [ds245532.mlab.com:45532] on first connect [MongoNetworkError: getaddrinfo EAI_AGAIN ds245532.mlab.com:45532]"}}
+[2018-10-03T11:09:40.134] [ERROR] Error - {"Error_Name":"","Error_Address":"","Error_Message":{"name":"MongoNetworkError","message":"failed to connect to server [ds245532.mlab.com:45532] on first connect [MongoNetworkError: getaddrinfo EAI_AGAIN ds245532.mlab.com:45532]"}}
+[2018-10-03T11:36:02.009] [ERROR] Error - {"Error_Name":"","Error_Address":"","Error_Message":"ReferenceError: multer is not defined"}
+[2018-10-03T11:43:00.907] [ERROR] Error - {"Error_Name":"","Error_Address":"","Error_Message":"TypeError: Cannot read property 'salt' of undefined"}
+[2018-10-03T11:45:00.900] [ERROR] Error - {"Error_Name":"","Error_Address":"","Error_Message":"TypeError: Cannot read property 'salt' of undefined"}

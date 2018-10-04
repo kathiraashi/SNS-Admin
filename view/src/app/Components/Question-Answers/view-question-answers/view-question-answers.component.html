@@ -88,27 +88,53 @@
             </div>
             <div class="row">
                <div *ngFor="let Question of _FilteredList; let i=index" class="col-sm-12">
-                  <div class="Section">
-                     <h5> {{i + 1}}. {{Question.Question}} 
-                        <span class="Actions">
-                           <!-- <span (click)="EditQuestionAnswers(i)"><i class="material-icons edit">border_color</i></span> -->
-                           <span (click)="DeleteQuestion(i)"><i class="material-icons delete"> delete </i></span>
-                        </span>
-                     </h5>
-                     <!-- Options -->
-                     <div class="Options">
-                        <span class="option" [ngClass]="{'ans': Question.Answer === 'A'}"> <span class="Differ"> A. </span> {{Question.Option_A}} </span>
-                        <span class="option" [ngClass]="{'ans': Question.Answer === 'B'}"> <span class="Differ"> B. </span> {{Question.Option_B}}  </span>
-                        <span class="option" [ngClass]="{'ans': Question.Answer === 'C'}"> <span class="Differ"> C. </span> {{Question.Option_C}}  </span>
-                        <span class="option" [ngClass]="{'ans': Question.Answer === 'D'}"> <span class="Differ"> D. </span> {{Question.Option_D}}  </span>
-                        <span class="option" [ngClass]="{'ans': Question.Answer === 'E'}"> <span class="Differ"> E. </span> {{Question.Option_E}}  </span>
-                        <span class="option" [ngClass]="{'ans': Question.Answer === 'F'}"> <span class="Differ"> F. </span> {{Question.Option_F}}  </span>
+                  <ng-container *ngIf="Question.Type === 'Image'">
+                     <div class="Section" style="display: flex">
+                           <h5 style="margin-right:20px;"> {{i + 1}}.
+                              <span class="Actions">
+                                 <span (click)="DeleteQuestion(i)"><i class="material-icons delete"> delete </i></span>
+                              </span>
+                           </h5>
+                        <img (mouseenter)="ImgZoom(Question['Image']?.filename)" (mouseleave)="ImgZoomHide()" style="max-width:200px; max-height: 100px;" src="http://localhost:4000/API/Uploads/Questions/{{Question['Image']?.filename}}" alt="">
+                        <div #actualTarget></div>
+                        <div class="Options">
+                           <span class="option ans" *ngIf="Question.Answer === 'A'"> Answer: <span class="Differ"> A </span> </span>
+                           <span class="option ans" *ngIf="Question.Answer === 'B'"> Answer: <span class="Differ"> B </span>  </span>
+                           <span class="option ans" *ngIf="Question.Answer === 'C'"> Answer: <span class="Differ"> C </span>  </span>
+                           <span class="option ans" *ngIf="Question.Answer === 'D'"> Answer: <span class="Differ"> D </span>  </span>
+                           <span class="option ans" *ngIf="Question.Answer === 'E'"> Answer: <span class="Differ"> E </span>  </span>
+                           <span class="option ans" *ngIf="Question.Answer === 'F'"> Answer: <span class="Differ"> F </span>  </span>
+                        </div>
                      </div>
-                  </div>
+                  </ng-container>
+                  <ng-container *ngIf="Question.Type === 'Question'">
+                     <div class="Section">
+                        <h5> {{i + 1}}. {{Question.Question}} 
+                           <span class="Actions">
+                              <span (click)="DeleteQuestion(i)"><i class="material-icons delete"> delete </i></span>
+                           </span>
+                        </h5>
+                        <!-- Options -->
+                        <div class="Options">
+                           <span class="option" [ngClass]="{'ans': Question.Answer === 'A'}"> <span class="Differ"> A. </span> {{Question.Option_A}} </span>
+                           <span class="option" [ngClass]="{'ans': Question.Answer === 'B'}"> <span class="Differ"> B. </span> {{Question.Option_B}}  </span>
+                           <span class="option" [ngClass]="{'ans': Question.Answer === 'C'}"> <span class="Differ"> C. </span> {{Question.Option_C}}  </span>
+                           <span class="option" [ngClass]="{'ans': Question.Answer === 'D'}"> <span class="Differ"> D. </span> {{Question.Option_D}}  </span>
+                           <span class="option" [ngClass]="{'ans': Question.Answer === 'E'}"> <span class="Differ"> E. </span> {{Question.Option_E}}  </span>
+                           <span class="option" [ngClass]="{'ans': Question.Answer === 'F'}"> <span class="Differ"> F. </span> {{Question.Option_F}}  </span>
+                        </div>
+                     </div>
+                  </ng-container>
                </div>
             </div>
          </div>
       </div>
+   </div>
+</div>
+
+<div class="ImageZoom">
+   <div class="ImgSection">
+      <img src="http://localhost:4000/API/Uploads/Questions/{{ZoomedImage}}" alt="">
    </div>
 </div>
 

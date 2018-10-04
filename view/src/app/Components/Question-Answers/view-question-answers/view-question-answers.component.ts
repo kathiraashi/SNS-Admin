@@ -45,6 +45,9 @@ export class ViewQuestionAnswersComponent implements OnInit {
    _List: any[] = [];
    _FilteredList: any[] = [];
 
+   ZoomImage: Boolean = false;
+   ZoomedImage = '';
+
    bsModalRef: BsModalRef;
    constructor(private modalService: BsModalService,
       public Service: QuestionAndAnswerService,
@@ -199,13 +202,6 @@ export class ViewQuestionAnswersComponent implements OnInit {
       });
    }
 
-   // EditQuestionAnswers(_index) {
-   //    const initialState = {
-   //    Type: 'Edit'
-   //    };
-   //    this.bsModalRef = this.modalService.show(ModelEditQuestionAnswersComponent, Object.assign({initialState}, { class: 'modal-lg max-width-70' }));
-   // }
-
    DeleteQuestion(_index) {
       const initialState = { Text: ' Question ' };
       this.bsModalRef = this.modalService.show(DeleteConfirmationComponent, Object.assign({initialState}, {ignoreBackdropClick: true, class: 'modal-sm' }));
@@ -229,5 +225,16 @@ export class ViewQuestionAnswersComponent implements OnInit {
             });
          }
       });
+   }
+
+
+   ImgZoom(_ImgName) {
+      this.ZoomedImage = _ImgName;
+      this.ZoomImage = true;
+   }
+
+   ImgZoomHide() {
+      this.ZoomedImage = '';
+      this.ZoomImage = false;
    }
 }

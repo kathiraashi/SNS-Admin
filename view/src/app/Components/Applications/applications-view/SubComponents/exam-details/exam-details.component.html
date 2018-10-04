@@ -108,14 +108,14 @@
                </div>
             </div>
             <br>
-            <div class="row">
-               <div class="col-sm-12 text-right">
-                  <button *ngIf="CandidateData['Current_Stage'] === 'Stage_4'" mat-raised-button color="primary" (click)="openModal(template)"> Update Result </button>
-                  <!-- <button *ngIf="CandidateData['Current_Stage'] === 'Stage_5'" mat-raised-button color="primary" (click)="openModal(templateTwo)" style="float:left"> Change Interview Schedule </button> -->
-                  <button *ngIf="CandidateData['Current_Stage'] === 'Stage_5'" mat-raised-button color="primary" (click)="openModal(templateOne)"> Update Interview Result </button>
-               </div>
-            </div>
          </div><!-- Section End -->
+         <div class="row">
+            <div class="col-sm-12 text-right">
+               <button *ngIf="CandidateData['Current_Stage'] === 'Stage_4'" mat-raised-button color="primary" (click)="openModal(template)"> Update Result </button>
+               <!-- <button *ngIf="CandidateData['Current_Stage'] === 'Stage_5'" mat-raised-button color="primary" (click)="openModal(templateTwo)" style="float:left"> Change Interview Schedule </button> -->
+               <button *ngIf="CandidateData['Current_Stage'] === 'Stage_5'" mat-raised-button color="primary" (click)="openModal(templateOne)"> Update Interview Result </button>
+            </div>
+         </div>
       </div>
    </div>
 </div>
@@ -200,7 +200,7 @@
                </div>
             </div>
             
-            <div *ngIf="If_Pass" class="row">
+            <div *ngIf="If_PassOne" class="row">
                <div class="col-sm-10 Form_Input" [ngClass]="{'Form_Err': FormOne.controls['JoinDate'].errors && !FormOne.controls['JoinDate'].pristine, 'Form_Success': FormOne.controls['JoinDate'].valid && !FormOne.controls['JoinDate'].pristine }">
                   <label> Joining Date :</label>
                   <input type="text" formControlName="JoinDate" [min]="MinDate" [matDatepicker]="DatepickerOne" (click)="DatepickerOne.open()" (keypress)="NotAllow()" (keydown)="NotAllow()">

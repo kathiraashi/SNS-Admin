@@ -23,6 +23,13 @@
                   <span *ngIf="Form.controls['Institution'].errors.Institution_NotAvailable"> Institution Already Exist</span>
                </p>
             </div>
+            <div class="col-sm-6 Form_Input" [ngClass]="{'Form_Err': Form.controls['Institution_Code'].errors && !Form.controls['Institution_Code'].pristine, 'Form_Success': Form.controls['Institution_Code'].valid && !Form.controls['Institution_Code'].pristine }">
+               <label>Institution Code:</label>
+               <input type="text" formControlName="Institution_Code">
+               <p class="error" *ngIf="Form.controls['Institution_Code'].errors && !Form.controls['Institution_Code'].pristine">
+                  <span *ngIf="Form.controls['Institution_Code'].errors.required"> Institution Code is required</span>
+               </p>
+            </div>
             <div class="col-sm-6 Form_Select">
                <label>Institution Category:</label>
                <ng-select class="NgSelect ValueBold"
@@ -77,6 +84,11 @@
                <div class="Static">Institution </div>
                <div class="dots"> : </div>
                <div class="Data"> {{Data.Institution}}</div>
+            </div>
+            <div class="view_item">
+               <div class="Static">Institution Code</div>
+               <div class="dots"> : </div>
+               <div class="Data"> {{Data.Institution_Code}}</div>
             </div>
             <div class="view_item">
                <div class="Static">Institution Category </div>
