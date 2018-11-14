@@ -4,7 +4,7 @@ import { Observable, of } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
 import * as CryptoJS from 'crypto-js';
 
-const API_URL = 'http://localhost:4000/API/RegisterAndLogin/';
+const API_URL = 'http://139.59.20.129:4000/API/RegisterAndLogin/';
 
 @Injectable({
   providedIn: 'root'

@@ -25,13 +25,14 @@
       align-items: flex-end;
    }
    .Main_Section .Section .Section_Data .Data .Title {
-      width: 30%;
+      width: 36%;
       position: relative;
       font-size: 14px;
       font-weight: 700;
       color: #4e6a7a;
       padding-left: 20px;
       letter-spacing: 0.3px;
+      padding-right: 20px;
    }
    .Main_Section .Section .Section_Data .Data .Title span {
       position: absolute;

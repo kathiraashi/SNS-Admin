@@ -50,7 +50,9 @@
                            <span class="S_no"> {{i + 1}} </span>
                         </td>
                         <td>
-                           <span class="Style_1"> {{Candidate.Personal_Info?.Name}} </span>
+                           <span class="Style_1"> {{Candidate.Personal_Info?.Name}}
+                              <span style="color: rgba(77, 106, 122, 0.47); display: block;
+                              font-size: 12px; font-weight: 700;"> ({{Candidate.Ref_ID}}) </span> </span>
                         </td>
                         <td>
                            <span class="Style_1"> {{Candidate.Personal_Info?.Gender}} ({{Candidate.Personal_Info?.Age}})</span>
