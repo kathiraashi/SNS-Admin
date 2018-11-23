@@ -1,6 +1,7 @@
 var CandidateModel = require('./../../models/Candidates/Candidates.model.js');
 var QA_Model = require('./../../models/Q&A/QuestionAndAnswer.model.js');
 var ExamConfigModel = require('./../../models/Settings/ExamConfig.model');
+var CategoryModel = require('./../../models/Settings/Category.model');
 var ErrorManagement = require('./../../../handling/ErrorHandling.js');
 var mongoose = require('mongoose');
 var CryptoJS = require("crypto-js");
@@ -19,7 +20,7 @@ function TemplateOne(User, Applied, Department, Ref_Id) {
 function TemplateTwo(Candidate, Applied, Department, Ref_Id, Link_Id, OTP) {
 
    var Img = 'http://www.snsct.org/sites/snsct.org/themes/Montreal/img/sns_group_logo.png';
-   var Link = 'http://139.59.20.129:5000/Online_Exam/' + Link_Id;
+   var Link = 'http://localhost:5000/Online_Exam/' + Link_Id;
 
    return '<div style="background-color:#f6f6f6;font-size:14px;height:100%;line-height:1.6;margin:0;padding:0;width:100%" bgcolor="#f6f6f6" height="100%" width="100%"> <table style="background-color:#f6f6f6;border-collapse:separate;border-spacing:0;box-sizing:border-box;width:100%" width="100%" bgcolor="#f6f6f6"> <tbody> <tr> <td style="box-sizing:border-box;display:block;font-size:14px;font-weight:normal;margin:0 auto;max-width:600px;padding:10px;text-align:center;width:auto" valign="top" align="center" width="auto"> <div style="background-color:#dedede; box-sizing:border-box;display:block;margin:0 auto;max-width:600px;padding:10px;text-align:left" align="left"> <table style="background:#fff;border:1px solid #e9e9e9;border-collapse:separate;border-radius:3px;border-spacing:0;box-sizing:border-box;width:100%"> <tbody> <tr> <td style="box-sizing:border-box;font-size:14px;font-weight:normal;margin:0;padding:30px;vertical-align:top" valign="top"> <table style="border-collapse:separate;border-spacing:0;box-sizing:border-box;width:100%" width="100%"> <tbody> <tr style="font-family: sans-serif; line-height:20px"> <td style="box-sizing:border-box;font-size:14px;font-weight:normal;margin:0;vertical-align:top" valign="top"> <img src="' + Img + '" style="width:40%; margin-left:30%" alt="SNS Logo"> <p style="font-size:18px;font-weight:700;color:#717171;font-family: inherit;"> Dear <b> <i style="color: #f4962f; text-decoration: underline;"> ' + Candidate + ' </i> </b> </p> <p style="font-size:14px;color:#717171;font-family: inherit;"> Greetings from SNS Group of Institutions! </p> <p style="font-size:14px;color:#717171;font-family: inherit;"> This is in response to your application for vacancy position at  <b> SNS Institutions  </b> </p> <p style="font-size:14px;color:#717171;font-family: inherit;">   Your online application for the post of <b> <i style="color: #f4962f; text-decoration: underline;"> ' + Applied + ' </i> </b> in the department of <b> <i style="color: #f4962f; text-decoration: underline;"> ' + Department + ' </i> </b> is scrutinized and you are advised to take up the Online test in the link provided below.  </p> <p style="font-size:14px;color:#717171;font-family: inherit;">  <b> Link : <b> <a href=" '+ Link + ' " target="blank" style="color: #f4962f; text-decoration: underline;"> ' + Link + ' </a> </b>  </b> </p> <p style="font-size:14px;color:#717171;font-family: inherit;">  <b> Your Reference Id : <b> <i style="color: #f4962f; text-decoration: underline;"> ' + Ref_Id + ' </i> </b>  </b> </p> <p style="font-size:14px;color:#717171;font-family: inherit;">  <b> One Time Password : <b> <i style="color: #f4962f; text-decoration: underline;"> ' + OTP + ' </i> </b>  </b> </p> <p style="font-size:14px;color:#717171;font-family: inherit;">  <b> You will be notified the status of your application after publication of Online test results. </b> </p> <p style="font-size:14px;color:#717171;font-family: inherit;">  <b> Thanks for your interest in SNS Institutions. </b> </p> <br> <br> <p style="font-size:14px;font-weight:normal;margin:0;margin-bottom:15px;padding:0;color: #717171;font-family: inherit;text-align: right;">With Regards, <br> <b> HR Team </b> </p> </td> </tr> </tbody> </table> </td> </tr> </tbody> </table> </div> </td> </tr> </tbody> </table> </div>';
    
@@ -27,14 +28,14 @@ function TemplateTwo(Candidate, Applied, Department, Ref_Id, Link_Id, OTP) {
 
 function TemplateThree(Candidate, _Date, Place) {
    _Date = new Date(_Date);
-   _Date = _Date.getDate() +'-'+ _Date.getMonth() +'-'+ _Date.getFullYear();
+   _Date = _Date.getDate() +'-'+ (_Date.getMonth() + 1) +'-'+ _Date.getFullYear();
    var Img = 'http://www.snsct.org/sites/snsct.org/themes/Montreal/img/sns_group_logo.png';
    return '<div style="background-color:#f6f6f6;font-size:14px;height:100%;line-height:1.6;margin:0;padding:0;width:100%" bgcolor="#f6f6f6" height="100%" width="100%"> <table style="background-color:#f6f6f6;border-collapse:separate;border-spacing:0;box-sizing:border-box;width:100%" width="100%" bgcolor="#f6f6f6"> <tbody> <tr><td style="box-sizing:border-box;display:block;font-size:14px;font-weight:normal;margin:0 auto;max-width:600px;padding:10px;text-align:center;width:auto" valign="top" align="center" width="auto"> <div style="background-color:#dedede; box-sizing:border-box;display:block;margin:0 auto;max-width:600px;padding:10px;text-align:left" align="left"> <table style="background:#fff;border:1px solid #e9e9e9;border-collapse:separate;border-radius:3px;border-spacing:0;box-sizing:border-box;width:100%"> <tbody> <tr> <td style="box-sizing:border-box;font-size:14px;font-weight:normal;margin:0;padding:30px;vertical-align:top" valign="top"> <table style="border-collapse:separate;border-spacing:0;box-sizing:border-box;width:100%" width="100%"> <tbody><tr style="font-family: sans-serif; line-height:20px"> <td style="box-sizing:border-box;font-size:14px;font-weight:normal;margin:0;vertical-align:top" valign="top"> <img src="' + Img + '" style="width:40%; margin-left:30%" alt="SNS Logo"> <p style="font-size:18px;font-weight:700;color:#717171;font-family: inherit;"> Dear <b> <i style="color: #f4962f; text-decoration: underline;"> ' + Candidate + ' </i> </b> </p> <p style="font-size:14px;color:#717171;font-family: inherit;"> Greetings from SNS Group of Institutions! </p> <p style="font-size:14px;color:#717171;font-family: inherit;"> We are pleased to inform you that you have been shortlisted for next round. You are requested to appear for an Interview on  <b> Date <i style="color: #f4962f; text-decoration: underline;"> ' + _Date + ' </i> </b> at <b> Place <i style="color: #f4962f; text-decoration: underline;"> ' + Place + ' </i> Coimbatore at 09.00 am. </b> </p> <p style="font-size:14px;color:#717171;font-family: inherit;"> Kindly confirm your presence through a mail on or before date ' + _Date + ' </p> <p style="font-size:14px;color:#717171;font-family: inherit;"> You are also instructed to bring a passport size photo - 1, original credentials and copies of the same. Since the interview process may take a full day, kindly plan accordingly. </p> <p style="font-size:14px;color:#717171;font-family: inherit;"> Interview process may consist of the following rounds. </p> <p style="font-size:14px;color:#717171;font-family: inherit;"> 1. Group Discussion </p> <p style="font-size:14px;color:#717171;font-family: inherit;"> 2. Demo class </p> <p style="font-size:14px;color:#717171;font-family: inherit;"> 3. HR/Personal Interview </p> <p style="font-size:14px;color:#717171;font-family: inherit;" > Wish you all the very best.</p> <br> <br> <p style="font-size:14px;font-weight:normal;margin:0;margin-bottom:15px;padding:0;color: #717171;font-family: inherit;text-align: right;">With Regards, <br> <b> HR Team </b> </p> </td> </tr> </tbody> </table> </td> </tr> </tbody> </table> </div> </td> </tr> </tbody> </table> </div>';
 }
 
 function TemplateFour(Candidate, Applied, Department, _Date) {
    _Date = new Date(_Date);
-   _Date = _Date.getDate() +'-'+ _Date.getMonth() +'-'+ _Date.getFullYear();
+   _Date = _Date.getDate() +'-'+ (_Date.getMonth() + 1) +'-'+ _Date.getFullYear();
    var Img = 'http://www.snsct.org/sites/snsct.org/themes/Montreal/img/sns_group_logo.png';
    return '<div style="background-color:#f6f6f6;font-size:14px;height:100%;line-height:1.6;margin:0;padding:0;width:100%" bgcolor="#f6f6f6" height="100%" width="100%"> <table style="background-color:#f6f6f6;border-collapse:separate;border-spacing:0;box-sizing:border-box;width:100%" width="100%" bgcolor="#f6f6f6"> <tbody> <tr><td style="box-sizing:border-box;display:block;font-size:14px;font-weight:normal;margin:0 auto;max-width:600px;padding:10px;text-align:center;width:auto" valign="top" align="center" width="auto"> <div style="background-color:#dedede; box-sizing:border-box;display:block;margin:0 auto;max-width:600px;padding:10px;text-align:left" align="left"> <table style="background:#fff;border:1px solid #e9e9e9;border-collapse:separate;border-radius:3px;border-spacing:0;box-sizing:border-box;width:100%"> <tbody> <tr> <td style="box-sizing:border-box;font-size:14px;font-weight:normal;margin:0;padding:30px;vertical-align:top" valign="top"> <table style="border-collapse:separate;border-spacing:0;box-sizing:border-box;width:100%" width="100%"> <tbody><tr style="font-family: sans-serif; line-height:20px"> <td style="box-sizing:border-box;font-size:14px;font-weight:normal;margin:0;vertical-align:top" valign="top"> <img src="' + Img + '" style="width:40%; margin-left:30%" alt="SNS Logo"> <p style="font-size:18px;font-weight:700;color:#717171;font-family: inherit;"> Dear <b> <i style="color: #f4962f; text-decoration: underline;"> ' + Candidate + ' </i> </b> </p> <p style="font-size:14px;color:#717171;font-family: inherit;"> Greetings from SNS Group of Institutions! </p> <p style="font-size:14px;color:#717171;font-family: inherit;"> <b> Congratulations!!!! </b></p> <p style="font-size:14px;color:#717171;font-family: inherit;"> This is to inform you that you have been provisionally selected for the post of <b> <i style="color: #f4962f; text-decoration: underline;"> ' + Applied + ' </i> </b> in the department of<b>  <i style="color: #f4962f; text-decoration: underline;"> ' + Department + ' </i>  </b> at our Institution. </p> <p style="font-size:14px;color:#717171;font-family: inherit;"> You are hereby requested to confirm the same through mail to us within three days from the receipt of this mail failing to which your appointment will be considered null and void. Also You are requested to submit your original certificates on or before date <b> <i style="color: #f4962f; text-decoration: underline;"> ' + _Date + ' </i> </b> for processing the order </p>  <br> <br> <p style="font-size:14px;font-weight:normal;margin:0;margin-bottom:15px;padding:0;color: #717171;font-family: inherit;text-align: right;">With Regards, <br> <b> HR Team </b> </p> </td> </tr> </tbody> </table> </td> </tr> </tbody> </table> </div> </td> </tr> </tbody> </table> </div>';
 }
@@ -351,6 +352,7 @@ exports.Candidate_ExamView = function(req, res) {
    }else {
       CandidateModel.OnlineExamSchema
       .findOne({Candidate: ReceivingData.Candidate_Id, If_Deleted: false }, {}, {})
+      .populate({path: "ExamConfig", select:"Config" })
       .populate({path: "User_Id", select:["Name", "User_Type"]})
       .populate({path: "ExamResult_UpdateUser", select:["Name", "User_Type"]})
       .populate({path: "InterviewResult_UpdateUser", select:["Name", "User_Type"]})
@@ -359,9 +361,16 @@ exports.Candidate_ExamView = function(req, res) {
             ErrorManagement.ErrorHandling.ErrorLogCreation(req, 'Candidate Data Find Query Error', 'Candidates.controller.js', err);
             res.status(417).send({status: false, Message: "Some error occurred while Find Candidate Data!."});
          } else {
-            var ReturnData = CryptoJS.AES.encrypt(JSON.stringify(result), 'SecretKeyOut@123');
-            ReturnData = ReturnData.toString();
-            res.status(200).send({Status: true, Response: ReturnData });
+            Promise.all(
+               result.ExamConfig.Config.map( async (obj) => {
+                  obj.Category = await CategoryModel.CategorySchema.findOne({'_id': mongoose.Types.ObjectId(obj.Category) }, {Category: 1}).exec();
+                  return obj;
+               })
+            ).then(response => {
+               var ReturnData = CryptoJS.AES.encrypt(JSON.stringify(result), 'SecretKeyOut@123');
+               ReturnData = ReturnData.toString();
+               res.status(200).send({Status: true, Response: ReturnData });
+            })
          }
       });
    }
@@ -427,27 +436,27 @@ exports.ExamResult_Update = function(req, res) {
                                           ErrorManagement.ErrorHandling.ErrorLogCreation(req, 'Candidate Data Find Query Error', 'Candidates.controller.js', err_5);
                                           res.status(417).send({status: false, Message: "Some error occurred while Find Candidate Data!."});
                                        } else {
-                                          if (ReceivingData.ExamResult === 'Pass') {
-                                             var SendData = {
-                                                from: 'SNS Institutions <sns.info@gmail.com>',
-                                                to: result.Personal_Info.Email,
-                                                subject: 'Call for Group Discussion, Demo Class & Technical/HR Interview – reg;',
-                                                html: TemplateThree(result.Personal_Info.Name, ReceivingData.InterviewDate, ReceivingData.Place )
-                                             };
-                                             mailgun.messages().send(SendData, function (error, body) {
-                                                if (error) {
-                                                   res.status(417).send({ Status: false, Error:error, Message: "Some error occurred while send The E-mail " });
-                                                } else {
+                                          // if (ReceivingData.ExamResult === 'Pass') {
+                                          //    var SendData = {
+                                          //       from: 'SNS Institutions <sns.info@gmail.com>',
+                                          //       to: result.Personal_Info.Email,
+                                          //       subject: 'Call for Group Discussion, Demo Class & Technical/HR Interview – reg;',
+                                          //       html: TemplateThree(result.Personal_Info.Name, ReceivingData.InterviewDate, ReceivingData.Place )
+                                          //    };
+                                          //    mailgun.messages().send(SendData, function (error, body) {
+                                          //       if (error) {
+                                          //          res.status(417).send({ Status: false, Error:error, Message: "Some error occurred while send The E-mail " });
+                                          //       } else {
                                                    var ReturnData = CryptoJS.AES.encrypt(JSON.stringify(result_5), 'SecretKeyOut@123');
                                                    ReturnData = ReturnData.toString();
                                                    res.status(200).send({Status: true, Response: ReturnData });
-                                                }
-                                             });
-                                          } else {
-                                             var ReturnData = CryptoJS.AES.encrypt(JSON.stringify(result_5), 'SecretKeyOut@123');
-                                             ReturnData = ReturnData.toString();
-                                             res.status(200).send({Status: true, Response: ReturnData });
-                                          }
+                                          //       }
+                                          //    });
+                                          // } else {
+                                          //    var ReturnData = CryptoJS.AES.encrypt(JSON.stringify(result_5), 'SecretKeyOut@123');
+                                          //    ReturnData = ReturnData.toString();
+                                          //    res.status(200).send({Status: true, Response: ReturnData });
+                                          // }
                                        }
                                     });
                                  }
@@ -467,6 +476,150 @@ exports.ExamResult_Update = function(req, res) {
 
 
 
+exports.GDResult_Update = function(req, res) {
+
+   var CryptoBytes  = CryptoJS.AES.decrypt(req.body.Info, 'SecretKeyIn@123');
+   var ReceivingData = JSON.parse(CryptoBytes.toString(CryptoJS.enc.Utf8));
+
+   if(!ReceivingData.Candidate_Id || ReceivingData.Candidate_Id === '' ) {
+      res.status(400).send({Status: false, Message: "Candidate Details can not be empty" });
+   } else if (!ReceivingData.User_Id || ReceivingData.User_Id === ''  ) {
+      res.status(400).send({Status: false, Message: "User Details can not be empty" });
+   } else if (!ReceivingData.Exam_Id || ReceivingData.Exam_Id === ''  ) {
+      res.status(400).send({Status: false, Message: "Exam Details can not be empty" });
+   } else if (!ReceivingData.GroupDiscussionResult || ReceivingData.GroupDiscussionResult === ''  ) {
+      res.status(400).send({Status: false, Message: "Interview Result can not be empty" });
+   }else {
+      CandidateModel.CandidatesSchema.findOne({'_id': mongoose.Types.ObjectId(ReceivingData.Candidate_Id)}, {}, {})
+      .exec( function(err, result) {
+         if(err) {
+            ErrorManagement.ErrorHandling.ErrorLogCreation(req, 'Candidate FindOne Query Error', 'Candidates.controller.js', err);
+            res.status(417).send({status: false, Error:err, Message: "Some error occurred while Find The Candidate!."});
+         } else {
+            if (result !== null) {
+               result.Current_Stage = 'Stage_6';
+               result.Last_Modified_By = mongoose.Types.ObjectId(ReceivingData.User_Id);
+               result.save(function(err_1, result_1) {
+                  if(err_1) {
+                     ErrorManagement.ErrorHandling.ErrorLogCreation(req, 'Candidate Update Query Error', 'Candidate.controller.js');
+                     res.status(417).send({Status: false, Error: err_1, Message: "Some error occurred while Update the Candidate!."});
+                  } else {
+                     CandidateModel.OnlineExamSchema.findOne({'_id': mongoose.Types.ObjectId(ReceivingData.Exam_Id)}, {}, {}, function(err_3, result_3) { // Candidate FindOne Query
+                        if(err_3) {
+                           ErrorManagement.ErrorHandling.ErrorLogCreation(req, 'Online Exam FindOne Query Error', 'Candidates.controller.js', err_3);
+                           res.status(417).send({status: false, Error:err, Message: "Some error occurred while Find The Online Exam!."});
+                        } else {
+                           if (result_3 !== null) {
+                              result_3.GdRound['GroupDiscussionResult'] = ReceivingData.GroupDiscussionResult;
+                              result_3.GdRound['GroupDiscussionDescription'] = ReceivingData.GroupDiscussionDescription;
+                              result_3.Last_Modified_By = mongoose.Types.ObjectId(ReceivingData.User_Id);
+                              result_3.save(function(err_4, result_4) { 
+                                 if(err_4) {
+                                    ErrorManagement.ErrorHandling.ErrorLogCreation(req, 'Online Exam Update Query Error', 'Candidate.controller.js', err_4);
+                                    res.status(417).send({Status: false, Message: "Some error occurred while Update the Online Exam!."});
+                                 } else {
+                                    CandidateModel.OnlineExamSchema
+                                    .findOne({'_id': mongoose.Types.ObjectId(ReceivingData.Exam_Id)}, {}, {})
+                                    .populate({path: "User_Id", select:["Name", "User_Type"]})
+                                    .populate({path: "ExamResult_UpdateUser", select:["Name", "User_Type"]})
+                                    .exec(function(err_5, result_5) {
+                                       if(err_5) {
+                                          ErrorManagement.ErrorHandling.ErrorLogCreation(req, 'Candidate Data Find Query Error', 'Candidates.controller.js', err_5);
+                                          res.status(417).send({status: false, Message: "Some error occurred while Find Candidate Data!."});
+                                       } else {
+                                          var ReturnData = CryptoJS.AES.encrypt(JSON.stringify(result_5), 'SecretKeyOut@123');
+                                          ReturnData = ReturnData.toString();
+                                          res.status(200).send({Status: true, Response: ReturnData });
+                                       }
+                                    });
+                                 }
+                              });
+                           }
+                        }
+                     });
+                  }
+               });
+            } else {
+               res.status(400).send({Status: false, Message: "Candidate Details can not be valid!" });
+            }
+         }
+      });
+   }
+};
+
+
+exports.TechnicalResult_Update = function(req, res) {
+
+   var CryptoBytes  = CryptoJS.AES.decrypt(req.body.Info, 'SecretKeyIn@123');
+   var ReceivingData = JSON.parse(CryptoBytes.toString(CryptoJS.enc.Utf8));
+
+   if(!ReceivingData.Candidate_Id || ReceivingData.Candidate_Id === '' ) {
+      res.status(400).send({Status: false, Message: "Candidate Details can not be empty" });
+   } else if (!ReceivingData.User_Id || ReceivingData.User_Id === ''  ) {
+      res.status(400).send({Status: false, Message: "User Details can not be empty" });
+   } else if (!ReceivingData.Exam_Id || ReceivingData.Exam_Id === ''  ) {
+      res.status(400).send({Status: false, Message: "Exam Details can not be empty" });
+   } else if (!ReceivingData.TechnicalResult || ReceivingData.TechnicalResult === ''  ) {
+      res.status(400).send({Status: false, Message: "Technical Result can not be empty" });
+   }else {
+      CandidateModel.CandidatesSchema.findOne({'_id': mongoose.Types.ObjectId(ReceivingData.Candidate_Id)}, {}, {})
+      .exec( function(err, result) {
+         if(err) {
+            ErrorManagement.ErrorHandling.ErrorLogCreation(req, 'Candidate FindOne Query Error', 'Candidates.controller.js', err);
+            res.status(417).send({status: false, Error:err, Message: "Some error occurred while Find The Candidate!."});
+         } else {
+            if (result !== null) {
+               result.Current_Stage = 'Stage_7';
+               result.Last_Modified_By = mongoose.Types.ObjectId(ReceivingData.User_Id);
+               result.save(function(err_1, result_1) {
+                  if(err_1) {
+                     ErrorManagement.ErrorHandling.ErrorLogCreation(req, 'Candidate Update Query Error', 'Candidate.controller.js');
+                     res.status(417).send({Status: false, Error: err_1, Message: "Some error occurred while Update the Candidate!."});
+                  } else {
+                     CandidateModel.OnlineExamSchema.findOne({'_id': mongoose.Types.ObjectId(ReceivingData.Exam_Id)}, {}, {}, function(err_3, result_3) { // Candidate FindOne Query
+                        if(err_3) {
+                           ErrorManagement.ErrorHandling.ErrorLogCreation(req, 'Online Exam FindOne Query Error', 'Candidates.controller.js', err_3);
+                           res.status(417).send({status: false, Error:err, Message: "Some error occurred while Find The Online Exam!."});
+                        } else {
+                           if (result_3 !== null) {
+                              result_3.TechnicalRound['TechnicalResult'] = ReceivingData.TechnicalResult;
+                              result_3.TechnicalRound['TechnicalDescription'] = ReceivingData.TechnicalDescription;
+                              result_3.Last_Modified_By = mongoose.Types.ObjectId(ReceivingData.User_Id);
+                              result_3.save(function(err_4, result_4) { 
+                                 if(err_4) {
+                                    ErrorManagement.ErrorHandling.ErrorLogCreation(req, 'Online Exam Update Query Error', 'Candidate.controller.js', err_4);
+                                    res.status(417).send({Status: false, Message: "Some error occurred while Update the Online Exam!."});
+                                 } else {
+                                    CandidateModel.OnlineExamSchema
+                                    .findOne({'_id': mongoose.Types.ObjectId(ReceivingData.Exam_Id)}, {}, {})
+                                    .populate({path: "User_Id", select:["Name", "User_Type"]})
+                                    .populate({path: "ExamResult_UpdateUser", select:["Name", "User_Type"]})
+                                    .exec(function(err_5, result_5) {
+                                       if(err_5) {
+                                          ErrorManagement.ErrorHandling.ErrorLogCreation(req, 'Candidate Data Find Query Error', 'Candidates.controller.js', err_5);
+                                          res.status(417).send({status: false, Message: "Some error occurred while Find Candidate Data!."});
+                                       } else {
+                                          var ReturnData = CryptoJS.AES.encrypt(JSON.stringify(result_5), 'SecretKeyOut@123');
+                                          ReturnData = ReturnData.toString();
+                                          res.status(200).send({Status: true, Response: ReturnData });
+                                       }
+                                    });
+                                 }
+                              });
+                           }
+                        }
+                     });
+                  }
+               });
+            } else {
+               res.status(400).send({Status: false, Message: "Candidate Details can not be valid!" });
+            }
+         }
+      });
+   }
+};
+
+
 
 exports.InterviewResult_Update = function(req, res) {
 
@@ -481,9 +634,11 @@ exports.InterviewResult_Update = function(req, res) {
       res.status(400).send({Status: false, Message: "Exam Details can not be empty" });
    } else if (!ReceivingData.InterviewResult || ReceivingData.InterviewResult === ''  ) {
       res.status(400).send({Status: false, Message: "Interview Result can not be empty" });
+   } else if (!ReceivingData.HrInterviewResult || ReceivingData.HrInterviewResult === ''  ) {
+      res.status(400).send({Status: false, Message: "Hr Interview Result can not be empty" });
    }else {
       CandidateModel.CandidatesSchema.findOne({'_id': mongoose.Types.ObjectId(ReceivingData.Candidate_Id)}, {}, {})
-      .populate({path: "Basic_Info.Department", select:"Department"}).exec( function(err, result) { // Candidate FindOne Query
+      .exec( function(err, result) {
          if(err) {
             ErrorManagement.ErrorHandling.ErrorLogCreation(req, 'Candidate FindOne Query Error', 'Candidates.controller.js', err);
             res.status(417).send({status: false, Error:err, Message: "Some error occurred while Find The Candidate!."});
@@ -494,9 +649,9 @@ exports.InterviewResult_Update = function(req, res) {
                } else {
                   result.Current_Status = 'Interview Failed';
                }
-               result.Current_Stage = 'Stage_6';
+               result.Current_Stage = 'Stage_8';
                result.Last_Modified_By = mongoose.Types.ObjectId(ReceivingData.User_Id);
-               result.save(function(err_1, result_1) { // Candidate Update Query
+               result.save(function(err_1, result_1) {
                   if(err_1) {
                      ErrorManagement.ErrorHandling.ErrorLogCreation(req, 'Candidate Update Query Error', 'Candidate.controller.js');
                      res.status(417).send({Status: false, Error: err_1, Message: "Some error occurred while Update the Candidate!."});
@@ -512,6 +667,9 @@ exports.InterviewResult_Update = function(req, res) {
                               }
                               result_3.InterviewResult_UpdateUser = mongoose.Types.ObjectId(ReceivingData.User_Id); 
                               result_3.InterviewResult = ReceivingData.InterviewResult;
+                              result_3.HrRound['HrInterviewResult'] = ReceivingData.HrInterviewResult;
+                              result_3.HrRound['HrInterviewDescription'] = ReceivingData.HrInterviewDescription;
+                              result_3.InterviewDescription = ReceivingData.InterviewDescription;
                               result_3.Last_Modified_By = mongoose.Types.ObjectId(ReceivingData.User_Id);
                               result_3.save(function(err_4, result_4) { 
                                  if(err_4) {
@@ -528,27 +686,27 @@ exports.InterviewResult_Update = function(req, res) {
                                           ErrorManagement.ErrorHandling.ErrorLogCreation(req, 'Candidate Data Find Query Error', 'Candidates.controller.js', err_5);
                                           res.status(417).send({status: false, Message: "Some error occurred while Find Candidate Data!."});
                                        } else {
-                                          if (ReceivingData.InterviewResult === 'Pass') {
-                                             var SendData = {
-                                                from: 'SNS Institutions <sns.info@gmail.com>',
-                                                to: result.Personal_Info.Email,
-                                                subject: 'Intimation of Interview results  – reg;',
-                                                html: TemplateFour(result.Personal_Info.Name, result.Basic_Info.Post_Applied, result.Basic_Info.Department.Department, ReceivingData.JoinDate )
-                                             };
-                                             mailgun.messages().send(SendData, function (error, body) {
-                                                if (error) {
-                                                   res.status(417).send({ Status: false, Error:error, Message: "Some error occurred while send The E-mail " });
-                                                } else {
+                                          // if (ReceivingData.InterviewResult === 'Pass') {
+                                          //    var SendData = {
+                                          //       from: 'SNS Institutions <sns.info@gmail.com>',
+                                          //       to: result.Personal_Info.Email,
+                                          //       subject: 'Intimation of Interview results  – reg;',
+                                          //       html: TemplateFour(result.Personal_Info.Name, result.Basic_Info.Post_Applied, result.Basic_Info.Department.Department, ReceivingData.JoinDate )
+                                          //    };
+                                          //    mailgun.messages().send(SendData, function (error, body) {
+                                          //       if (error) {
+                                          //          res.status(417).send({ Status: false, Error:error, Message: "Some error occurred while send The E-mail " });
+                                          //       } else {
                                                    var ReturnData = CryptoJS.AES.encrypt(JSON.stringify(result_5), 'SecretKeyOut@123');
                                                    ReturnData = ReturnData.toString();
                                                    res.status(200).send({Status: true, Response: ReturnData });
-                                                }
-                                             });
-                                          } else {
-                                             var ReturnData = CryptoJS.AES.encrypt(JSON.stringify(result_5), 'SecretKeyOut@123');
-                                             ReturnData = ReturnData.toString();
-                                             res.status(200).send({Status: true, Response: ReturnData });
-                                          }
+                                          //       }
+                                          //    });
+                                          // } else {
+                                          //    var ReturnData = CryptoJS.AES.encrypt(JSON.stringify(result_5), 'SecretKeyOut@123');
+                                          //    ReturnData = ReturnData.toString();
+                                          //    res.status(200).send({Status: true, Response: ReturnData });
+                                          // }
                                        }
                                     });
                                  }

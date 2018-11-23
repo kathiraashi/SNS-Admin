@@ -43,6 +43,30 @@
    font-weight: 500;
    color: #4E6A7A;
 }
+.Main_Section .Section .Section_Data .Data .Value a{
+   cursor: pointer;
+   color: royalblue;
+   font-size: 14px;
+   text-decoration: underline;
+   font-weight: 700;
+   padding: 0px 10px;
+}
+table.ModelTable {
+   width: 100%;
+   border: 1px solid silver;
+   border-collapse: collapse;
+   text-align: center;
+}
+table.ModelTable thead tr td {
+   font-weight: 700;
+}
+table.ModelTable tr td {
+   border: 1px solid silver;
+   line-height: 35px;
+   font-size: 14px;
+   font-weight: 500;
+   color: #4f6a7a;
+}
 
 
 
@@ -229,4 +253,42 @@
    font-size: 10px;
    letter-spacing: 0.4px;
    border: 1px solid #4f6a7a;
+}
+
+
+
+
+
+.Model_Body .Section .Section_Data .Data {
+   display: flex;
+   margin-bottom: 15px;
+   align-items: flex-start;
+   border-bottom: 1px solid rgba(128, 128, 128, 0.1);
+}
+.Model_Body .Section .Section_Data .Data .Title {
+   min-width: 35%;
+   position: relative;
+   font-size: 14px;
+   font-weight: 700;
+   color: #4e6a7a;
+   padding-left: 20px;
+   letter-spacing: 0.3px;
+}
+.Model_Body .Section .Section_Data .Data .Title span {
+   position: absolute;
+   right: 10px;
+}
+.Model_Body .Section .Section_Data .Data .Value {
+   letter-spacing: 0.3px;
+   font-size: 14px;
+   font-weight: 500;
+   color: #4E6A7A;
+}
+.Model_Body .Section .Section_Data .Data .Value a{
+   cursor: pointer;
+   color: royalblue;
+   font-size: 14px;
+   text-decoration: underline;
+   font-weight: 700;
+   padding: 0px 10px;
 }

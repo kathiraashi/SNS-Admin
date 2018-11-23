@@ -4,7 +4,7 @@ import { Observable, of } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
 import { LoginService } from './../LoginService/login.service';
 
-const API_URL = 'http://139.59.20.129:4000/API/Candidates/';
+const API_URL = 'http://localhost:4000/API/Candidates/';
 
 @Injectable({
   providedIn: 'root'
@@ -107,6 +107,26 @@ export class CandidatesService {
          this.headers.set('Authorization', atob(sessionStorage.getItem('SessionToken')));
          sessionStorage.setItem('SessionKey', btoa(Date()));
          return this.http.post(API_URL + 'ExamResult_Update', Info, {headers: this.headers }).pipe( map(response => response),  catchError(error => of(error)));
+      } else {
+         return this.ValidateEveryRequest();
+      }
+   }
+
+   public GDResult_Update(Info: any): Observable<any[]> {
+      if (this.Service.If_LoggedIn()) {
+         this.headers.set('Authorization', atob(sessionStorage.getItem('SessionToken')));
+         sessionStorage.setItem('SessionKey', btoa(Date()));
+         return this.http.post(API_URL + 'GDResult_Update', Info, {headers: this.headers }).pipe( map(response => response),  catchError(error => of(error)));
+      } else {
+         return this.ValidateEveryRequest();
+      }
+   }
+
+   public TechnicalResult_Update(Info: any): Observable<any[]> {
+      if (this.Service.If_LoggedIn()) {
+         this.headers.set('Authorization', atob(sessionStorage.getItem('SessionToken')));
+         sessionStorage.setItem('SessionKey', btoa(Date()));
+         return this.http.post(API_URL + 'TechnicalResult_Update', Info, {headers: this.headers }).pipe( map(response => response),  catchError(error => of(error)));
       } else {
          return this.ValidateEveryRequest();
       }

@@ -7,7 +7,8 @@ var Schema = mongoose.Schema;
       Department: { type: Schema.Types.ObjectId, ref: 'Department', required : true },
       Config: [{
             Category: { type: Schema.Types.ObjectId, ref: 'Category', required : true },
-            NoOfQuestion: { type: Number, required : true }
+            NoOfQuestion: { type: Number, required : true },
+            Cutoff: { type: Number, required : true }
          }],
       ExamDuration: { type : Number, required : true },
       Created_By : { type: Schema.Types.ObjectId, ref: 'User_Management', required : true },

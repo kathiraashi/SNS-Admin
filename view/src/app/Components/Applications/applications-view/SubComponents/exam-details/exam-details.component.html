@@ -11,15 +11,15 @@
          </div>
       </div>
       <div class="col-sm-6">
-            <div class="Section" style="margin-bottom: 0px;">
-               <div class="Section_Data">
-                  <div class="Data">
-                     <div class="Title" style="width: 210px;padding-left: 0px"> Application Accepted Date <span> : </span> </div>
-                     <div class="Value"> {{CandidateData['Accepted_Date'] | date:'medium'}} </div>
-                  </div>
+         <div class="Section" style="margin-bottom: 0px;">
+            <div class="Section_Data">
+               <div class="Data">
+                  <div class="Title" style="width: 210px;padding-left: 0px"> Application Accepted Date <span> : </span> </div>
+                  <div class="Value"> {{CandidateData['Accepted_Date'] | date:'medium'}} </div>
                </div>
             </div>
          </div>
+      </div>
       <div class="col-sm-12">
          <hr>
       </div>
@@ -56,8 +56,6 @@
                </div>
             </div>
          </div><!-- Section End -->
-      </div>
-      <div class="col-sm-6">
          <div class="Section"> <!-- Section Start-->
             <div class="Section_Identity"> <h5 class="Identity"> Exam Result Details </h5> </div>
             <div class="Section_Data">
@@ -75,7 +73,9 @@
                </div>
                <div class="Data">
                   <div class="Title"> Exam Result <span> : </span> </div>
-                  <div class="Value"> {{Exam_Data['ExamResult'] }} </div>
+                  <div class="Value"> {{Exam_Data['ExamResult'] }}
+                     <a *ngIf="Exam_Data['ExamResult'] !== undefined" (click)="openLargeModal(templateThree)">  View Full Result </a>
+                  </div>
                </div>
                <div class="Data">
                   <div class="Title"> Exam Result Updated By<span> : </span> </div>
@@ -83,22 +83,72 @@
                </div>
             </div>
          </div>
+      </div>
+      <div class="col-sm-6" >
          <div *ngIf="Exam_Data['ExamResult'] === 'Pass'" class="Section"> <!-- Section Start-->
-            <div class="Section_Identity"> <h5 class="Identity"> Interview Result Details </h5> </div>
+            <div class="Section_Identity"> <h5 class="Identity"> Interview Assigned Details </h5> </div>
             <div class="Section_Data">
                <div class="Data">
-                  <div class="Title"> Interview Date <span> : </span> </div>
+                  <div class="Title"> Assigned Date <span> : </span> </div>
                   <div class="Value"> {{Exam_Data['InterviewDate'] | date:'d/M/yyyy' }} </div>
                </div>
                <div class="Data">
-                  <div class="Title"> Interview Place <span> : </span> </div>
+                  <div class="Title"> Assigned Place <span> : </span> </div>
                   <div class="Value"> {{Exam_Data['InterviewPlace'] }} </div>
                </div>
+            </div>
+         </div>
+         <div  *ngIf="Exam_Data['GdRound'] && Exam_Data['GdRound']['GroupDiscussionResult']" class="Section"> <!-- Section Start-->
+            <div class="Section_Identity"> <h5 class="Identity"> Group Discussion Details </h5> </div>
+            <div class="Section_Data">
                <div class="Data">
-                  <div class="Title"> Interview Result <span> : </span> </div>
+                  <div class="Title"> GD Result <span> : </span> </div>
+                  <div class="Value"> {{Exam_Data['GdRound']['GroupDiscussionResult'] }} </div>
+               </div>
+               <div class="Data">
+                  <div class="Title"> GD Description <span> : </span> </div>
+                  <div class="Value"> {{Exam_Data['GdRound']['GroupDiscussionDescription'] }} </div>
+               </div>
+            </div>
+         </div>
+         <div *ngIf="Exam_Data['TechnicalRound'] && Exam_Data['TechnicalRound']['TechnicalResult']" class="Section"> <!-- Section Start-->
+            <div class="Section_Identity"> <h5 class="Identity"> Technical Round Details </h5> </div>
+            <div class="Section_Data">
+               <div class="Data">
+                  <div class="Title"> Technical Result <span> : </span> </div>
+                  <div class="Value"> {{Exam_Data['TechnicalRound']['TechnicalResult'] }} </div>
+               </div>
+               <div class="Data">
+                  <div class="Title"> Technical Description <span> : </span> </div>
+                  <div class="Value"> {{Exam_Data['TechnicalRound']['TechnicalDescription'] }} </div>
+               </div>
+            </div>
+         </div>
+         <div *ngIf="Exam_Data['HrRound'] && Exam_Data['HrRound']['HrInterviewResult']" class="Section"> <!-- Section Start-->
+            <div class="Section_Identity"> <h5 class="Identity"> Hr Interview Details </h5> </div>
+            <div class="Section_Data">
+               <div class="Data">
+                  <div class="Title"> Hr Interview Result <span> : </span> </div>
+                  <div class="Value"> {{Exam_Data['HrRound']['HrInterviewResult'] }} </div>
+               </div>
+               <div class="Data"> 
+                  <div class="Title"> Hr Interview Description <span> : </span> </div>
+                  <div class="Value"> {{Exam_Data['HrRound']['HrInterviewDescription'] }} </div>
+               </div>
+            </div>
+         </div>
+         <div *ngIf="Exam_Data['InterviewResult'] !== undefined" class="Section"> <!-- Section Start-->
+            <div class="Section_Identity"> <h5 class="Identity"> Finally Interview Result </h5> </div>
+            <div class="Section_Data">
+               <div class="Data">
+                  <div class="Title"> Final Result <span> : </span> </div>
                   <div class="Value"> {{Exam_Data['InterviewResult'] }} </div>
                </div>
-               <div class="Data" *ngIf="Exam_Data['InterviewResult'] === 'Pass'">
+               <div class="Data">
+                  <div class="Title"> Final Description <span> : </span> </div>
+                  <div class="Value"> {{Exam_Data['InterviewDescription'] }} </div>
+               </div>
+               <div class="Data" >
                   <div class="Title"> Interview Result Updated By<span> : </span> </div>
                   <div class="Value"> {{Exam_Data['InterviewResult_UpdateUser']?.Name }} </div>
                </div>
@@ -107,13 +157,14 @@
                   <div class="Value"> {{Exam_Data['Joining_Date'] | date:'d/M/yyyy' }} </div>
                </div>
             </div>
-            <br>
-         </div><!-- Section End -->
+         </div>
+         <br>
          <div class="row">
             <div class="col-sm-12 text-right">
                <button *ngIf="CandidateData['Current_Stage'] === 'Stage_4'" mat-raised-button color="primary" (click)="openModal(template)"> Update Result </button>
-               <!-- <button *ngIf="CandidateData['Current_Stage'] === 'Stage_5'" mat-raised-button color="primary" (click)="openModal(templateTwo)" style="float:left"> Change Interview Schedule </button> -->
-               <button *ngIf="CandidateData['Current_Stage'] === 'Stage_5'" mat-raised-button color="primary" (click)="openModal(templateOne)"> Update Interview Result </button>
+               <button *ngIf="CandidateData['Current_Stage'] === 'Stage_5'" mat-raised-button color="primary" (click)="openLargeModal(templateGd)"> Group Discussion Result </button>
+               <button *ngIf="CandidateData['Current_Stage'] === 'Stage_6'" mat-raised-button color="primary" (click)="openLargeModal(templateTech)"> Technical Result </button>
+               <button *ngIf="CandidateData['Current_Stage'] === 'Stage_7'" mat-raised-button color="primary" (click)="openLargeModal(templateFinal)"> Hr Interview Result </button>
             </div>
          </div>
       </div>
@@ -173,41 +224,27 @@
    </div>
  </ng-template>
 
-
-
-
-<ng-template #templateOne>
+ <ng-template #templateGd>
    <div class="Modal_Content">
       <div class="Modal_Header">
-         <p> Update Interview Result </p>
+         <p> Update Group Discussion Result </p>
          <span  *ngIf="!Uploading" data-dismiss="modal" (click)="modalRef.hide()">&times;</span>
       </div>
-      <form [formGroup]="FormOne" (ngSubmit)="InterviewSubmit()">
+      <form [formGroup]="FormOne" (ngSubmit)="GdSubmit()">
          <div class="Model_Body">
             <div class="row">
-               <div class="col-sm-10 Form_Input" [ngClass]="{'Form_Err': FormOne.controls['InterviewResult'].errors && !FormOne.controls['InterviewResult'].pristine, 'Form_Success': FormOne.controls['InterviewResult'].valid && !FormOne.controls['InterviewResult'].pristine }">
-                  <label> Interview Result :</label>
+               <!-- Group Discussion -->
+               <div class="col-sm-6 Form_Select">
+                  <label> Group Discussion Result:</label>
                   <ng-select class="NgSelect"
                            [items]="UpdateOptions"
-                           formControlName="InterviewResult"
-                           [searchable]="true"
-                           (change)="InterviewResultChange()"
-                           placeholder="Interview Result">
+                           formControlName="GroupDiscussionResult"
+                           placeholder="Group Discussion Result">
                   </ng-select>
-                  <p class="error" *ngIf="FormOne.controls['InterviewResult'].errors && !FormOne.controls['InterviewResult'].pristine">
-                     <span *ngIf="FormOne.controls['InterviewResult'].errors.required">Interview Result is required</span>
-                  </p>
                </div>
-            </div>
-            
-            <div *ngIf="If_PassOne" class="row">
-               <div class="col-sm-10 Form_Input" [ngClass]="{'Form_Err': FormOne.controls['JoinDate'].errors && !FormOne.controls['JoinDate'].pristine, 'Form_Success': FormOne.controls['JoinDate'].valid && !FormOne.controls['JoinDate'].pristine }">
-                  <label> Joining Date :</label>
-                  <input type="text" formControlName="JoinDate" [min]="MinDate" [matDatepicker]="DatepickerOne" (click)="DatepickerOne.open()" (keypress)="NotAllow()" (keydown)="NotAllow()">
-                  <mat-datepicker touchUi #DatepickerOne></mat-datepicker>
-                  <p class="error" *ngIf="FormOne.controls['JoinDate'].errors && !FormOne.controls['JoinDate'].pristine">
-                     <span *ngIf="FormOne.controls['JoinDate'].errors.required">Joining Date is required</span>
-                  </p>
+               <div class="col-sm-6 Form_TextArea">
+                  <label> Group Discussion Description:</label>
+                  <textarea formControlName="GroupDiscussionDescription"></textarea>
                </div>
             </div>
          </div>
@@ -221,39 +258,142 @@
    </div>
 </ng-template>
 
- 
-<!-- <ng-template #templateTwo>
+<ng-template #templateTech>
    <div class="Modal_Content">
       <div class="Modal_Header">
-         <p> Change Interview Schedule </p>
+         <p> Update Technical Result </p>
          <span  *ngIf="!Uploading" data-dismiss="modal" (click)="modalRef.hide()">&times;</span>
       </div>
-      <form [formGroup]="Form" (ngSubmit)="onSubmit()">
+      <form [formGroup]="FormTwo" (ngSubmit)="TechnicalSubmit()">
          <div class="Model_Body">
             <div class="row">
-               <div class="col-sm-10 Form_Input" [ngClass]="{'Form_Err': Form.controls['InterviewDate'].errors && !Form.controls['InterviewDate'].pristine, 'Form_Success': Form.controls['InterviewDate'].valid && !Form.controls['InterviewDate'].pristine }">
-                  <label> Interview Date :</label>
-                  <input type="text" formControlName="InterviewDate" [min]="MinDate" [matDatepicker]="Datepicker" (click)="Datepicker.open()" (keypress)="NotAllow()" (keydown)="NotAllow()">
-                  <mat-datepicker touchUi #Datepicker></mat-datepicker>
-                  <p class="error" *ngIf="Form.controls['InterviewDate'].errors && !Form.controls['InterviewDate'].pristine">
-                     <span *ngIf="Form.controls['InterviewDate'].errors.required">Interview Date is required</span>
-                  </p>
+               <!-- Demo class -->
+               <div class="col-sm-6 Form_Select">
+                  <label> Technical Result:</label>
+                  <ng-select class="NgSelect"
+                           [items]="UpdateOptions"
+                           formControlName="TechnicalResult"
+                           placeholder="Technical Result">
+                  </ng-select>
                </div>
-               <div class="col-sm-10 Form_Input" [ngClass]="{'Form_Err': Form.controls['Place'].errors && !Form.controls['Place'].pristine, 'Form_Success': Form.controls['Place'].valid && !Form.controls['Place'].pristine }">
-                  <label> Interview Place :</label>
-                  <input type="text" formControlName="Place">
-                  <p class="error" *ngIf="Form.controls['Place'].errors && !Form.controls['Place'].pristine">
-                     <span *ngIf="Form.controls['Place'].errors.required">Interview Place is required</span>
-                  </p>
+               <div class="col-sm-6 Form_TextArea">
+                  <label> Technical Interview Description:</label>
+                  <textarea formControlName="TechnicalDescription"></textarea>
                </div>
             </div>
          </div>
          <div class="Model_Footer">
-            <button type="submit" [disabled]="Form.status !== 'VALID' || Uploading" mat-raised-button color="primary">
-               <span *ngIf="!Uploading"> Update </span>
+            <button type="submit" [disabled]="FormTwo.status !== 'VALID' || Uploading" mat-raised-button color="primary">
+               <span *ngIf="!Uploading">Update</span>
                <span *ngIf="Uploading" class="UploadingBtn"> <i class="fa fa-refresh fa-spin"></i> Loading... </span>
             </button>
          </div>
       </form>
    </div>
-</ng-template> -->
+</ng-template>
+
+<ng-template #templateFinal>
+   <div class="Modal_Content">
+      <div class="Modal_Header">
+         <p> Update Interview Result </p>
+         <span  *ngIf="!Uploading" data-dismiss="modal" (click)="modalRef.hide()">&times;</span>
+      </div>
+      <form [formGroup]="FormThree" (ngSubmit)="InterviewSubmit()">
+         <div class="Model_Body">
+            <div class="row">
+               <!-- Hr/Personal Interview  -->
+               <div class="col-sm-6 Form_Select">
+                  <label> Hr/Personal Interview Result:</label>
+                  <ng-select class="NgSelect"
+                           [items]="UpdateOptions"
+                           formControlName="HrInterviewResult"
+                           placeholder="Hr/Personal Interview Result">
+                  </ng-select>
+               </div>
+               <div class="col-sm-6 Form_TextArea">
+                  <label> Hr/Personal Interview Description:</label>
+                  <textarea formControlName="HrInterviewDescription"></textarea>
+               </div>
+               <!-- Final Result -->
+               <div class="col-sm-6 Form_Input" [ngClass]="{'Form_Err': FormThree.controls['InterviewResult'].errors && !FormThree.controls['InterviewResult'].pristine, 'Form_Success': FormThree.controls['InterviewResult'].valid && !FormThree.controls['InterviewResult'].pristine }">
+                  <label> Final Result :</label>
+                  <ng-select class="NgSelect"
+                           [items]="UpdateOptions"
+                           formControlName="InterviewResult"
+                           [searchable]="true"
+                           (change)="InterviewResultChange()"
+                           placeholder="Interview Result">
+                  </ng-select>
+                  <p class="error" *ngIf="FormThree.controls['InterviewResult'].errors && !FormThree.controls['InterviewResult'].pristine">
+                     <span *ngIf="FormThree.controls['InterviewResult'].errors.required">Interview Result is required</span>
+                  </p>
+               </div>
+               <div class="col-sm-6 Form_TextArea">
+                  <label> Final Result Description:</label>
+                  <textarea formControlName="InterviewDescription"></textarea>
+               </div>
+            </div>
+            
+            <div *ngIf="If_PassOne" class="row">
+               <div class="col-sm-6 Form_Input" [ngClass]="{'Form_Err': FormThree.controls['JoinDate'].errors && !FormThree.controls['JoinDate'].pristine, 'Form_Success': FormThree.controls['JoinDate'].valid && !FormThree.controls['JoinDate'].pristine }">
+                  <label> Joining Date :</label>
+                  <input type="text" formControlName="JoinDate" [min]="MinDate" [matDatepicker]="DatepickerOne" (click)="DatepickerOne.open()" (keypress)="NotAllow()" (keydown)="NotAllow()">
+                  <mat-datepicker touchUi #DatepickerOne></mat-datepicker>
+                  <p class="error" *ngIf="FormThree.controls['JoinDate'].errors && !FormThree.controls['JoinDate'].pristine">
+                     <span *ngIf="FormThree.controls['JoinDate'].errors.required">Joining Date is required</span>
+                  </p>
+               </div>
+            </div>
+         </div>
+         <div class="Model_Footer">
+            <button type="submit" [disabled]="FormThree.status !== 'VALID' || Uploading" mat-raised-button color="primary">
+               <span *ngIf="!Uploading">Update</span>
+               <span *ngIf="Uploading" class="UploadingBtn"> <i class="fa fa-refresh fa-spin"></i> Loading... </span>
+            </button>
+         </div>
+      </form>
+   </div>
+</ng-template>
+
+<ng-template #templateThree>
+   <div class="Modal_Content">
+      <div class="Modal_Header">
+         <p>Complete Exam Result </p>
+         <span data-dismiss="modal" (click)="modalRef.hide()">&times;</span>
+      </div>
+      <div class="Model_Body">
+         <div class="row">
+            <div class="col-sm-12">
+               <table class="ModelTable">
+                  <thead>
+                     <tr>
+                        <td>S.No</td>
+                        <td>Category</td>
+                        <td>No.Of Questions</td>
+                        <td>Cutoff Mark</td>
+                        <td>Answered Questions</td>
+                        <td>Correct Answers</td>
+                     </tr>
+                  </thead>
+                  <tbody *ngIf="Exam_Data['ExamConfig']['Config'] !== undefined">
+                     <tr *ngFor="let item of Exam_Data['ExamConfig']['Config']; let i=index">
+                        <td> {{ i + 1 }} </td>
+                        <td> {{ item?.Category?.Category }} </td>
+                        <td> {{ item?.NoOfQuestion }} </td>
+                        <td> {{ item?.Cutoff }} </td>
+                        <td> {{ item?.Answered }} </td>
+                        <td> {{ item?.CorrectAnswer }} </td>
+                     </tr>
+                  </tbody>
+               </table>
+            </div>
+         </div>
+      </div>
+      <div class="Model_Footer">
+         <button type="button" mat-raised-button color="primary" (click)="modalRef.hide()">
+            <span > Close </span>
+         </button>
+      </div>
+   </div>
+</ng-template>
+

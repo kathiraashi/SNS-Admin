@@ -101,7 +101,7 @@ export class ModelInstitutionCreateComponent implements OnInit {
                Modified_By: new FormControl(this.User_Id, Validators.required)
             });
             this.Show_Img_Preview = true ;
-            this.Preview_Img = 'http://139.59.20.129:4000/API/Uploads/Institutions/' + this.Data.Image.filename;
+            this.Preview_Img = 'http://localhost:4000/API/Uploads/Institutions/' + this.Data.Image.filename;
          }
    }
 

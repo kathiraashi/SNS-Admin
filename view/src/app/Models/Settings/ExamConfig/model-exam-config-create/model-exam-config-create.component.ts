@@ -81,7 +81,7 @@ export class ModelExamConfigCreateComponent implements OnInit {
                this.Temp_Categories = DecryptedData;
                if (this.Type === 'Edit') {
                   this.Data.Config.map(obj => {
-                     this.SetConfig_FormArray(obj.Category._id, obj.NoOfQuestion);
+                     this.SetConfig_FormArray(obj.Category._id, obj.NoOfQuestion, obj.Cutoff);
                   });
                   setTimeout(() => {
                      const SelectedCategories = [];
@@ -148,15 +148,17 @@ export class ModelExamConfigCreateComponent implements OnInit {
    Config_FormArray(): FormGroup {
       return new FormGroup({
          Category: new FormControl(null, Validators.required),
-         NoOfQuestion: new FormControl( '', [Validators.required, Validators.min(3)])
+         NoOfQuestion: new FormControl('', [Validators.required, Validators.min(3)]),
+         Cutoff: new FormControl('', [Validators.required, Validators.min(1)])
       });
    }
 
-   SetConfig_FormArray(Category, NoOfQuestion) {
+   SetConfig_FormArray(Category, NoOfQuestion, Cutoff) {
       const Group = this.Form.get('Config') as FormArray;
       Group.push(new FormGroup({
          Category: new FormControl(Category, Validators.required),
-         NoOfQuestion: new FormControl(NoOfQuestion, [Validators.required, Validators.min(3)])
+         NoOfQuestion: new FormControl(NoOfQuestion, [Validators.required, Validators.min(3)]),
+         Cutoff: new FormControl(Cutoff, [Validators.required, Validators.min(1)])
       }));
    }
 

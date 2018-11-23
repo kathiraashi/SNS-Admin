@@ -59,7 +59,7 @@
                            <div class="col-sm-1 Form_Input">
                               <label style="line-height: 78px; text-align: center; width: 100%;"> {{i + 1}} ) </label>
                            </div>
-                           <div class="col-sm-5 Form_Select">
+                           <div class="col-sm-4 Form_Select">
                               <label>Category:</label>
                               <ng-select class="NgSelect"
                                        [items]="Temp_Categories"
@@ -70,11 +70,15 @@
                                        formControlName="Category">
                               </ng-select>
                            </div>
-                           <div class="col-sm-4 Form_Input" >
+                           <div class="col-sm-3 Form_Input" >
                               <label> No Of Question <span> (minimum 3)</span> :</label>
                               <input formControlName="NoOfQuestion" [min]="3" type="number">
                            </div>
-                           <div class="col-sm-2 Form_Input">
+                           <div class="col-sm-3 Form_Input" >
+                              <label> Cutoff Mark <span> (minimum 1)</span> :</label>
+                              <input formControlName="Cutoff" [min]="1" type="number">
+                           </div>
+                           <div class="col-sm-1 Form_Input">
                               <button class="Table_Action_mini" (click)="Remove_Config(i)" mat-mini-fab color="primary" style="margin-top: 28px;">
                                  <i class="material-icons"> remove </i>
                               </button>
@@ -104,7 +108,7 @@
    </div>
    <div class="Model_Body">
       <div class="row">
-         <div class="col-sm-6">
+         <div class="col-sm-5">
             <div class="view_item">
                <div class="Static">Institution </div>
                <div class="dots"> : </div>
@@ -143,14 +147,14 @@
                <div class="Data"> {{Data.updatedAt | date:'medium'}}</div>
             </div>
          </div>
-         <div class="col-sm-6">
+         <div class="col-sm-7">
             <div class="view_item">
                <div class="Static"> Categories : </div>
             </div>
             <div class="view_item" style="grid-template-columns: 10% 90%;">
                <div></div>
                <div>
-                  <div style="display:grid; grid-template-columns: 40px auto 125px;">
+                  <div style="display:grid; grid-template-columns: 40px auto 125px 125px;">
                      <ng-container>
                         <span class="Static" style="border:1px solid #b9b9b9 ;margin-bottom:0px;text-align:center; line-height: 28px;"> 
                            S.No
@@ -160,6 +164,9 @@
                         </span>
                         <span class="Static" style="border:1px solid #b9b9b9; margin-bottom:0px;text-align:center; line-height: 28px;">
                            No.Of Questions 
+                        </span>
+                        <span class="Static" style="border:1px solid #b9b9b9; margin-bottom:0px;text-align:center; line-height: 28px;">
+                           Cutoff Marks
                         </span>
                      </ng-container>
                      <ng-container *ngFor="let Con of Data.Config; let i=index">
@@ -171,6 +178,9 @@
                         </span>
                         <span class="Data" style="border:1px solid #b9b9b9; margin-bottom:0px;text-align:center; line-height: 28px;">
                            {{ Con.NoOfQuestion}} 
+                        </span>
+                        <span class="Data" style="border:1px solid #b9b9b9; margin-bottom:0px;text-align:center; line-height: 28px;">
+                           {{ Con.Cutoff}} 
                         </span>
                      </ng-container>
                   </div>

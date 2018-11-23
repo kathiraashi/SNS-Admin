@@ -262,6 +262,19 @@ var OnlineExamSchema = mongoose.Schema({
    InterviewDate: { type: Date },
    InterviewPlace: { type: String },
    InterviewResult: { type: String },
+   InterviewDescription: { type: String },
+   GdRound: {
+               GroupDiscussionResult: { type: String },
+               GroupDiscussionDescription: { type: String }
+            },
+   TechnicalRound: {
+                     TechnicalResult: { type: String },
+                     TechnicalDescription: { type: String }
+                  },
+   HrRound: {
+               HrInterviewResult: { type: String },
+               HrInterviewDescription: { type: String },
+            },
    InterviewResult_UpdateUser: { type: Schema.Types.ObjectId, ref: 'User_Management'},
    Joining_Date: { type: Date },
    Status: { type: String, required : true },
