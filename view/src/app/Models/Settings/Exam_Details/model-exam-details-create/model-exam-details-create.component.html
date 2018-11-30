@@ -1,0 +1,69 @@
+<!-- If Create Or Edit The ExamDetails -->
+<div class="Modal_Content" *ngIf="Type && ( Type === 'Create' || Type === 'Edit')">
+   <div class="Modal_Header">
+      <p> {{Type}} Exam Details </p>
+      <span  *ngIf="!Uploading" data-dismiss="modal" (click)="bsModalRef.hide()">&times;</span>
+   </div>
+   <form [formGroup]="Form" (ngSubmit)="onSubmit()">
+      <div class="Model_Body">
+         <div class="row">
+            <div class="col-sm-12 Form_TextArea" [ngClass]="{'Form_Err': Form.controls['ExamDetails'].errors && !Form.controls['ExamDetails'].pristine, 'Form_Success': Form.controls['ExamDetails'].valid && !Form.controls['ExamDetails'].pristine }">
+               <label>Exam Details:</label>
+               <textarea type="text" style="min-height: 100px;" formControlName="ExamDetails"></textarea>
+               <p class="error" *ngIf="Form.controls['ExamDetails'].errors && !Form.controls['ExamDetails'].pristine">
+                  <span *ngIf="Form.controls['ExamDetails'].errors.required">Exam Details is required</span>
+               </p>
+            </div>
+         </div>
+      </div>
+      <div class="Model_Footer">
+         <button type="submit" [disabled]="Form.status !== 'VALID' || Uploading" mat-raised-button color="primary">
+            <span *ngIf="Type === 'Create' && !Uploading">Submit</span>
+            <span *ngIf="Type === 'Edit' && !Uploading">Update</span>
+            <span *ngIf="Uploading" class="UploadingBtn"> <i class="fa fa-refresh fa-spin"></i> Loading... </span>
+         </button>
+      </div>
+   </form>
+</div>
+
+<!-- If View The ExamDetails -->
+<div class="Modal_Content" *ngIf=" Type && Type === 'View'">
+   <div class="Modal_Header">
+      <p>View Exam Details</p>
+      <span data-dismiss="modal" (click)="bsModalRef.hide()">&times;</span>
+   </div>
+   <div class="Model_Body">
+      <div class="view_item">
+         <div class="Static">Exam Details </div>
+         <div class="dots"> : </div>
+         <div class="Data"> {{Data.ExamDetails}}</div>
+      </div>
+      <div class="view_item">
+         <div class="Static">Created By </div>
+         <div class="dots"> : </div>
+         <div class="Data"> {{Data.Created_By.Name}} 
+            <!-- <span class="Badge"> {{Data.Created_By.User_Type.User_Type}} </span> -->
+         </div>
+      </div>
+      <div class="view_item">
+         <div class="Static">Last Modified By </div>
+         <div class="dots"> : </div>
+         <div class="Data"> {{Data.Last_Modified_By.Name}}
+            <!-- <span class="Badge"> {{Data.Last_Modified_By.User_Type.User_Type}} </span> -->
+         </div>
+      </div>
+      <div class="view_item">
+         <div class="Static"> Created Date </div>
+         <div class="dots"> : </div>
+         <div class="Data"> {{Data.createdAt | date:'medium'}}</div>
+      </div>
+      <div class="view_item">
+         <div class="Static">Last Modified Date  </div>
+         <div class="dots"> : </div>
+         <div class="Data"> {{Data.updatedAt | date:'medium'}}</div>
+      </div>
+   </div>
+</div>
+
+
+

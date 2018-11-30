@@ -100,6 +100,7 @@ app.use('/API/Uploads', express.static('Uploads'));
    require('./server/web/routes/Settings/Category.routes.js')(app);
    require('./server/web/routes/Settings/Institution.routes.js')(app);
    require('./server/web/routes/Settings/ExamConfig.routes.js')(app);
+   require('./server/web/routes/Settings/ExamDetails.routes.js')(app);
 
 
    app.use(express.static(__dirname + '/view/dist/view/'));

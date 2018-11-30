@@ -13,6 +13,7 @@ import { UserManagementListComponent } from './Components/Settings/UserManagemen
 import { InstitutionListComponent } from './Components/Settings/Institutions/institution-list/institution-list.component';
 import { CategoriesListComponent } from './Components/Settings/Categories/categories-list/categories-list.component';
 import { ExamConfigListComponent } from './Components/Settings/ExamConfig/exam-config-list/exam-config-list.component';
+import { ExamDetailsListComponent } from './Components/Settings/Exam_Details/exam-details-list/exam-details-list.component';
 
 
 
@@ -81,6 +82,12 @@ const appRoutes: Routes = [
       component: ExamConfigListComponent,
       data: {
          animation: { value: 'ExamConfig', }
+      }
+   },
+   { path: 'ExamDetails',
+      component: ExamDetailsListComponent,
+      data: {
+         animation: { value: 'ExamDetails', }
       }
    },
    { path: 'Personal_Info',

@@ -51,8 +51,8 @@ import { ExamConfigListComponent } from './Components/Settings/ExamConfig/exam-c
 import { ModelExamConfigCreateComponent } from './Models/Settings/ExamConfig/model-exam-config-create/model-exam-config-create.component';
 import { ConfirmationComponent } from './Components/Common/confirmation/confirmation.component';
 import { ExamDetailsComponent } from './Components/Applications/applications-view/SubComponents/exam-details/exam-details.component';
-
-
+import { ExamDetailsListComponent } from './Components/Settings/Exam_Details/exam-details-list/exam-details-list.component';
+import { ModelExamDetailsCreateComponent } from './Models/Settings/Exam_Details/model-exam-details-create/model-exam-details-create.component';
 
 
 
@@ -97,8 +97,9 @@ import { ExamDetailsComponent } from './Components/Applications/applications-vie
    ExamConfigListComponent,
    ModelExamConfigCreateComponent,
    ConfirmationComponent,
-   ExamDetailsComponent
-
+   ExamDetailsComponent,
+   ExamDetailsListComponent,
+   ModelExamDetailsCreateComponent
   ],
   imports: [
     BrowserModule,
@@ -134,7 +135,8 @@ import { ExamDetailsComponent } from './Components/Applications/applications-vie
     ModelInstitutionCreateComponent,
     ModelCategoryCreateComponent,
     ModelExamConfigCreateComponent,
-    ConfirmationComponent
+    ConfirmationComponent,
+    ModelExamDetailsCreateComponent
   ],
   bootstrap: [AppComponent]
 })
