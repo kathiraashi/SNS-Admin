@@ -142,5 +142,24 @@ export class CandidatesService {
       }
    }
 
+   public Refer_Candidate(Info: any): Observable<any[]> {
+      if (this.Service.If_LoggedIn()) {
+         this.headers.set('Authorization', atob(sessionStorage.getItem('SessionToken')));
+         sessionStorage.setItem('SessionKey', btoa(Date()));
+         return this.http.post(API_URL + 'Refer_Candidate', Info, {headers: this.headers }).pipe( map(response => response),  catchError(error => of(error)));
+      } else {
+         return this.ValidateEveryRequest();
+      }
+   }
+
+   public Accept_Referred(Info: any): Observable<any[]> {
+      if (this.Service.If_LoggedIn()) {
+         this.headers.set('Authorization', atob(sessionStorage.getItem('SessionToken')));
+         sessionStorage.setItem('SessionKey', btoa(Date()));
+         return this.http.post(API_URL + 'Accept_Referred', Info, {headers: this.headers }).pipe( map(response => response),  catchError(error => of(error)));
+      } else {
+         return this.ValidateEveryRequest();
+      }
+   }
 
 }

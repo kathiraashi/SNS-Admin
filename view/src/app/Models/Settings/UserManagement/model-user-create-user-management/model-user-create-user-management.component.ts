@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Subject } from 'rxjs';
 import { FormGroup, Validators, FormControl, AbstractControl } from '@angular/forms';
 
-import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
+import { BsModalRef } from 'ngx-bootstrap/modal';
 import * as CryptoJS from 'crypto-js';
 import { map } from 'rxjs/operators';
 
@@ -22,16 +22,17 @@ export class ModelUserCreateUserManagementComponent implements OnInit {
    onClose: Subject<any>;
 
    Type: String;
-   Data;
+   Data: any;
    _Institutions: any[] = [];
    _Departments: any[] = [];
-   _UserTypes: any[] =  ['Admin', 'Sub-Admin', 'Principle', 'HOD', 'Assistant-Professor', 'User'];
+   _UserTypes: any[] =  ['Sub-Admin', 'Principle', 'HOD', 'Assistant-Professor', 'User'];
 
 
    ShowInstitution: Boolean = false;
    ShowDepartment: Boolean = false;
 
-   User_Id;
+   User_Id: any;
+   User_Type: any;
 
    Form: FormGroup;
 
@@ -44,29 +45,19 @@ export class ModelUserCreateUserManagementComponent implements OnInit {
                public Institution_Service: InstitutionService
             ) {
                this.User_Id = this.Login_Service.LoginUser_Info()['_id'];
+               this.User_Type = this.Login_Service.LoginUser_Info()['User_Type'];
+               console.log(this.Login_Service.LoginUser_Info());
+
                const Data = {'User_Id' : this.User_Id };
                let Info = CryptoJS.AES.encrypt(JSON.stringify(Data), 'SecretKeyIn@123');
                Info = Info.toString();
-               this.Department_Service.Department_List({'Info': Info}).subscribe( response => {
-                  const ResponseData = JSON.parse(response['_body']);
-                  if (response['status'] === 200 && ResponseData['Status'] ) {
-                     const CryptoBytes  = CryptoJS.AES.decrypt(ResponseData['Response'], 'SecretKeyOut@123');
-                     const DecryptedData = JSON.parse(CryptoBytes.toString(CryptoJS.enc.Utf8));
-                     this._Departments = DecryptedData;
-                  } else if (response['status'] === 400 || response['status'] === 417 && !ResponseData['Status']) {
-                     this.Toastr.NewToastrMessage({ Type: 'Error', Message: ResponseData['Message'] });
-                  } else if (response['status'] === 401 && !ResponseData['Status']) {
-                     this.Toastr.NewToastrMessage({ Type: 'Error',  Message: ResponseData['Message'] });
-                  } else {
-                     this.Toastr.NewToastrMessage({ Type: 'Error', Message: 'Department List Getting Error!, But not Identify!' });
-                  }
-               });
-               this.Institution_Service.Institution_SimpleList({'Info': Info}).subscribe( response => {
+               this.Institution_Service.Institution_List({'Info': Info}).subscribe( response => {
                   const ResponseData = JSON.parse(response['_body']);
                   if (response['status'] === 200 && ResponseData['Status'] ) {
                      const CryptoBytes  = CryptoJS.AES.decrypt(ResponseData['Response'], 'SecretKeyOut@123');
                      const DecryptedData = JSON.parse(CryptoBytes.toString(CryptoJS.enc.Utf8));
                      this._Institutions = DecryptedData;
+                     this.UserBasedDataSet();
                   } else if (response['status'] === 400 || response['status'] === 417 && !ResponseData['Status']) {
                      this.Toastr.NewToastrMessage({ Type: 'Error', Message: ResponseData['Message'] });
                   } else if (response['status'] === 401 && !ResponseData['Status']) {
@@ -80,6 +71,18 @@ export class ModelUserCreateUserManagementComponent implements OnInit {
    ngOnInit() {
       this.onClose = new Subject();
 
+      if (this.User_Type === 'Admin') {
+         this._UserTypes =  ['Sub-Admin', 'Principle', 'HOD', 'Assistant-Professor', 'User'];
+      } else if (this.User_Type === 'Sub-Admin') {
+         this._UserTypes =  ['Principle', 'HOD', 'Assistant-Professor', 'User'];
+      } else if (this.User_Type === 'Principle') {
+         this._UserTypes =  [ 'HOD', 'Assistant-Professor', 'User'];
+      } else if (this.User_Type === 'HOD') {
+         this._UserTypes =  [ 'Assistant-Professor', 'User'];
+      } else {
+         this._UserTypes = [];
+      }
+
       this.Form = new FormGroup({
          User_Id: new FormControl(this.User_Id ),
          User_Name: new FormControl('', { validators: Validators.required,
@@ -91,6 +94,21 @@ export class ModelUserCreateUserManagementComponent implements OnInit {
          Phone: new FormControl(''),
          User_Type: new FormControl(null, Validators.required),
       });
+   }
+
+   UserBasedDataSet() {
+      if (this.User_Type !== 'Admin' && this.User_Type !== 'Sub-Admin') {
+         const Institution = this.Login_Service.LoginUser_Info()['Institution'];
+         this.ShowInstitution = true;
+         this.Form.setControl('Institution', new FormControl({value: Institution['_id'], disabled: true}, Validators.required));
+         if (this.User_Type !== 'Principle') {
+            const _index = this._Institutions.findIndex(obj => obj._id === Institution['_id']);
+            this._Departments = this._Institutions[_index].Departments;
+            const Department = this.Login_Service.LoginUser_Info()['Department'];
+            this.ShowDepartment = true;
+            this.Form.setControl('Department', new FormControl({value: Department['_id'], disabled: true}, Validators.required));
+         }
+      }
    }
 
    UserNameAsyncValidate( control: AbstractControl ) {
@@ -108,29 +126,40 @@ export class ModelUserCreateUserManagementComponent implements OnInit {
    }
 
    TypeChange() {
-      const Type = this.Form.controls['User_Type'].value;
-      if (Type === 'HOD' || Type === 'Assistant-Professor' || Type === 'User') {
-         this.ShowInstitution = true;
-         this.ShowDepartment = true;
-         this.Form.setControl('Institution', new FormControl(null, Validators.required));
-         this.Form.setControl('Department', new FormControl(null, Validators.required));
-      } else if (Type === 'Principle' ) {
-         this.ShowInstitution = true;
+      if (this.User_Type === 'Admin' || this.User_Type === 'Sub-Admin') {
+         const Type = this.Form.controls['User_Type'].value;
          this.ShowDepartment = false;
-         this.Form.setControl('Institution', new FormControl(null, Validators.required));
-         this.Form.removeControl('Department');
-      } else {
          this.ShowInstitution = false;
-         this.ShowDepartment = false;
-         this.Form.removeControl('Institution');
          this.Form.removeControl('Department');
+         this.Form.removeControl('Institution');
+         if (Type === 'HOD' || Type === 'Assistant-Professor' || Type === 'User' || Type === 'Principle' ) {
+            this.ShowInstitution = true;
+            this.Form.setControl('Institution', new FormControl(null, Validators.required));
+         }
+      }
+   }
+
+   InstitutionChange() {
+      if (this.User_Type === 'Admin' || this.User_Type === 'Sub-Admin') {
+         const Institution = this.Form.controls['Institution'].value;
+         const Type = this.Form.controls['User_Type'].value;
+         this.ShowDepartment = false;
+         if (Type === 'HOD' || Type === 'Assistant-Professor' || Type === 'User') {
+            this.ShowDepartment = true;
+            this.Form.setControl('Department', new FormControl(null, Validators.required));
+         } else {
+            this.ShowDepartment = false;
+            this.Form.removeControl('Department');
+         }
+         const _index = this._Institutions.findIndex(obj => obj._id === Institution);
+         this._Departments = this._Institutions[_index].Departments;
       }
    }
 
 
    submit() {
       if (this.Form.valid) {
-         const Data = this.Form.value;
+         const Data = this.Form.getRawValue();
          let Info = CryptoJS.AES.encrypt(JSON.stringify(Data), 'SecretKeyIn@123');
          Info = Info.toString();
          this.Service.User_Create({'Info': Info}).subscribe( response => {

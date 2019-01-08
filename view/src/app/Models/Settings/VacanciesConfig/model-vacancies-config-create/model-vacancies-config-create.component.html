@@ -1,0 +1,168 @@
+<!-- If Create Or Edit The Vacancies Config-->
+<div class="Modal_Content" *ngIf="Type && ( Type === 'Create' || Type === 'Edit')">
+   <div class="Modal_Header">
+      <p> {{Type}} Vacancies Config </p>
+      <span  *ngIf="!Uploading" data-dismiss="modal" (click)="bsModalRef.hide()">&times;</span>
+   </div>
+   <form [formGroup]="Form" (ngSubmit)="onSubmit()">
+      <div class="Model_Body">
+         <div class="row">
+            <div class="col-sm-4 Form_Input">
+               <label>Institution:</label>
+               <ng-select class="NgSelect ValueBold"
+                           formControlName="Institution"
+                           [items]="_Institutions"
+                           [bindLabel]="'Institution'"
+                           [bindValue]="'_id'"
+                           [searchable]="true"
+                           placeholder="Institution"
+                           (change)="InstitutionChange()">
+               </ng-select>
+               <p class="error" *ngIf="Form.controls['Institution'].errors && !Form.controls['Institution'].pristine">
+                  <span *ngIf="Form.controls['Institution'].errors.required"> Institution is required</span>
+               </p>
+            </div>
+            <div class="col-sm-4 Form_Select">
+               <label> Department:</label>
+               <ng-select class="NgSelect ValueBold"
+                           formControlName="Department"
+                           [items]="_Departments"
+                           [bindLabel]="'Department'"
+                           [bindValue]="'_id'"
+                           [searchable]="true"
+                           placeholder="Department"
+                           (change)="DepartmentChange()">
+               </ng-select>
+               <p class="error" *ngIf="Form.controls['Department'].errors && !Form.controls['Department'].pristine">
+                  <span *ngIf="Form.controls['Department'].errors.required"> Department is required</span>
+               </p>
+            </div>
+            <div class="col-sm-4 Form_Select">
+               <label> Department:</label>
+               <ng-select class="NgSelect ValueBold"
+                           formControlName="Designation"
+                           [items]="_Designations"
+                           [bindLabel]="'Designation'"
+                           [bindValue]="'_id'"
+                           [searchable]="true"
+                           placeholder="Designation">
+               </ng-select>
+               <p class="error" *ngIf="Form.controls['Designation'].errors && !Form.controls['Designation'].pristine">
+                  <span *ngIf="Form.controls['Designation'].errors.required"> Designation is required</span>
+                  <span *ngIf="Form.controls['Designation'].errors.Designation_NotAvailable"> Designation is Already Exist</span>
+               </p>
+            </div>
+         </div>
+         <br>
+         <div class="row">
+            <div class="col-sm-12 Form_TextArea">
+               <label> Job Description:</label>
+               <textarea [froalaEditor]="options" formControlName="JobDescription"></textarea>
+            </div>
+         </div>
+         <br>
+         <div class="row">
+            <div class="col-sm-12 Form_TextArea" >
+               <label> Job Responsibility:</label>
+               <textarea [froalaEditor]="options"  formControlName="JobResponsibility"></textarea>
+            </div>
+         </div>
+      </div>
+      <div class="Model_Footer">
+         <button type="submit" [disabled]="Form.status !== 'VALID' || Uploading " mat-raised-button color="primary">
+            <span *ngIf="Type === 'Create' && !Uploading">Submit</span>
+            <span *ngIf="Type === 'Edit' && !Uploading">Update</span>
+            <span *ngIf="Uploading" class="UploadingBtn"> <i class="fa fa-refresh fa-spin"></i> Loading... </span>
+         </button>
+      </div>
+   </form>
+</div>
+
+
+
+
+
+
+
+
+
+<!-- If View The Vacancies -->
+<div class="Modal_Content" *ngIf=" Type && Type === 'View'">
+   <div class="Modal_Header">
+      <p>View Vacancies Config</p>
+      <span data-dismiss="modal" (click)="bsModalRef.hide()">&times;</span>
+   </div>
+   <div class="Model_Body">
+      <div class="row">
+         <div class="col-sm-6">
+            <div class="view_item">
+               <div class="Static">Institution </div>
+               <div class="dots"> : </div>
+               <div class="Data"> {{Data['Institution']?.Institution}}</div>
+            </div>
+            <div class="view_item">
+               <div class="Static"> Department </div>
+               <div class="dots"> : </div>
+               <div class="Data"> {{Data['Department']?.Department}}</div>
+            </div>
+            <div class="view_item">
+               <div class="Static"> Designation </div>
+               <div class="dots"> : </div>
+               <div class="Data"> {{Data['Designation']?.Designation}}</div>
+            </div>
+         </div>
+         <div class="col-sm-6">
+            <div class="view_item">
+               <div class="Static">Created By </div>
+               <div class="dots"> : </div>
+               <div class="Data"> {{Data.Created_By.Name}}
+               </div>
+            </div>
+            <div class="view_item">
+               <div class="Static">Last Modified By </div>
+               <div class="dots"> : </div>
+               <div class="Data"> {{Data.Last_Modified_By.Name}}
+               </div>
+            </div>
+            <div class="view_item">
+               <div class="Static"> Created Date </div>
+               <div class="dots"> : </div>
+               <div class="Data"> {{Data.createdAt | date:'medium'}}</div>
+            </div>
+            <div class="view_item">
+               <div class="Static">Last Modified Date  </div>
+               <div class="dots"> : </div>
+               <div class="Data"> {{Data.updatedAt | date:'medium'}}</div>
+            </div>
+         </div>
+      </div>
+      <hr>
+      <div class="row">
+         <div class="col-sm-12">
+            <div class="view_item">
+               <div class="Static"> Job Description  </div>
+               <div class="dots"> : </div>
+            </div>
+         </div>
+         <div class="col-sm-1">
+         </div>
+         <div class="col-sm-11">
+            <div [innerHtml]="Data['JobDescription'] | innerHtml"> </div>
+         </div>
+      </div>
+      <hr>
+      <div class="row">
+         <div class="col-sm-12">
+            <div class="view_item">
+               <div class="Static"> Job Responsibility  </div>
+               <div class="dots"> : </div>
+            </div>
+         </div>
+         <div class="col-sm-1">
+         </div>
+         <div class="col-sm-11">
+            <div [innerHtml]="Data['JobResponsibility']  | innerHtml"> </div>
+         </div>
+      </div>
+   </div>
+</div>

@@ -14,6 +14,8 @@ import { InstitutionListComponent } from './Components/Settings/Institutions/ins
 import { CategoriesListComponent } from './Components/Settings/Categories/categories-list/categories-list.component';
 import { ExamConfigListComponent } from './Components/Settings/ExamConfig/exam-config-list/exam-config-list.component';
 import { ExamDetailsListComponent } from './Components/Settings/Exam_Details/exam-details-list/exam-details-list.component';
+import { DesignationListComponent } from './Components/Settings/Designation/designation-list/designation-list.component';
+import { VacanciesConfigListComponent } from './Components/Settings/VacanciesConfig/vacancies-config-list/vacancies-config-list.component';
 
 
 
@@ -78,10 +80,22 @@ const appRoutes: Routes = [
          animation: { value: 'Categories', }
       }
    },
+   { path: 'Designation',
+      component: DesignationListComponent,
+      data: {
+         animation: { value: 'Designation', }
+      }
+   },
    { path: 'ExamConfig',
       component: ExamConfigListComponent,
       data: {
          animation: { value: 'ExamConfig', }
+      }
+   },
+   { path: 'VacanciesConfig',
+      component: VacanciesConfigListComponent,
+      data: {
+         animation: { value: 'VacanciesConfig', }
       }
    },
    { path: 'ExamDetails',

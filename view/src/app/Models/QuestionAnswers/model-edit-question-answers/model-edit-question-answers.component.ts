@@ -11,7 +11,8 @@ import { CategoriesService } from './../../../Services/settings/categories/categ
 import { DepartmentService } from './../../../Services/settings/department/department.service';
 import { InstitutionService } from './../../../Services/settings/institution/institution.service';
 
-import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
+import { BsModalRef } from 'ngx-bootstrap/modal';
+
 
 @Component({
   selector: 'app-model-edit-question-answers',
@@ -72,34 +73,33 @@ export class ModelEditQuestionAnswersComponent implements OnInit {
             this.Toastr.NewToastrMessage({ Type: 'Error', Message: 'Categories List Getting Error!, But not Identify!' });
          }
       });
-      this.Department_Service.Department_SimpleList({ 'Info': Info }).subscribe(response => {
-         const ResponseData = JSON.parse(response['_body']);
-         if (response['status'] === 200 && ResponseData['Status'] ) {
-            const CryptoBytes  = CryptoJS.AES.decrypt(ResponseData['Response'], 'SecretKeyOut@123');
-            const DecryptedData = JSON.parse(CryptoBytes.toString(CryptoJS.enc.Utf8));
-            this._Departments = DecryptedData;
-         } else if (response['status'] === 400 || response['status'] === 417 && !ResponseData['Status']) {
-            this.Toastr.NewToastrMessage({ Type: 'Error', Message: ResponseData['Message'] });
-         } else if (response['status'] === 401 && !ResponseData['Status']) {
-            this.Toastr.NewToastrMessage({ Type: 'Error', Message: ResponseData['Message'] });
-         } else {
-            this.Toastr.NewToastrMessage({ Type: 'Error', Message: 'Departments List Getting Error!, But not Identify!' });
-         }
-      });
-      this.Institution_Service.Institution_SimpleList({ 'Info': Info }).subscribe(response => {
-         const ResponseData = JSON.parse(response['_body']);
-         if (response['status'] === 200 && ResponseData['Status'] ) {
-            const CryptoBytes  = CryptoJS.AES.decrypt(ResponseData['Response'], 'SecretKeyOut@123');
-            const DecryptedData = JSON.parse(CryptoBytes.toString(CryptoJS.enc.Utf8));
-            this._Institutions = DecryptedData;
-         } else if (response['status'] === 400 || response['status'] === 417 && !ResponseData['Status']) {
-            this.Toastr.NewToastrMessage({ Type: 'Error', Message: ResponseData['Message'] });
-         } else if (response['status'] === 401 && !ResponseData['Status']) {
-            this.Toastr.NewToastrMessage({ Type: 'Error', Message: ResponseData['Message'] });
-         } else {
-            this.Toastr.NewToastrMessage({ Type: 'Error', Message: 'Departments List Getting Error!, But not Identify!' });
-         }
-      });
+
+      if (this.User_Type === 'Admin' || this.User_Type === 'Sub-Admin' || this.User_Type === 'Principle') {
+         this.Institution_Service.Institution_List({'Info': Info}).subscribe( response => {
+            const ResponseData = JSON.parse(response['_body']);
+            if (response['status'] === 200 && ResponseData['Status'] ) {
+               const CryptoBytes  = CryptoJS.AES.decrypt(ResponseData['Response'], 'SecretKeyOut@123');
+               const DecryptedData = JSON.parse(CryptoBytes.toString(CryptoJS.enc.Utf8));
+               if (this.User_Type === 'Principle') {
+                  this._Institutions = [this.Login_Service.LoginUser_Info()['Institution']];
+                  const _index = DecryptedData.findIndex(obj => obj._id === this._Institutions[0]['_id'] );
+                  this._Departments = DecryptedData[_index].Departments;
+                  this.Form.controls['Institution'].setValue(this._Institutions[0]['_id']);
+                  this.Form.controls['Institution'].disable();
+               } else {
+                  this._Institutions = DecryptedData;
+               }
+            } else if (response['status'] === 400 || response['status'] === 417 && !ResponseData['Status']) {
+               this.Toastr.NewToastrMessage({ Type: 'Error', Message: ResponseData['Message'] });
+            } else if (response['status'] === 401 && !ResponseData['Status']) {
+               this.Toastr.NewToastrMessage({ Type: 'Error',  Message: ResponseData['Message'] });
+            } else {
+               this.Toastr.NewToastrMessage({ Type: 'Error', Message: 'Institutions List Getting Error!, But not Identify!' });
+            }
+         });
+      } else {
+         this.UserPermissionBased();
+      }
 
       this.Form = new FormGroup({
          Institution: new FormControl(null, Validators.required),
@@ -111,6 +111,30 @@ export class ModelEditQuestionAnswersComponent implements OnInit {
       });
    }
 
+
+   UserPermissionBased() {
+      setTimeout(() => {
+         this._Institutions = [this.Login_Service.LoginUser_Info()['Institution']];
+         const Institution = this.Login_Service.LoginUser_Info()['Institution']['_id'];
+         setTimeout(() => {
+            this.Form.controls['Institution'].setValue(Institution);
+            this.Form.controls['Institution'].disable();
+         }, 100);
+         this._Departments = [this.Login_Service.LoginUser_Info()['Department']];
+         const Department = this.Login_Service.LoginUser_Info()['Department']['_id'];
+         setTimeout(() => {
+            this.Form.controls['Department'].setValue(Department);
+            this.Form.controls['Department'].disable();
+         }, 100);
+      }, 200);
+   }
+
+   InstitutionChange() {
+      const Institution_Id = this.Form.controls['Institution'].value;
+      const _index = this._Institutions.findIndex(obj => obj._id === Institution_Id );
+      this._Departments = this._Institutions[_index].Departments;
+      this.Form.controls['Department'].setValue(null);
+   }
 
    ActiveTabChange(Tab) {
       if (this.ActiveTab === Tab) {

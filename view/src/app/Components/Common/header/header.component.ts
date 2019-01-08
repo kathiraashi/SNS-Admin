@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
+import { LoginService } from './../../../Services/LoginService/login.service';
+
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
@@ -7,9 +9,13 @@ import { Component, OnInit } from '@angular/core';
 })
 export class HeaderComponent implements OnInit {
 
-  constructor() { }
+   User_Type: any;
 
-  ngOnInit() {
-  }
+   constructor(public Login_Service: LoginService) {
+      this.User_Type = this.Login_Service.LoginUser_Info()['User_Type'];
+   }
+
+   ngOnInit() {
+   }
 
 }

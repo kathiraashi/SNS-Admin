@@ -56,36 +56,36 @@ app.use('/API/Uploads', express.static('Uploads'));
 
  require('./server/web/routes/Admin/RegisterAndLogin.routes.js')(app); // Without Company Id, User Id and Authorization
 
-   // function AuthorizationValidate(AuthorizationKey, callback) {
-   //    var date = new Date(new Date() - 20 * 60 * 1000); // 20 minutes differ
-   //    AdminModel.User_Management.findOne({ 
-   //       '_id': mongoose.Types.ObjectId(AuthorizationKey.slice(0, -32)), 
-   //       'LoginToken': AuthorizationKey.slice(-32),
-   //       LastActiveTime: { $gte: date } }, {}, {}, function(err, response) {
-   //          if (!err && response !== null) {
-   //             AdminModel.User_Management.update({ _id: response._id }, { $set: { LastActiveTime: new Date() }}).exec();
-   //             return callback(true);
-   //          }else {
-   //             return callback(false);
-   //          }
-   //       });
-   // }
-//  // Every request Log Creation
-   // app.use('/API/', function (req, res, next) {
-   //    if (req.headers.authorization) {
-   //       AuthorizationValidate(req.headers.authorization, function(callback){
-   //          if (callback) {
-   //             return next();
-   //          }else{
-   //             ErrorManagement.ErrorHandling.ErrorLogCreation(req, 'Security Error For Request authorization Empty', 'Server.js');
-   //             return res.status(401).send({Status: false, Message: 'Invalid Authorization'});
-   //          }
-   //        });
-   //    }else {
-   //       ErrorManagement.ErrorHandling.ErrorLogCreation(req, 'Security Error For Request authorization Empty', 'Server.js');
-   //       return res.status(401).send({Status: false, Message: 'Invalid Authorization'});
-   //    }
-   // });
+   function AuthorizationValidate(AuthorizationKey, callback) {
+      var date = new Date(new Date() - 20 * 60 * 1000); // 20 minutes differ
+      AdminModel.User_Management.findOne({ 
+         '_id': mongoose.Types.ObjectId(AuthorizationKey.slice(0, -32)), 
+         'LoginToken': AuthorizationKey.slice(-32),
+         LastActiveTime: { $gte: date } }, {}, {}, function(err, response) {
+            if (!err && response !== null) {
+               AdminModel.User_Management.update({ _id: response._id }, { $set: { LastActiveTime: new Date() }}).exec();
+               return callback(true);
+            }else {
+               return callback(false);
+            }
+         });
+   }
+ // Every request Log Creation
+   app.use('/API/', function (req, res, next) {
+      if (req.headers.authorization) {
+         AuthorizationValidate(req.headers.authorization, function(callback){
+            if (callback) {
+               return next();
+            }else{
+               ErrorManagement.ErrorHandling.ErrorLogCreation(req, 'Security Error For Request authorization Empty', 'Server.js');
+               return res.status(401).send({Status: false, Message: 'Invalid Authorization'});
+            }
+          });
+      }else {
+         ErrorManagement.ErrorHandling.ErrorLogCreation(req, 'Security Error For Request authorization Empty', 'Server.js');
+         return res.status(401).send({Status: false, Message: 'Invalid Authorization'});
+      }
+   });
 
 // Admin
    require('./server/web/routes/Admin/AdminManagement.routes.js')(app);
@@ -98,16 +98,18 @@ app.use('/API/Uploads', express.static('Uploads'));
 // Settings
    require('./server/web/routes/Settings/Department.routes.js')(app);
    require('./server/web/routes/Settings/Category.routes.js')(app);
+   require('./server/web/routes/Settings/Designation.routes.js')(app);
    require('./server/web/routes/Settings/Institution.routes.js')(app);
+   require('./server/web/routes/Settings/VacanciesConfig.routes.js')(app);
    require('./server/web/routes/Settings/ExamConfig.routes.js')(app);
    require('./server/web/routes/Settings/ExamDetails.routes.js')(app);
 
 
-   app.use(express.static(__dirname + '/view/dist/view/'));
+   // app.use(express.static(__dirname + '/view/dist/view/'));
 
-   app.use(function(req, res) {
-      res.sendFile(path.join(__dirname, '/view/dist/view', 'index.html'));
-   });
+   // app.use(function(req, res) {
+   //    res.sendFile(path.join(__dirname, '/view/dist/view', 'index.html'));
+   // });
 
 
 app.get('*', function(req, res){

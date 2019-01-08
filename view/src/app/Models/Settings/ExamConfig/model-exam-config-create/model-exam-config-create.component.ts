@@ -2,7 +2,7 @@ import { Component, OnInit, ElementRef, ViewChild  } from '@angular/core';
 import { Subject } from 'rxjs';
 import { FormGroup, Validators, FormControl, AbstractControl, FormArray, FormBuilder } from '@angular/forms';
 
-import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
+import { BsModalRef } from 'ngx-bootstrap/modal';
 import * as CryptoJS from 'crypto-js';
 import { map } from 'rxjs/operators';
 
@@ -23,7 +23,7 @@ export class ModelExamConfigCreateComponent implements OnInit {
    onClose: Subject<any>;
 
    Type: string;
-   Data;
+   Data: any;
    _Institutions: any[] = [];
    _Departments: any[] = [];
    _Categories: any[] = [];
@@ -31,9 +31,10 @@ export class ModelExamConfigCreateComponent implements OnInit {
 
    Uploading: Boolean = false;
    Form: FormGroup;
-   User_Id;
+   User_Id: any;
+   User_Type: any;
 
-   Config;
+   Config: any;
 
    constructor( public bsModalRef: BsModalRef,
                 public Institution_Service: InstitutionService,
@@ -44,6 +45,7 @@ export class ModelExamConfigCreateComponent implements OnInit {
                 public form_builder: FormBuilder
             ) {
                this.User_Id = this.Login_Service.LoginUser_Info()['_id'];
+               this.User_Type = this.Login_Service.LoginUser_Info()['User_Type'];
             }
 
    ngOnInit() {
@@ -53,25 +55,38 @@ export class ModelExamConfigCreateComponent implements OnInit {
          const Data = {'User_Id' : this.User_Id };
          let Info = CryptoJS.AES.encrypt(JSON.stringify(Data), 'SecretKeyIn@123');
          Info = Info.toString();
-         this.Institution_Service.Institution_List({'Info': Info}).subscribe( response => {
-            const ResponseData = JSON.parse(response['_body']);
-            if (response['status'] === 200 && ResponseData['Status'] ) {
-               const CryptoBytes  = CryptoJS.AES.decrypt(ResponseData['Response'], 'SecretKeyOut@123');
-               const DecryptedData = JSON.parse(CryptoBytes.toString(CryptoJS.enc.Utf8));
-               this._Institutions = DecryptedData;
-               if (this.Type === 'Edit') {
-                  this.Form.controls['Institution'].setValue(this.Data.Institution._id);
-                  this._Departments.push(this.Data.Department);
-                  this.Form.controls['Department'].setValue(this.Data.Department._id);
+         if (this.User_Type === 'Admin' || this.User_Type === 'Sub-Admin' || this.User_Type === 'Principle') {
+            this.Institution_Service.Institution_List({'Info': Info}).subscribe( response => {
+               const ResponseData = JSON.parse(response['_body']);
+               if (response['status'] === 200 && ResponseData['Status'] ) {
+                  const CryptoBytes  = CryptoJS.AES.decrypt(ResponseData['Response'], 'SecretKeyOut@123');
+                  const DecryptedData = JSON.parse(CryptoBytes.toString(CryptoJS.enc.Utf8));
+                  if (this.Type === 'Create' && this.User_Type === 'Principle') {
+                     this._Institutions = [this.Login_Service.LoginUser_Info()['Institution']];
+                     const _index = DecryptedData.findIndex(obj => obj._id === this._Institutions[0]['_id'] );
+                     this._Departments = DecryptedData[_index].Departments;
+                     this.Form.controls['Institution'].setValue(this._Institutions[0]['_id']);
+                  } else {
+                     this._Institutions = DecryptedData;
+                  }
+                  if (this.Type === 'Edit') {
+                     this.Form.controls['Institution'].setValue(this.Data.Institution._id);
+                     this._Departments.push(this.Data.Department);
+                     this.Form.controls['Department'].setValue(this.Data.Department._id);
+                  }
+               } else if (response['status'] === 400 || response['status'] === 417 && !ResponseData['Status']) {
+                  this.Toastr.NewToastrMessage({ Type: 'Error', Message: ResponseData['Message'] });
+               } else if (response['status'] === 401 && !ResponseData['Status']) {
+                  this.Toastr.NewToastrMessage({ Type: 'Error',  Message: ResponseData['Message'] });
+               } else {
+                  this.Toastr.NewToastrMessage({ Type: 'Error', Message: 'Institutions List Getting Error!, But not Identify!' });
                }
-            } else if (response['status'] === 400 || response['status'] === 417 && !ResponseData['Status']) {
-               this.Toastr.NewToastrMessage({ Type: 'Error', Message: ResponseData['Message'] });
-            } else if (response['status'] === 401 && !ResponseData['Status']) {
-               this.Toastr.NewToastrMessage({ Type: 'Error',  Message: ResponseData['Message'] });
-            } else {
-               this.Toastr.NewToastrMessage({ Type: 'Error', Message: 'Institutions List Getting Error!, But not Identify!' });
-            }
-         });
+            });
+         } else {
+            this.UserPermissionBased();
+         }
+
+
          this.Category_Service.Category_SimpleList({'Info': Info}).subscribe( response => {
             const ResponseData = JSON.parse(response['_body']);
             if (response['status'] === 200 && ResponseData['Status'] ) {
@@ -128,6 +143,22 @@ export class ModelExamConfigCreateComponent implements OnInit {
                Modified_By: new FormControl(this.User_Id, Validators.required ),
             });
          }
+   }
+
+
+   UserPermissionBased() {
+      setTimeout(() => {
+         this._Institutions = [this.Login_Service.LoginUser_Info()['Institution']];
+         const Institution = this.Login_Service.LoginUser_Info()['Institution']['_id'];
+         setTimeout(() => {
+            this.Form.controls['Institution'].setValue(Institution);
+         }, 100);
+         this._Departments = [this.Login_Service.LoginUser_Info()['Department']];
+         const Department = this.Login_Service.LoginUser_Info()['Department']['_id'];
+         setTimeout(() => {
+            this.Form.controls['Department'].setValue(Department);
+         }, 100);
+      }, 200);
    }
 
    InstitutionChange() {
@@ -207,7 +238,7 @@ export class ModelExamConfigCreateComponent implements OnInit {
       submit() {
          if (this.Form.valid && !this.Uploading && this.Form.value.Config.length > 0) {
             this.Uploading = true;
-            const Data = this.Form.value;
+            const Data = this.Form.getRawValue();
             let Info = CryptoJS.AES.encrypt(JSON.stringify(Data), 'SecretKeyIn@123');
             Info = Info.toString();
             this.Service.ExamConfig_Create({'Info': Info}).subscribe( response => {

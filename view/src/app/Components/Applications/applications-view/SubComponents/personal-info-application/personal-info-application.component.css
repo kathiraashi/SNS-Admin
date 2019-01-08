@@ -79,3 +79,13 @@
       position: absolute;
       right: 0px;
    }
+   h5.Referral {
+      text-align: center;
+      margin-bottom: 30px;
+      background-color: #dadada;
+      line-height: 40px;
+      font-weight: 600;
+      font-size: 18px;
+      color: #4E6A7A;
+      letter-spacing: 0.5px;
+  }

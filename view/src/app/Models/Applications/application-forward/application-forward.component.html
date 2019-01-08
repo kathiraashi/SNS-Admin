@@ -1,0 +1,49 @@
+<!-- If Create Or Edit The Institution -->
+<div class="Modal_Content">
+   <div class="Modal_Header">
+      <p> Application Forward Confirmation </p>
+      <span  *ngIf="!Uploading" data-dismiss="modal" (click)="bsModalRef.hide()">&times;</span>
+   </div>
+   <form [formGroup]="Form" (ngSubmit)="submit()">
+      <div class="Model_Body">
+         <div class="row">
+            <div class="col-sm-12 Form_Select" >
+               <label>Institution:</label>
+               <ng-select class="NgSelect ValueBold"
+                           formControlName="To_Institution_Id"
+                           [items]="_Institutions"
+                           [bindLabel]="'Institution'"
+                           [bindValue]="'_id'"
+                           [searchable]="true"
+                           placeholder="Institution"
+                           (change)="InstitutionChange()">
+               </ng-select>
+               <p class="error" *ngIf="Form.controls['To_Institution_Id'].errors && !Form.controls['To_Institution_Id'].pristine">
+                  <span *ngIf="Form.controls['To_Institution_Id'].errors.required"> Institution is required</span>
+               </p>
+            </div>
+            <div class="col-sm-12 Form_Select" >
+               <label> Department:</label>
+               <ng-select class="NgSelect ValueBold"
+                           formControlName="To_Department_Id"
+                           [items]="_Departments"
+                           [bindLabel]="'Department'"
+                           [bindValue]="'_id'"
+                           [searchable]="true"
+                           placeholder="Department"
+                           (change)="DepartmentChange()">
+               </ng-select>
+               <p class="error" *ngIf="Form.controls['To_Department_Id'].errors && !Form.controls['To_Department_Id'].pristine">
+                  <span *ngIf="Form.controls['To_Department_Id'].errors.required"> Department is required</span>
+               </p>
+            </div>
+         </div>
+      </div>
+      <div class="Model_Footer">
+         <button type="submit" [disabled]="Form.status !== 'VALID' || Uploading " mat-raised-button color="primary">
+            <span *ngIf="!Uploading">Submit</span>
+            <span *ngIf="Uploading" class="UploadingBtn"> <i class="fa fa-refresh fa-spin"></i> Loading... </span>
+         </button>
+      </div>
+   </form>
+</div>

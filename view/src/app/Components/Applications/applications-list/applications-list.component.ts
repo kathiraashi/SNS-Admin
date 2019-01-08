@@ -2,12 +2,12 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import {MatMenuTrigger} from '@angular/material';
 
-import { BsModalService } from 'ngx-bootstrap/modal';
-import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
+import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
 
 import * as CryptoJS from 'crypto-js';
 
 import { ConfirmationComponent } from './../../Common/confirmation/confirmation.component';
+import { ApplicationForwardComponent } from '../../../Models/Applications/application-forward/application-forward.component';
 import { ToastrService } from './../../../Services/common-services/toastr-service/toastr.service';
 import { CandidatesService } from './../../../Services/Applications/candidates.service';
 import { LoginService } from './../../../Services/LoginService/login.service';
@@ -29,7 +29,8 @@ export class ApplicationsListComponent implements OnInit {
    User_Type;
    _List: any[] = [];
    _Menus: any[] = [ { name: 'Verify & Accepted', activity: 'Accepted', show: true },
-                     { name: 'Assign Online Exam', activity: 'AssignExam', show: true }];
+                     { name: 'Assign Online Exam', activity: 'AssignExam', show: true },
+                     { name: 'Refer', activity: 'Refer', show: true }];
    Temp_Menu: any[] = [];
    ActionId;
 
@@ -41,7 +42,14 @@ export class ApplicationsListComponent implements OnInit {
             ) {
                   this.User_Id = this.Login_Service.LoginUser_Info()['_id'];
                   this.User_Type = this.Login_Service.LoginUser_Info()['User_Type'];
-                  const Data = {'User_Id' : this.User_Id };
+                  const Query = { };
+                  if (this.User_Type !== 'Admin' && this.User_Type !== 'Sub-Admin') {
+                     Query['Institution'] = this.Login_Service.LoginUser_Info()['Institution']['_id'];
+                     if (this.User_Type !== 'Principle') {
+                        Query['Department'] = this.Login_Service.LoginUser_Info()['Department']['_id'];
+                     }
+                  }
+                  const Data = { User_Id : this.User_Id, Query: Query };
                   let Info = CryptoJS.AES.encrypt(JSON.stringify(Data), 'SecretKeyIn@123');
                   Info = Info.toString();
                   this.Service.CandidatesList({ 'Info': Info }).subscribe(response => {
@@ -71,17 +79,18 @@ export class ApplicationsListComponent implements OnInit {
 
    SetActionId(_index) {
       this.ActionId = this._List[_index]._id;
-      if (this._List[_index].Current_Stage === 'Stage_1') {
+      if (this._List[_index].Current_Stage === 'Stage_1' ) {
          this.Temp_Menu = this._Menus.slice(0);
       }
-      if (this._List[_index].Current_Stage === 'Stage_2') {
+      if (this._List[_index].Current_Stage !== 'Stage_1' ) {
          this.Temp_Menu = this._Menus.slice(1);
-      }
-      if (this._List[_index].Current_Stage === 'Stage_3') {
          this.Temp_Menu = this._Menus.slice(2);
       }
-      if (this._List[_index].Current_Stage === 'Stage_4') {
-         this.Temp_Menu = this._Menus.slice(3);
+      if (this._List[_index].If_Referred_To) {
+         this.Temp_Menu = [];
+      }
+      if (this._List[_index].If_Referred_From && !this._List[_index].If_Referred_Accepted) {
+         this.Temp_Menu = [{ name: 'Accept Referral', activity: 'AcceptRefer', show: true }];
       }
    }
 
@@ -159,6 +168,48 @@ export class ApplicationsListComponent implements OnInit {
                   } else {
                      this.Toastr.NewToastrMessage({ Type: 'Error', Message: 'Questions Available Check Error!, But not Identify!' });
                      this._List[_index].BtnLoading = false;
+                  }
+               });
+            } else {
+               this._List[_index].BtnLoading = false;
+            }
+         });
+      }
+
+      if (Action === 'Refer') {
+         this._List[_index].BtnLoading = false;
+
+         const initialState = { Data: this._List[_index] };
+         this.bsModalRef = this.modalService.show(ApplicationForwardComponent, Object.assign({initialState}, {ignoreBackdropClick: true, class: 'modal-md' }));
+         this.bsModalRef.content.onClose.subscribe(confirmation => {
+            if (confirmation.Status) {
+               this._List[_index] = confirmation.Response;
+            }
+         });
+      }
+
+      if (Action === 'AcceptRefer') {
+         const initialState = { Type: 'Confirmation',
+                                 Header: 'Accept Referred Application',
+                                 LineOne: 'Are you Sure?',
+                                 LineTwo: 'You Want to Accept Referred Candidate Application' };
+         this.bsModalRef = this.modalService.show(ConfirmationComponent, Object.assign({initialState}, {ignoreBackdropClick: true, class: 'modal-md' }));
+         this.bsModalRef.content.onClose.subscribe(confirmation => {
+            if (confirmation.Status) {
+               const Data = {'User_Id' : this.User_Id, 'Candidate_Id': this.ActionId };
+               let Info = CryptoJS.AES.encrypt(JSON.stringify(Data), 'SecretKeyIn@123');
+               Info = Info.toString();
+               this.Service.Accept_Referred({ 'Info': Info }).subscribe(response => {
+                  this._List[_index].BtnLoading = false;
+                  const ResponseData = JSON.parse(response['_body']);
+                  this._List[_index].BtnLoading = false;
+                  if (response['status'] === 200 && ResponseData['Status'] ) {
+                     this._List[_index].If_Referred_Accepted = true;
+                     this._List[_index].Current_Status = 'Referred Accepted';
+                  } else if (response['status'] === 400 || response['status'] === 417 && !ResponseData['Status'] || response['status'] === 401) {
+                     this.Toastr.NewToastrMessage({ Type: 'Error', Message: ResponseData['Message'] });
+                  } else {
+                     this.Toastr.NewToastrMessage({ Type: 'Error', Message: 'Referred Candidate Accept Update Error!, But not Identify!' });
                   }
                });
             } else {

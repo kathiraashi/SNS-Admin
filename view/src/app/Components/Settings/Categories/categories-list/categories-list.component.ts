@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 
-import { BsModalService } from 'ngx-bootstrap/modal';
-import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
+import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
 
 import { ModelCategoryCreateComponent } from '../../../../Models/Settings/Categories/model-category-create/model-category-create.component';
 import { DeleteConfirmationComponent } from '../../../Common/delete-confirmation/delete-confirmation.component';

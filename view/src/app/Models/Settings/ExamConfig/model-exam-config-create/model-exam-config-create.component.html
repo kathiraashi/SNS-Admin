@@ -15,8 +15,8 @@
                            [bindLabel]="'Institution'"
                            [bindValue]="'_id'"
                            [searchable]="true"
-                           (ngModelChange)="InstitutionChange()"
-                           placeholder="Institution">
+                           placeholder="Institution"
+                           (change)="InstitutionChange()">
                </ng-select>
                <p class="error" *ngIf="Form.controls['Institution'].errors && !Form.controls['Institution'].pristine">
                   <span *ngIf="Form.controls['Institution'].errors.required"> Institution is required</span>

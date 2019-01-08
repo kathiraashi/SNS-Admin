@@ -45,7 +45,7 @@
                <ng-select class="NgSelect"
                         [searchable]="true"
                         formControlName="User_Type"
-                        (ngModelChange)="TypeChange()">
+                        (change)="TypeChange()">
                   <ng-option *ngFor="let Type of _UserTypes" [value]="Type">{{Type}}</ng-option>
                </ng-select>
                <p class="error" *ngIf="Form.controls['User_Type'].errors && !Form.controls['User_Type'].pristine">
@@ -59,7 +59,8 @@
                            [bindLabel]="'Institution'"
                            [bindValue]="'_id'"
                            [searchable]="true"
-                           formControlName="Institution">
+                           formControlName="Institution"
+                           (change)="InstitutionChange()">
                </ng-select>
                <p class="error" *ngIf="Form.controls['Institution'].errors && !Form.controls['Institution'].pristine">
                   <span *ngIf="Form.controls['Institution'].errors.required"> Institution is required</span>

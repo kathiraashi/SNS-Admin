@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 
-import { BsModalService } from 'ngx-bootstrap/modal';
-import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
+import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
 
 import { ModelPersonalinfoReligionComponent } from '../../../../../Models/Settings/personal-info/model-personalinfo-religion/model-personalinfo-religion.component';
 import { DeleteConfirmationComponent } from '../../../../Common/delete-confirmation/delete-confirmation.component';

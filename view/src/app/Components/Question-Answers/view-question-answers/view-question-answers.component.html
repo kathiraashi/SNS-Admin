@@ -46,8 +46,9 @@
                            [bindLabel]="'Institution'"
                            [bindValue]="'_id'"
                            [searchable]="true"
+                           [disabled]="User_Type !== 'Admin' && User_Type !== 'Sub-Admin'"
                            placeholder="Institution"
-                           (ngModelChange)="FilterChange()">
+                           (change)="FilterChange(); InstitutionChange()">
                </ng-select>
             </div>
             <div class="col-sm-3 Form_Select">
@@ -57,8 +58,9 @@
                            [bindLabel]="'Department'"
                            [bindValue]="'_id'"
                            [searchable]="true"
+                           [disabled]="User_Type !== 'Admin' && User_Type !== 'Sub-Admin' && User_Type !== 'Principle'"
                            placeholder="Department"
-                           (ngModelChange)="FilterChange()">
+                           (change)="FilterChange()">
                </ng-select>
             </div>
             <div class="col-sm-3 Form_Select">
@@ -69,7 +71,7 @@
                            [bindValue]="'_id'"
                            [searchable]="true"
                            placeholder="Category"
-                           (ngModelChange)="FilterChange()">
+                           (change)="FilterChange()">
                </ng-select>
             </div>
          </div>

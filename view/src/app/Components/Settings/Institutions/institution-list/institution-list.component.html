@@ -49,6 +49,7 @@
                      <th>Institution Name</th>
                      <th>Institution Code</th>
                      <th>Institution Category</th>
+                     <th> No.of Designation </th>
                      <th> No.of Departments </th>
                      <th>Last Modified By</th>
                      <th>Action</th>
@@ -67,6 +68,9 @@
                      </td>
                      <td>
                         <span class="Style_1"> {{Item.Institution_Category?.Category}} </span>
+                     </td>
+                     <td>
+                        <span class="Style_1"> {{Item.Designation.length}} </span>
                      </td>
                      <td>
                         <span class="Style_1"> {{Item.Departments.length}} </span>

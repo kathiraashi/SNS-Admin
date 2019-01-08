@@ -102,8 +102,15 @@ var mongoose = require('mongoose');
       if (!ReceivingData.User_Id || ReceivingData.User_Id === ''  ) {
          res.status(400).send({Status: false, Message: "User Details can not be empty" });
       }else {
+         var FindQuery = {'If_Deleted': false };
+         if (ReceivingData.Query['Institution']) {
+            FindQuery['Institution'] = mongoose.Types.ObjectId(ReceivingData.Query['Institution']);
+         }
+         if (ReceivingData.Query['Department']) {
+            FindQuery['Department'] = mongoose.Types.ObjectId(ReceivingData.Query['Department']);
+         }
          ExamConfigModel.ExamConfigSchema
-            .find({ 'If_Deleted': false }, {}, {sort: { updatedAt: -1 }})
+            .find(FindQuery, {}, {sort: { updatedAt: -1 }})
             .populate({ path: 'Config.Category', select: ['Category'] })
             .populate({ path: 'Institution', select: ['Institution'] })
             .populate({ path: 'Department', select: ['Department'] })
@@ -186,6 +193,8 @@ var mongoose = require('mongoose');
                         });
                      }
                   });
+               } else {
+                  res.status(400).send({Status: false, Message: "Exam Config can not be valid!" });
                }
             }
          });

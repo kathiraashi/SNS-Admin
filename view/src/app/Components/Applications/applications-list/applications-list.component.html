@@ -67,15 +67,17 @@
                            <span class="Style_1"> {{Candidate.Basic_Info?.Department?.Department}} ( {{Candidate.Basic_Info?.Department?.Department_Code}} ) </span>
                         </td>
                         <td>
-                           <span class="Style_1"> {{Candidate.Current_Status}}</span>
+                           <span *ngIf="!Candidate.If_Referred_To && (!Candidate.If_Referred_From || (Candidate.If_Referred_From && Candidate.If_Referred_Accepted))" class="Style_1"> {{Candidate.Current_Status}}</span>
+                           <span *ngIf="Candidate.If_Referred_From && !Candidate.If_Referred_Accepted" class="Style_1"> Referred </span>
+                           <span *ngIf="Candidate.If_Referred_To" class="Style_1"> Forwarded </span> 
                         </td>
                         <td>
                            <span class="Style_1"> {{Candidate.createdAt | date:'medium'}}</span>
                         </td>
-                        <td *ngIf="Candidate.Current_Stage !== 'Stage_1' && Candidate.Current_Stage !== 'Stage_2'">
-                              <button mat-raised-button color="primary" (click)="SetActionId(i)" [matMenuTriggerFor]="menu" (click)="View()"> View </button>
+                        <td *ngIf="Candidate.If_Referred_To">
+                           <button mat-raised-button color="primary" (click)="SetActionId(i)" [matMenuTriggerFor]="menu" (click)="View()"> View </button>
                         </td>
-                        <td *ngIf="Candidate.Current_Stage === 'Stage_1' || Candidate.Current_Stage === 'Stage_2'">
+                        <td *ngIf="!Candidate.If_Referred_To">
                            <ng-container *ngIf="!Candidate.BtnLoading">
                               <button mat-raised-button color="primary" (click)="SetActionId(i)" [matMenuTriggerFor]="menu" > Action </button>
                            </ng-container>

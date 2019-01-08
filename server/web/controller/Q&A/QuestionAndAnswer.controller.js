@@ -219,7 +219,14 @@ exports.Questions_List = function(req, res) {
    if(!ReceivingData.User_Id || ReceivingData.User_Id === '' ) {
       res.status(400).send({Status: false, Message: "User Details can not be empty" });
    }else {
-      QA_Model.QuestionSchema.find({ If_Deleted: false }, {}, {})
+      var FindQuery = {'If_Deleted': false };
+      if (ReceivingData.Query['Institution']) {
+         FindQuery['Institution'] = mongoose.Types.ObjectId(ReceivingData.Query['Institution']);
+      }
+      if (ReceivingData.Query['Department']) {
+         FindQuery['Department'] = mongoose.Types.ObjectId(ReceivingData.Query['Department']);
+      }
+      QA_Model.QuestionSchema.find(FindQuery, {}, {})
       .populate({path: 'Department', select: ['Department'] })
       .populate({path: 'Category', select: ['Category'] })
       .populate({path: 'Institution', select: ['Institution'] })

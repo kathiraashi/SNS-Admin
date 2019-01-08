@@ -2,7 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { Subject } from 'rxjs';
 import { FormGroup, Validators, FormControl } from '@angular/forms';
 
-import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
+import { BsModalRef } from 'ngx-bootstrap/modal';
+
 import * as CryptoJS from 'crypto-js';
 
 import { ExamDetailsService } from './../../../../Services/settings/ExamDetails/exam-details.service';

@@ -219,7 +219,19 @@ var CandidatesSchema = mongoose.Schema({
    Ref_ID: { type: String, required: true },
    Current_Stage: { type: String },
    Current_Status: { type: String},
-   Status: { type: String},
+   Status: { type: String },
+   If_Referred_Accepted: { type: Boolean, required : true },
+   If_Referred_From: { type: Boolean, required : true },
+   If_Referred_To: { type: Boolean, required : true },
+   Referred_From: {
+      User_Id: { type: Schema.Types.ObjectId, ref: 'User_Management' },
+      Institution: { type: Schema.Types.ObjectId, ref: 'Institution' }
+   },
+   Referred_To: {
+      User_Id: { type: Schema.Types.ObjectId, ref: 'User_Management' },
+      Institution: { type: Schema.Types.ObjectId, ref: 'Institution' },
+      Department: { type: Schema.Types.ObjectId, ref: 'Department' }
+   }
 }, { timestamps: true });
 
 var varCandidates_Data = mongoose.model('Candidates_Data', CandidatesSchema, 'Candidates_Data');

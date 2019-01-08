@@ -28,12 +28,11 @@
             <tr>
                <th style="width: 80px;">S.no</th>
                <th>Name</th>
-               <th>User Name</th>
                <th>Email</th>
                <th>Phone</th>
+               <th>Institution</th>
+               <th>Department</th>
                <th>User Type</th>
-               <th>Last Modified By</th>
-               <th>Status</th>
             </tr>
             </thead>
             <tbody>
@@ -45,23 +44,19 @@
                   <span class="Style_1"> {{item['Name']}} </span>
                </td>
                <td>
-                  <span class="Style_1"> {{item['User_Name']}} </span>
-               </td>
-               <td>
                   <span class="Style_1"> {{item['Email']}} </span>
                </td>
                <td>
                   <span class="Style_1"> {{item['Phone']}} </span>
                </td>
                <td>
+                  <span class="Style_1"> {{item?.Institution?.Institution}} </span>
+               </td>
+               <td>
+                  <span class="Style_1"> {{item?.Department?.Department}} </span>
+               </td>
+               <td>
                   <span class="Style_1"> {{item['User_Type']}}  </span>
-               </td>
-               <td>
-                  <span class="Style_1"> {{item['updatedAt'] | date:'medium'}} </span>
-               </td>
-               <td>
-                  <span class="Style_1" *ngIf="item.Active_Status"> Active </span>
-                  <span class="Style_1" *ngIf="!item.Active_Status"> Inactive </span>
                </td>
             </tr>
          </tbody>

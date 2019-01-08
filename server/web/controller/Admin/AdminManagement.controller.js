@@ -40,7 +40,10 @@ var crypto = require("crypto");
       } else if (!ReceivingData.User_Password || ReceivingData.User_Password === ''  ) {
          res.status(400).send({Status: false, Message: "User Password can not be empty" });
       } else {
-         AdminModel.User_Management.findOne({'User_Name': { $regex : new RegExp("^" + ReceivingData.User_Name + "$", "i") }, 'User_Password': ReceivingData.User_Password, 'Active_Status': true}, { User_Password: 0 }, {}, function(err, result) {
+         AdminModel.User_Management.findOne({'User_Name': { $regex : new RegExp("^" + ReceivingData.User_Name + "$", "i") }, 'User_Password': ReceivingData.User_Password, 'Active_Status': true}, { User_Password: 0 }, {})
+         .populate({ path: 'Institution', select: ['Institution'] })
+         .populate({ path: 'Department', select: ['Department'] })
+         .exec(function(err, result) {
             if(err) {
                ErrorManagement.ErrorHandling.ErrorLogCreation(req, 'User Details Validate Query Error', 'RegisterAndLogin.controller.js', err);
                res.status(417).send({status: false, Error:err, Message: "Some error occurred while Validate The User Details!."});
@@ -98,6 +101,16 @@ var crypto = require("crypto");
       } else if(!ReceivingData.User_Type || ReceivingData.User_Type === '' ) {
          res.status(400).send({Status: false, Message: "User Type can not be empty " });
       } else {
+         if (ReceivingData.Institution && ReceivingData.Institution !== null && ReceivingData.Institution !== '') {
+            ReceivingData.Institution = mongoose.Types.ObjectId(ReceivingData.Institution)
+         } else {  
+            ReceivingData.Institution = null;
+         }
+         if (ReceivingData.Department && ReceivingData.Department !== null && ReceivingData.Department !== '') {
+            ReceivingData.Department = mongoose.Types.ObjectId(ReceivingData.Department)
+         } else {
+            ReceivingData.Department = null;
+         }
          var CreateUser_Management = new AdminModel.User_Management({
             User_Name : ReceivingData.User_Name,
             User_Password : ReceivingData.User_Password,
@@ -105,8 +118,8 @@ var crypto = require("crypto");
             Phone : ReceivingData.Phone || '',
             Email : ReceivingData.Email,
             User_Type: ReceivingData.User_Type,
-            Institution: mongoose.Types.ObjectId(ReceivingData.Institution) || null,
-            Department: mongoose.Types.ObjectId(ReceivingData.Department) || null,
+            Institution: ReceivingData.Institution,
+            Department: ReceivingData.Department,
             Created_By : mongoose.Types.ObjectId(ReceivingData.User_Id),
             Last_ModifiedBy : mongoose.Types.ObjectId(ReceivingData.User_Id),
             Active_Status : ReceivingData.Active_Status || true,
@@ -117,12 +130,22 @@ var crypto = require("crypto");
                ErrorManagement.ErrorHandling.ErrorLogCreation(req, 'User Creation Query Error', 'AdminManagement.controller.js', err);
                res.status(400).send({Status: false, Message: "Some error occurred while creating the User!."});
             } else {
-               var ReturnData = CryptoJS.AES.encrypt(JSON.stringify(result), 'SecretKeyOut@123');
-                  ReturnData = ReturnData.toString();
-                  res.status(200).send({Status: true, Response: ReturnData });
+               AdminModel.User_Management.findOne({'_id': result._id}, {}, {})
+               .populate({ path: 'Institution', select: ['Institution'] })
+               .populate({ path: 'Department', select: ['Department'] })
+               .exec(function(err, result) {
+                  if(err) {
+                     ErrorManagement.ErrorHandling.ErrorLogCreation(req, 'User List Find Query Error', 'AdminManagement.controller.js', err);
+                     res.status(417).send({status: false, Message: "Some error occurred while Find Users List!."});
+                  } else {
+                     var ReturnData = CryptoJS.AES.encrypt(JSON.stringify(result), 'SecretKeyOut@123');
+                        ReturnData = ReturnData.toString();
+                     res.status(200).send({Status: true, Response: ReturnData });
+                  }
+               });
             }
          });
-   }
+      }
    };
 
 
@@ -134,8 +157,18 @@ var crypto = require("crypto");
 
       if(!ReceivingData.User_Id || ReceivingData.User_Id === '' ) {
          res.status(400).send({Status: false, Message: "User Details can not be empty" });
-      }else {
-         AdminModel.User_Management.find({'Active_Status': true }, {}, {sort: { updatedAt: -1 }}, function(err, result) { // Users Find Query
+      } else {
+         var FindQuery = {'Active_Status': true };
+         if (ReceivingData.Query['Institution']) {
+            FindQuery['Institution'] = mongoose.Types.ObjectId(ReceivingData.Query['Institution']);
+         }
+         if (ReceivingData.Query['Department']) {
+            FindQuery['Department'] = mongoose.Types.ObjectId(ReceivingData.Query['Department']);
+         }
+         AdminModel.User_Management.find(FindQuery, {}, {sort: { updatedAt: -1 }})
+         .populate({ path: 'Institution', select: ['Institution'] })
+         .populate({ path: 'Department', select: ['Department'] })
+         .exec(function(err, result) { // Users Find Query
             if(err) {
                ErrorManagement.ErrorHandling.ErrorLogCreation(req, 'User List Find Query Error', 'AdminManagement.controller.js', err);
                res.status(417).send({status: false, Message: "Some error occurred while Find Users List!."});

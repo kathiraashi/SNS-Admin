@@ -37,18 +37,20 @@
                   <span> Settings </span>
                </a>
                <ul class="tree-view">
-                  <li class="tree-list" [routerLinkActive]="['active']" [routerLink]="['/Departments']"><a> Config Departments</a></li>
+                  <li *ngIf="User_Type === 'Admin' || User_Type === 'Sub-Admin'" class="tree-list" [routerLinkActive]="['active']" [routerLink]="['/Departments']"><a> Config Departments</a></li>
                   <li class="tree-list" [routerLinkActive]="['active']" [routerLink]="['/Categories']"><a> Config Categories </a></li>
-                  <li class="tree-list" [routerLinkActive]="['active']" [routerLink]="['/Institutions']"><a> Institutions </a></li>
+                  <li *ngIf="User_Type === 'Admin' || User_Type === 'Sub-Admin'" class="tree-list" [routerLinkActive]="['active']" [routerLink]="['/Designation']"><a> Config Designation </a></li>
+                  <li *ngIf="User_Type === 'Admin' || User_Type === 'Sub-Admin'" class="tree-list" [routerLinkActive]="['active']" [routerLink]="['/Institutions']"><a> Institutions </a></li>
+                  <li class="tree-list" [routerLinkActive]="['active']" [routerLink]="['/VacanciesConfig']"><a> Vacancies Config </a></li>
                   <li class="tree-list" [routerLinkActive]="['active']" [routerLink]="['/ExamConfig']"><a> Exam Config </a></li>
                   <li class="tree-list" [routerLinkActive]="['active']" [routerLink]="['/ExamDetails']"><a> Exam Details </a></li>
                   <!-- <li class="tree-list" [routerLinkActive]="['active']" [routerLink]="['/Post_Applied']"><a> Post Applied </a></li>
                   <li class="tree-list" [routerLinkActive]="['active']" [routerLink]="['/Personal_Info']"><a> Personal Info </a></li>
                   <li class="tree-list" [routerLinkActive]="['active']" [routerLink]="['/Educational_Info']"><a> Educational Info </a></li> -->
-                  <li class="tree-list" [routerLinkActive]="['active']" [routerLink]="['/User_Management']"><a> User Management </a></li>
+                  <li *ngIf="User_Type !== 'Assistant-Professor' && User_Type !== 'User'" class="tree-list" [routerLinkActive]="['active']" [routerLink]="['/User_Management']"><a> User Management </a></li>
                </ul>
             </span>
          </li>
       </ul>
    </div>
-</div>
+</div> 

@@ -60,6 +60,8 @@ var Institution_Image_Upload = multer({
             res.status(400).send({Status: false, Message: "Institution can not be empty" });
          }else if(!ReceivingData.Institution_Code || ReceivingData.Institution_Code === '' ) {
             res.status(400).send({Status: false, Message: "Institution Code can not be empty" });
+         } else if (!ReceivingData.Designation || typeof ReceivingData.Designation !== 'object' || ReceivingData.Designation.length === 0 ) {
+            res.status(400).send({Status: false, Message: "Designation can not be empty" });
          } else if (!ReceivingData.Departments || typeof ReceivingData.Departments !== 'object' || ReceivingData.Departments.length === 0 ) {
             res.status(400).send({Status: false, Message: "Departments can not be empty" });
          } else if (!ReceivingData.Institution_Category || typeof ReceivingData.Institution_Category !== 'object' || Object.keys(ReceivingData.Institution_Category).length !== 2 ) {
@@ -72,9 +74,11 @@ var Institution_Image_Upload = multer({
                _Image = { filename: req.file.filename, mimetype: req.file.mimetype, size: req.file.size };
             }
             ReceivingData.Departments.map(obj => mongoose.Types.ObjectId(obj));
+            ReceivingData.Designation.map(obj => mongoose.Types.ObjectId(obj));
             var Create_Institution = new InstitutionModel.InstitutionSchema({
                Institution: ReceivingData.Institution,
                Institution_Code: ReceivingData.Institution_Code,
+               Designation: ReceivingData.Designation,
                Departments: ReceivingData.Departments,
                Image: _Image,
                Institution_Category: ReceivingData.Institution_Category,
@@ -90,6 +94,7 @@ var Institution_Image_Upload = multer({
                } else {
                   InstitutionModel.InstitutionSchema
                      .findOne({'_id': result._id})
+                     .populate({ path: 'Designation', select: ['Designation'] })
                      .populate({ path: 'Departments', select: ['Department'] })
                      .populate({ path: 'Created_By', select: ['Name', 'User_Type'] })
                      .populate({ path: 'Last_Modified_By', select: ['Name', 'User_Type'] })
@@ -118,7 +123,8 @@ var Institution_Image_Upload = multer({
       }else {
          InstitutionModel.InstitutionSchema
             .find({ 'If_Deleted': false }, {}, {sort: { updatedAt: -1 }})
-            .populate({ path: 'Departments', select: ['Department'] })
+            .populate({ path: 'Designation', select: ['Designation'] })
+            .populate({ path: 'Departments', select: ['Department', 'Department_Code'] })
             .populate({ path: 'Created_By', select: ['Name', 'User_Type'] })
             .populate({ path: 'Last_Modified_By', select: ['Name', 'User_Type'] })
             .exec(function(err, result) { // Institution FindOne Query
@@ -172,6 +178,8 @@ var Institution_Image_Upload = multer({
             res.status(400).send({Status: false, Message: "Institution can not be empty" });
          }else if(!ReceivingData.Institution_Code || ReceivingData.Institution_Code === '' ) {
             res.status(400).send({Status: false, Message: "Institution Code can not be empty" });
+         } else if (!ReceivingData.Designation || typeof ReceivingData.Designation !== 'object' || ReceivingData.Designation.length === 0 ) {
+            res.status(400).send({Status: false, Message: "Departments can not be empty" });
          } else if (!ReceivingData.Departments || typeof ReceivingData.Departments !== 'object' || ReceivingData.Departments.length === 0 ) {
             res.status(400).send({Status: false, Message: "Departments can not be empty" });
          } else if (!ReceivingData.Institution_Category || typeof ReceivingData.Institution_Category !== 'object' || Object.keys(ReceivingData.Institution_Category).length !== 2 ) {
@@ -186,10 +194,12 @@ var Institution_Image_Upload = multer({
                } else {
                   if (result !== null) {
                      ReceivingData.Departments.map(obj => mongoose.Types.ObjectId(obj));
+                     ReceivingData.Designation.map(obj => mongoose.Types.ObjectId(obj));
 
                      if(req.file !== null && req.file !== undefined && req.file !== ''){
                         result.Image = { filename: req.file.filename, mimetype: req.file.mimetype, size: req.file.size };
                      }
+                     result.Designation = ReceivingData.Designation;
                      result.Departments = ReceivingData.Departments;
                      result.Institution_Category = ReceivingData.Institution_Category;
                      result.Institution = ReceivingData.Institution;
@@ -203,6 +213,7 @@ var Institution_Image_Upload = multer({
                         } else {
                            InstitutionModel.InstitutionSchema
                               .findOne({'_id': result_1._id})
+                              .populate({ path: 'Designation', select: ['Designation'] })
                               .populate({ path: 'Departments', select: ['Department'] })
                               .populate({ path: 'Created_By', select: ['Name', 'User_Type'] })
                               .populate({ path: 'Last_Modified_By', select: ['Name', 'User_Type'] })

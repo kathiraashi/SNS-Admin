@@ -14,4 +14,8 @@ module.exports = function(app) {
    app.post('/API/Candidates/TechnicalResult_Update', Controller.TechnicalResult_Update);
    app.post('/API/Candidates/InterviewResult_Update', Controller.InterviewResult_Update);
 
+   app.post('/API/Candidates/Refer_Candidate', Controller.Refer_Candidate);
+   app.post('/API/Candidates/Accept_Referred', Controller.Accept_Referred);
+
+
 };

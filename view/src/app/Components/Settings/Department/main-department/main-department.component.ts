@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
-import { BsModalService } from 'ngx-bootstrap/modal';
-import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
+import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
+
 
 import { ModelDepartmentCreateComponent } from '../../../../Models/Settings/Department/model-department-create/model-department-create.component';
 import { DeleteConfirmationComponent } from '../../../Common/delete-confirmation/delete-confirmation.component';

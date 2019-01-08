@@ -2,12 +2,13 @@ import { Component, OnInit, ElementRef, ViewChild  } from '@angular/core';
 import { Subject } from 'rxjs';
 import { FormGroup, Validators, FormControl, AbstractControl } from '@angular/forms';
 
-import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
+import { BsModalRef } from 'ngx-bootstrap/modal';
 import * as CryptoJS from 'crypto-js';
 import { map } from 'rxjs/operators';
 
 import { InstitutionService } from './../../../../Services/settings/institution/institution.service';
 import { DepartmentService } from './../../../../Services/settings/department/department.service';
+import { DesignationService } from './../../../../Services/settings/Designation/designation.service';
 import { ToastrService } from './../../../../Services/common-services/toastr-service/toastr.service';
 import { LoginService } from './../../../../Services/LoginService/login.service';
 
@@ -32,6 +33,7 @@ export class ModelInstitutionCreateComponent implements OnInit {
                                  { Category: 'Education', Type: 'Type_3'},
                                  { Category: 'School', Type: 'Type_4'}];
    _Departments: any[] = [];
+   _Designation: any[] = [];
    Uploading: Boolean = false;
    Form: FormGroup;
    User_Id;
@@ -40,7 +42,8 @@ export class ModelInstitutionCreateComponent implements OnInit {
                 public Service: InstitutionService,
                 private Toastr: ToastrService,
                 public Login_Service: LoginService,
-                public Department_Service: DepartmentService
+                public Department_Service: DepartmentService,
+                public Designation_Service: DesignationService
             ) {
                this.User_Id = this.Login_Service.LoginUser_Info()['_id'];
             }
@@ -73,6 +76,27 @@ export class ModelInstitutionCreateComponent implements OnInit {
                this.Toastr.NewToastrMessage({ Type: 'Error', Message: 'Department List Getting Error!, But not Identify!' });
             }
          });
+         this.Designation_Service.Designation_List({'Info': Info}).subscribe( response => {
+            const ResponseData = JSON.parse(response['_body']);
+            if (response['status'] === 200 && ResponseData['Status'] ) {
+               const CryptoBytes  = CryptoJS.AES.decrypt(ResponseData['Response'], 'SecretKeyOut@123');
+               const DecryptedData = JSON.parse(CryptoBytes.toString(CryptoJS.enc.Utf8));
+               this._Designation = DecryptedData;
+               if (this.Type === 'Edit') {
+                  const setValue = [];
+                  this.Data.Designation.map(obj => {
+                     setValue.push(obj._id);
+                  });
+                  this.Form.controls['Designation'].setValue(setValue);
+               }
+            } else if (response['status'] === 400 || response['status'] === 417 && !ResponseData['Status']) {
+               this.Toastr.NewToastrMessage({ Type: 'Error', Message: ResponseData['Message'] });
+            } else if (response['status'] === 401 && !ResponseData['Status']) {
+               this.Toastr.NewToastrMessage({ Type: 'Error',  Message: ResponseData['Message'] });
+            } else {
+               this.Toastr.NewToastrMessage({ Type: 'Error', Message: 'Designation List Getting Error!, But not Identify!' });
+            }
+         });
       }
 
       // If Create New Institution
@@ -83,6 +107,7 @@ export class ModelInstitutionCreateComponent implements OnInit {
                                                       updateOn: 'blur' } ),
                Institution_Code: new FormControl('', Validators.required ),
                Institution_Category: new FormControl(null, Validators.required ),
+               Designation: new FormControl(null, Validators.required ),
                Departments: new FormControl(null, Validators.required ),
                Created_By: new FormControl( this.User_Id, Validators.required ),
             });
@@ -96,6 +121,7 @@ export class ModelInstitutionCreateComponent implements OnInit {
                                                                         updateOn: 'blur' }),
                Institution_Code: new FormControl(this.Data.Institution_Code, Validators.required ),
                Institution_Category: new FormControl(this.Data.Institution_Category, Validators.required ),
+               Designation: new FormControl(null, Validators.required ),
                Departments: new FormControl(null, Validators.required ),
                Institution_Id: new FormControl(this.Data._id, Validators.required),
                Modified_By: new FormControl(this.User_Id, Validators.required)

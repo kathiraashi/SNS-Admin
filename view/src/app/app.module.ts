@@ -9,11 +9,12 @@ import { HttpClientModule } from '@angular/common/http';
 import { RouterModule, Routes } from '@angular/router';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app.routing.module';
+
 import { ModalModule} from 'ngx-bootstrap';
 import { CalendarModule } from 'primeng/calendar';
-
 import { MatButtonModule, MatFormFieldModule, MatSelectModule, MatRadioModule, MatMenuModule, MatDatepickerModule, MatNativeDateModule } from '@angular/material';
 import { NgSelectModule } from '@ng-select/ng-select';
+import { FroalaEditorModule, FroalaViewModule } from 'angular-froala-wysiwyg';
 
 import { HeaderComponent } from './Components/Common/header/header.component';
 import { LoginPageComponent } from './Components/Common/login-page/login-page.component';
@@ -53,6 +54,12 @@ import { ConfirmationComponent } from './Components/Common/confirmation/confirma
 import { ExamDetailsComponent } from './Components/Applications/applications-view/SubComponents/exam-details/exam-details.component';
 import { ExamDetailsListComponent } from './Components/Settings/Exam_Details/exam-details-list/exam-details-list.component';
 import { ModelExamDetailsCreateComponent } from './Models/Settings/Exam_Details/model-exam-details-create/model-exam-details-create.component';
+import { ApplicationForwardComponent } from './Models/Applications/application-forward/application-forward.component';
+import { DesignationListComponent } from './Components/Settings/Designation/designation-list/designation-list.component';
+import { ModelDesignationCreateComponent } from './Models/Settings/Designation/model-designation-create/model-designation-create.component';
+import { VacanciesConfigListComponent } from './Components/Settings/VacanciesConfig/vacancies-config-list/vacancies-config-list.component';
+import { ModelVacanciesConfigCreateComponent, InnerHtmlPipe } from './Models/Settings/VacanciesConfig/model-vacancies-config-create/model-vacancies-config-create.component';
+
 
 
 
@@ -99,7 +106,13 @@ import { ModelExamDetailsCreateComponent } from './Models/Settings/Exam_Details/
    ConfirmationComponent,
    ExamDetailsComponent,
    ExamDetailsListComponent,
-   ModelExamDetailsCreateComponent
+   ModelExamDetailsCreateComponent,
+   ApplicationForwardComponent,
+   DesignationListComponent,
+   ModelDesignationCreateComponent,
+   VacanciesConfigListComponent,
+   ModelVacanciesConfigCreateComponent,
+   InnerHtmlPipe
   ],
   imports: [
     BrowserModule,
@@ -119,7 +132,9 @@ import { ModelExamDetailsCreateComponent } from './Models/Settings/Exam_Details/
     MatMenuModule,
     MatDatepickerModule,
     MatNativeDateModule,
-    NgSelectModule
+    NgSelectModule,
+    FroalaEditorModule.forRoot(),
+    FroalaViewModule.forRoot()
   ],
   providers: [],
   entryComponents: [ModelEditQuestionAnswersComponent,
@@ -136,7 +151,10 @@ import { ModelExamDetailsCreateComponent } from './Models/Settings/Exam_Details/
     ModelCategoryCreateComponent,
     ModelExamConfigCreateComponent,
     ConfirmationComponent,
-    ModelExamDetailsCreateComponent
+    ModelExamDetailsCreateComponent,
+    ApplicationForwardComponent,
+    ModelDesignationCreateComponent,
+    ModelVacanciesConfigCreateComponent
   ],
   bootstrap: [AppComponent]
 })

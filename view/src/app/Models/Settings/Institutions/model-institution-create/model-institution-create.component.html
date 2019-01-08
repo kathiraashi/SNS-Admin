@@ -44,6 +44,22 @@
                </p>
             </div>
             <div class="col-sm-12 Form_Select">
+               <label>Designation's:</label>
+               <ng-select class="NgSelect ValueBold"
+                           formControlName="Designation"
+                           [items]="_Designation"
+                           bindLabel="Designation"
+                           bindValue="_id"
+                           [hideSelected]="true"
+                           [multiple]="true"
+                           [searchable]="true"
+                           placeholder="Designation">
+               </ng-select>
+               <p class="error" *ngIf="Form.controls['Designation'].errors && !Form.controls['Designation'].pristine">
+                  <span *ngIf="Form.controls['Designation'].errors.required"> Designation's is required</span>
+               </p>
+            </div>
+            <div class="col-sm-12 Form_Select">
                <label> Departments: </label>
                <ng-select class="NgSelect ValueBold"
                            formControlName="Departments"
@@ -126,6 +142,13 @@
                <div class="dots"> : </div>
                <div class="Data"> 
                   <img style="max-height: 120px" src="http://localhost:4000/API/Uploads/Institutions/{{Data?.Image?.filename}}" alt="">
+               </div>
+            </div>
+            <div class="view_item">
+               <div class="Static"> Designation's </div>
+               <div class="dots"> : </div>
+               <div class="Data"> 
+                  <span class="Badge" *ngFor="let Designation of Data.Designation; let j=index"> {{Designation?.Designation}} </span> 
                </div>
             </div>
             <div class="view_item">

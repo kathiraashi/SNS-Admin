@@ -1,5 +1,15 @@
 <!-- Main Section -->
 <div class="Main_Section">
+   <div class="row" *ngIf="CandidateData['If_Referred_To'] || CandidateData['If_Referred_From']">
+      <div class="col-sm-12">
+         <h5 class="Referral" *ngIf="CandidateData['If_Referred_From']">
+            <small> this Application Referred From </small> {{CandidateData['Referred_From']?.Institution?.Institution}}
+         </h5>
+         <h5 class="Referral" *ngIf="CandidateData['If_Referred_To']">
+            <small> this Application Forwarded to </small> {{CandidateData['Referred_To']?.Institution?.Institution}}
+         </h5>
+      </div>
+   </div>
    <div class="row">
       <div class="col-sm-12">
          <div class="Section"> <!-- Section Start-->

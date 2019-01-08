@@ -1,4 +1,14 @@
 <div class="Main_Section">
+   <div class="row" *ngIf="CandidateData['If_Referred_To'] || CandidateData['If_Referred_From']">
+      <div class="col-sm-12">
+         <h5 class="Referral" *ngIf="CandidateData['If_Referred_From']">
+            <small> this Application Referred From </small> {{CandidateData['Referred_From']?.Institution?.Institution}}
+         </h5>
+         <h5 class="Referral" *ngIf="CandidateData['If_Referred_To']">
+            <small> this Application Forwarded to </small> {{CandidateData['Referred_To']?.Institution?.Institution}}
+         </h5>
+      </div>
+   </div>
    <div class="row">
       <div class="col-sm-6">
          <div class="Section" style="margin-bottom: 0px;">
@@ -138,7 +148,7 @@
             </div>
          </div>
          <div *ngIf="Exam_Data['InterviewResult'] !== undefined" class="Section"> <!-- Section Start-->
-            <div class="Section_Identity"> <h5 class="Identity"> Finally Interview Result </h5> </div>
+            <div class="Section_Identity"> <h5 class="Identity"> Final Interview Result </h5> </div>
             <div class="Section_Data">
                <div class="Data">
                   <div class="Title"> Final Result <span> : </span> </div>
@@ -159,7 +169,7 @@
             </div>
          </div>
          <br>
-         <div class="row">
+         <div class="row" *ngIf="!CandidateData['If_Referred_To']">
             <div class="col-sm-12 text-right">
                <button *ngIf="CandidateData['Current_Stage'] === 'Stage_4'" mat-raised-button color="primary" (click)="openModal(template)"> Update Result </button>
                <button *ngIf="CandidateData['Current_Stage'] === 'Stage_5'" mat-raised-button color="primary" (click)="openLargeModal(templateGd)"> Group Discussion Result </button>

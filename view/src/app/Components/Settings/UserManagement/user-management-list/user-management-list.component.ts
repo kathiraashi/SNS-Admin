@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
-import { BsModalService } from 'ngx-bootstrap/modal';
-import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
+import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
+
 
 import { ModelUserCreateUserManagementComponent } from './../../../../Models/Settings/UserManagement/model-user-create-user-management/model-user-create-user-management.component';
 
@@ -22,8 +22,8 @@ export class UserManagementListComponent implements OnInit {
    bsModalRef: BsModalRef;
 
    _List: any[] = [];
-   User_Id;
-   User_Type;
+   User_Id: any;
+   User_Type: string;
 
    constructor(
                private modalService: BsModalService,
@@ -35,7 +35,14 @@ export class UserManagementListComponent implements OnInit {
                this.User_Id = this.Login_Service.LoginUser_Info()['_id'];
                this.User_Type = this.Login_Service.LoginUser_Info()['User_Type'];
 
-               const Data = { User_Id : this.User_Id };
+               const Query = { };
+               if (this.User_Type !== 'Admin' && this.User_Type !== 'Sub-Admin') {
+                  Query['Institution'] = this.Login_Service.LoginUser_Info()['Institution']['_id'];
+                  if (this.User_Type !== 'Principle') {
+                     Query['Department'] = this.Login_Service.LoginUser_Info()['Department']['_id'];
+                  }
+               }
+               const Data = { User_Id : this.User_Id, Query: Query };
                let Info = CryptoJS.AES.encrypt(JSON.stringify(Data), 'SecretKeyIn@123');
                Info = Info.toString();
                this.Service.Users_List({'Info': Info}).subscribe( response => {
