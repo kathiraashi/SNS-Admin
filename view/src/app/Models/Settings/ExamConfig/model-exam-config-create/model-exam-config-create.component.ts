@@ -32,8 +32,9 @@ export class ModelExamConfigCreateComponent implements OnInit {
    Uploading: Boolean = false;
    Form: FormGroup;
    User_Id: any;
-   User_Type: any;
 
+   Restricted_Institution: any = null;
+   Restricted_Department: any = null;
    Config: any;
 
    constructor( public bsModalRef: BsModalRef,
@@ -45,7 +46,8 @@ export class ModelExamConfigCreateComponent implements OnInit {
                 public form_builder: FormBuilder
             ) {
                this.User_Id = this.Login_Service.LoginUser_Info()['_id'];
-               this.User_Type = this.Login_Service.LoginUser_Info()['User_Type'];
+               this.Restricted_Institution = this.Login_Service.LoginUser_Info()['Institution'];
+               this.Restricted_Department = this.Login_Service.LoginUser_Info()['Department'];
             }
 
    ngOnInit() {
@@ -55,24 +57,28 @@ export class ModelExamConfigCreateComponent implements OnInit {
          const Data = {'User_Id' : this.User_Id };
          let Info = CryptoJS.AES.encrypt(JSON.stringify(Data), 'SecretKeyIn@123');
          Info = Info.toString();
-         if (this.User_Type === 'Admin' || this.User_Type === 'Sub-Admin' || this.User_Type === 'Principle') {
+         if (this.Restricted_Department === null || this.Restricted_Department === undefined) {
             this.Institution_Service.Institution_List({'Info': Info}).subscribe( response => {
                const ResponseData = JSON.parse(response['_body']);
                if (response['status'] === 200 && ResponseData['Status'] ) {
                   const CryptoBytes  = CryptoJS.AES.decrypt(ResponseData['Response'], 'SecretKeyOut@123');
                   const DecryptedData = JSON.parse(CryptoBytes.toString(CryptoJS.enc.Utf8));
-                  if (this.Type === 'Create' && this.User_Type === 'Principle') {
-                     this._Institutions = [this.Login_Service.LoginUser_Info()['Institution']];
-                     const _index = DecryptedData.findIndex(obj => obj._id === this._Institutions[0]['_id'] );
-                     this._Departments = DecryptedData[_index].Departments;
-                     this.Form.controls['Institution'].setValue(this._Institutions[0]['_id']);
+                  if (this.Restricted_Institution !== null && this.Restricted_Institution !== undefined) {
+                     this._Institutions = DecryptedData.filter(obj => obj._id === this.Restricted_Institution['_id'] );
+                     this._Departments = this._Institutions[0].Departments;
+                     this.Form.controls['Institution'].setValue(this.Restricted_Institution['_id']);
+                     this.Form.controls['Institution'].disable();
+                     if (this.Type === 'Edit') {
+                        this.Form.controls['Department'].setValue(this.Data.Department._id);
+                     }
                   } else {
                      this._Institutions = DecryptedData;
-                  }
-                  if (this.Type === 'Edit') {
-                     this.Form.controls['Institution'].setValue(this.Data.Institution._id);
-                     this._Departments.push(this.Data.Department);
-                     this.Form.controls['Department'].setValue(this.Data.Department._id);
+                     if (this.Type === 'Edit') {
+                        this.Form.controls['Institution'].setValue(this.Data.Institution._id);
+                        const _index = this._Institutions.findIndex(obj => obj._id === this.Data.Institution._id );
+                        this._Departments = DecryptedData[_index].Departments;
+                        this.Form.controls['Department'].setValue(this.Data.Department._id);
+                     }
                   }
                } else if (response['status'] === 400 || response['status'] === 417 && !ResponseData['Status']) {
                   this.Toastr.NewToastrMessage({ Type: 'Error', Message: ResponseData['Message'] });
@@ -83,7 +89,16 @@ export class ModelExamConfigCreateComponent implements OnInit {
                }
             });
          } else {
-            this.UserPermissionBased();
+            this._Institutions = [this.Restricted_Institution];
+            setTimeout(() => {
+               this.Form.controls['Institution'].setValue(this.Restricted_Institution['_id']);
+               this.Form.controls['Institution'].disable();
+            }, 100);
+            this._Departments = [this.Restricted_Department];
+            setTimeout(() => {
+               this.Form.controls['Department'].setValue(this.Restricted_Department['_id']);
+               this.Form.controls['Department'].disable();
+            }, 100);
          }
 
 

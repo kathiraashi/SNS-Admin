@@ -32,7 +32,8 @@
                <th>Phone</th>
                <th>Institution</th>
                <th>Department</th>
-               <th>User Type</th>
+               <th>Designation</th>
+               <th> Action </th>
             </tr>
             </thead>
             <tbody>
@@ -56,7 +57,12 @@
                   <span class="Style_1"> {{item?.Department?.Department}} </span>
                </td>
                <td>
-                  <span class="Style_1"> {{item['User_Type']}}  </span>
+                  <span class="Style_1"> {{item?.Designation?.Designation}}  </span>
+               </td>
+               <td>
+                  <button (click)="ViewUser(i)" class="Table_Action_mini Bg_Info" mat-mini-fab color="primary">
+                     <i class="material-icons">zoom_in</i>
+                  </button>
                </td>
             </tr>
          </tbody>

@@ -41,8 +41,11 @@ var crypto = require("crypto");
          res.status(400).send({Status: false, Message: "User Password can not be empty" });
       } else {
          AdminModel.User_Management.findOne({'User_Name': { $regex : new RegExp("^" + ReceivingData.User_Name + "$", "i") }, 'User_Password': ReceivingData.User_Password, 'Active_Status': true}, { User_Password: 0 }, {})
-         .populate({ path: 'Institution', select: ['Institution'] })
-         .populate({ path: 'Department', select: ['Department'] })
+         .populate({ path: 'Institution', select: 'Institution' })
+         .populate({ path: 'Department', select: 'Department' })
+         .populate({ path: 'Designation', select: 'Designation' })
+         .populate({ path: 'Created_By', select: 'Name' })
+         .populate({ path: 'Last_ModifiedBy', select: 'Name' })
          .exec(function(err, result) {
             if(err) {
                ErrorManagement.ErrorHandling.ErrorLogCreation(req, 'User Details Validate Query Error', 'RegisterAndLogin.controller.js', err);
@@ -98,7 +101,7 @@ var crypto = require("crypto");
          res.status(400).send({Status: false, Message: "User Name can not be empty" });
       } else if(!ReceivingData.User_Password || ReceivingData.User_Password === '' ) {
          res.status(400).send({Status: false, Message: "User Password can not be empty" });
-      } else if(!ReceivingData.User_Type || ReceivingData.User_Type === '' ) {
+      } else if(!ReceivingData.Designation || ReceivingData.Designation === '' ) {
          res.status(400).send({Status: false, Message: "User Type can not be empty " });
       } else {
          if (ReceivingData.Institution && ReceivingData.Institution !== null && ReceivingData.Institution !== '') {
@@ -111,13 +114,29 @@ var crypto = require("crypto");
          } else {
             ReceivingData.Department = null;
          }
+         if (ReceivingData.Designation && ReceivingData.Designation !== null && ReceivingData.Designation !== '') {
+            ReceivingData.Designation = mongoose.Types.ObjectId(ReceivingData.Designation)
+         } else {
+            ReceivingData.Designation = null;
+         }
          var CreateUser_Management = new AdminModel.User_Management({
             User_Name : ReceivingData.User_Name,
             User_Password : ReceivingData.User_Password,
             Name : ReceivingData.Name,
-            Phone : ReceivingData.Phone || '',
+            Phone : ReceivingData.Phone,
             Email : ReceivingData.Email,
-            User_Type: ReceivingData.User_Type,
+            Designation: ReceivingData.Designation,
+            ApplicationManagement_Permission: ReceivingData.ApplicationManagement_Permission,
+            Q_A_Permission: ReceivingData.Q_A_Permission,
+            OnlineExamUpdate_Permission: ReceivingData.OnlineExamUpdate_Permission,
+            GD_Permission: ReceivingData.GD_Permission,
+            Technical_Permission: ReceivingData.Technical_Permission,
+            Hr_Permission: ReceivingData.Hr_Permission,
+            BasicConfig_Permission: ReceivingData.BasicConfig_Permission,
+            AdvancedConfig_Permission: ReceivingData.AdvancedConfig_Permission,
+            UserManagement_Permission: ReceivingData.UserManagement_Permission,
+            Institution_Restricted: ReceivingData.Institution_Restricted,
+            Department_Restricted: ReceivingData.Department_Restricted,
             Institution: ReceivingData.Institution,
             Department: ReceivingData.Department,
             Created_By : mongoose.Types.ObjectId(ReceivingData.User_Id),
@@ -131,8 +150,11 @@ var crypto = require("crypto");
                res.status(400).send({Status: false, Message: "Some error occurred while creating the User!."});
             } else {
                AdminModel.User_Management.findOne({'_id': result._id}, {}, {})
-               .populate({ path: 'Institution', select: ['Institution'] })
-               .populate({ path: 'Department', select: ['Department'] })
+               .populate({ path: 'Designation', select: 'Designation' })
+               .populate({ path: 'Institution', select: 'Institution' })
+               .populate({ path: 'Department', select: 'Department' })
+               .populate({ path: 'Created_By', select: 'Name' })
+               .populate({ path: 'Last_ModifiedBy', select: 'Name' })
                .exec(function(err, result) {
                   if(err) {
                      ErrorManagement.ErrorHandling.ErrorLogCreation(req, 'User List Find Query Error', 'AdminManagement.controller.js', err);
@@ -166,8 +188,11 @@ var crypto = require("crypto");
             FindQuery['Department'] = mongoose.Types.ObjectId(ReceivingData.Query['Department']);
          }
          AdminModel.User_Management.find(FindQuery, {}, {sort: { updatedAt: -1 }})
-         .populate({ path: 'Institution', select: ['Institution'] })
-         .populate({ path: 'Department', select: ['Department'] })
+         .populate({ path: 'Institution', select: 'Institution' })
+         .populate({ path: 'Department', select: 'Department' })
+         .populate({ path: 'Designation', select: 'Designation' })
+         .populate({ path: 'Created_By', select: 'Name' })
+         .populate({ path: 'Last_ModifiedBy', select: 'Name' })
          .exec(function(err, result) { // Users Find Query
             if(err) {
                ErrorManagement.ErrorHandling.ErrorLogCreation(req, 'User List Find Query Error', 'AdminManagement.controller.js', err);

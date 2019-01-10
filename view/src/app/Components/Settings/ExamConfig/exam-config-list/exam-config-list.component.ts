@@ -23,7 +23,9 @@ export class ExamConfigListComponent implements OnInit {
    _List: any[] = [];
 
    User_Id: any;
-   User_Type: any;
+
+   Restricted_Institution: any = null;
+   Restricted_Department: any = null;
 
    constructor(   private modalService: BsModalService,
                   private Service: ExamConfigService,
@@ -31,13 +33,14 @@ export class ExamConfigListComponent implements OnInit {
                   public Login_Service: LoginService
                ) {
                   this.User_Id = this.Login_Service.LoginUser_Info()['_id'];
-                  this.User_Type = this.Login_Service.LoginUser_Info()['User_Type'];
+                  this.Restricted_Institution = this.Login_Service.LoginUser_Info()['Institution'];
+                  this.Restricted_Department = this.Login_Service.LoginUser_Info()['Department'];
 
                   const Query = { };
-                  if (this.User_Type !== 'Admin' && this.User_Type !== 'Sub-Admin') {
-                     Query['Institution'] = this.Login_Service.LoginUser_Info()['Institution']['_id'];
-                     if (this.User_Type !== 'Principle') {
-                        Query['Department'] = this.Login_Service.LoginUser_Info()['Department']['_id'];
+                  if (this.Restricted_Institution !== null && this.Restricted_Institution !== undefined) {
+                     Query['Institution'] = this.Restricted_Institution['_id'];
+                     if (this.Restricted_Department !== null && this.Restricted_Department !== undefined) {
+                        Query['Department'] = this.Restricted_Department['_id'];
                      }
                   }
                   const Data = { User_Id : this.User_Id, Query: Query };

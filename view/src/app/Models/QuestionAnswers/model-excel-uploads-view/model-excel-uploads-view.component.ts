@@ -31,9 +31,12 @@ export class ModelExcelUploadsViewComponent implements OnInit {
    Uploading: Boolean = false;
 
    onClose: Subject<any>;
-   User_Id;
-   User_Type;
-   _Data;
+   User_Id: any;
+
+   Restricted_Institution: any = null;
+   Restricted_Department: any = null;
+
+   _Data: any;
 
    Form: FormGroup;
 
@@ -45,7 +48,8 @@ export class ModelExcelUploadsViewComponent implements OnInit {
       public Department_Service: DepartmentService,
       public Institution_Service: InstitutionService) {
          this.User_Id = this.Login_Service.LoginUser_Info()['_id'];
-         this.User_Type = this.Login_Service.LoginUser_Info()['User_Type'];
+         this.Restricted_Institution = this.Login_Service.LoginUser_Info()['Institution'];
+         this.Restricted_Department = this.Login_Service.LoginUser_Info()['Department'];
       }
 
    ngOnInit() {
@@ -68,17 +72,16 @@ export class ModelExcelUploadsViewComponent implements OnInit {
             this.Toastr.NewToastrMessage({ Type: 'Error', Message: 'Categories List Getting Error!, But not Identify!' });
          }
       });
-      if (this.User_Type === 'Admin' || this.User_Type === 'Sub-Admin' || this.User_Type === 'Principle') {
+      if (this.Restricted_Department === null || this.Restricted_Department === undefined) {
          this.Institution_Service.Institution_List({'Info': Info}).subscribe( response => {
             const ResponseData = JSON.parse(response['_body']);
             if (response['status'] === 200 && ResponseData['Status'] ) {
                const CryptoBytes  = CryptoJS.AES.decrypt(ResponseData['Response'], 'SecretKeyOut@123');
                const DecryptedData = JSON.parse(CryptoBytes.toString(CryptoJS.enc.Utf8));
-               if (this.User_Type === 'Principle') {
-                  this._Institutions = [this.Login_Service.LoginUser_Info()['Institution']];
-                  const _index = DecryptedData.findIndex(obj => obj._id === this._Institutions[0]['_id'] );
-                  this._Departments = DecryptedData[_index].Departments;
-                  this.Form.controls['Institution'].setValue(this._Institutions[0]['_id']);
+               if (this.Restricted_Institution !== null && this.Restricted_Institution !== undefined) {
+                  this._Institutions = DecryptedData.filter(obj => obj._id === this.Restricted_Institution['_id'] );
+                  this._Departments = this._Institutions[0].Departments;
+                  this.Form.controls['Institution'].setValue(this.Restricted_Institution['_id']);
                   this.Form.controls['Institution'].disable();
                } else {
                   this._Institutions = DecryptedData;
@@ -92,7 +95,16 @@ export class ModelExcelUploadsViewComponent implements OnInit {
             }
          });
       } else {
-         this.UserPermissionBased();
+         this._Institutions = [this.Restricted_Institution];
+         setTimeout(() => {
+            this.Form.controls['Institution'].setValue(this.Restricted_Institution['_id']);
+            this.Form.controls['Institution'].disable();
+         }, 100);
+         this._Departments = [this.Restricted_Department];
+         setTimeout(() => {
+            this.Form.controls['Department'].setValue(this.Restricted_Department['_id']);
+            this.Form.controls['Department'].disable();
+         }, 100);
       }
 
       this.Form = new FormGroup({
@@ -105,30 +117,17 @@ export class ModelExcelUploadsViewComponent implements OnInit {
    }
 
 
-   UserPermissionBased() {
-      setTimeout(() => {
-         this._Institutions = [this.Login_Service.LoginUser_Info()['Institution']];
-         const Institution = this.Login_Service.LoginUser_Info()['Institution']['_id'];
-         setTimeout(() => {
-            this.Form.controls['Institution'].setValue(Institution);
-            this.Form.controls['Institution'].disable();
-         }, 100);
-         this._Departments = [this.Login_Service.LoginUser_Info()['Department']];
-         const Department = this.Login_Service.LoginUser_Info()['Department']['_id'];
-         setTimeout(() => {
-            this.Form.controls['Department'].setValue(Department);
-            this.Form.controls['Department'].disable();
-         }, 100);
-      }, 200);
-   }
-
    InstitutionChange() {
-      const Institution_Id = this.Form.controls['Institution'].value;
-      const _index = this._Institutions.findIndex(obj => obj._id === Institution_Id );
-      this._Departments = this._Institutions[_index].Departments;
+      const Institution = this.Form.controls['Institution'].value;
       this.Form.controls['Department'].setValue(null);
+      this._Departments = [];
+      if (Institution !== '' && Institution !== null && Institution !== undefined) {
+         if ((this.Restricted_Institution === null || this.Restricted_Institution === undefined) && (this.Restricted_Institution === null || this.Restricted_Institution === undefined))  {
+            const _index = this._Institutions.findIndex(obj => obj._id === Institution );
+            this._Departments = this._Institutions[_index].Departments;
+         }
+      }
    }
-
    DeleteQuestion(_index) {
       this._Data.splice(_index, 1);
    }

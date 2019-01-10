@@ -1,0 +1,109 @@
+<!-- If View The User Details -->
+<div class="Modal_Content">
+   <div class="Modal_Header">
+      <p> View User </p>
+      <span data-dismiss="modal" (click)="bsModalRef.hide()">&times;</span>
+   </div>
+   <div class="Model_Body">
+      <div class="row">
+         <div class="col-sm-6">
+            <div class="view_item">
+               <div class="Static"> Name </div>
+               <div class="dots"> : </div>
+               <div class="Data"> {{Data?.Name}}</div>
+            </div>
+            <div class="view_item">
+               <div class="Static"> User Name </div>
+               <div class="dots"> : </div>
+               <div class="Data"> {{Data?.User_Name}}</div>
+            </div>
+            <div class="view_item">
+               <div class="Static"> Email </div>
+               <div class="dots"> : </div>
+               <div class="Data"> {{Data?.Email}}</div>
+            </div>
+            <div class="view_item">
+               <div class="Static"> Phone </div>
+               <div class="dots"> : </div>
+               <div class="Data"> {{Data?.Phone}}</div>
+            </div>
+            <div class="view_item">
+               <div class="Static"> Designation </div>
+               <div class="dots"> : </div>
+               <div class="Data"> {{Data?.Designation?.Designation}}</div>
+            </div>
+            <div class="view_item">
+               <div class="Static"> Created By </div>
+               <div class="dots"> : </div>
+               <div class="Data"> {{Data.Created_By.Name}} </div>
+            </div>
+            <div class="view_item">
+               <div class="Static">Last Modified By </div>
+               <div class="dots"> : </div>
+               <div class="Data"> {{Data.Last_ModifiedBy.Name}}</div>
+            </div>
+            <div class="view_item">
+               <div class="Static"> Created Date </div>
+               <div class="dots"> : </div>
+               <div class="Data"> {{Data.createdAt | date:'medium'}}</div>
+            </div>
+            <div class="view_item">
+               <div class="Static">Last Modified Date  </div>
+               <div class="dots"> : </div>
+               <div class="Data"> {{Data.updatedAt | date:'medium'}}</div>
+            </div>
+         </div>
+         <div class="col-sm-6">
+            <div class="view_item" *ngIf="Data?.Institution_Restricted">
+               <div class="Static"> Restricted Institution </div>
+               <div class="dots"> : </div>
+               <div class="Data"> {{Data?.Institution?.Institution}}</div>
+            </div>
+            <div class="view_item" *ngIf="Data?.Department_Restricted">
+               <div class="Static"> Restricted Department </div>
+               <div class="dots"> : </div>
+               <div class="Data"> {{Data?.Department?.Department}}</div>
+            </div>
+            <div class="row">
+               <div class="col-sm-1"></div>
+               <div class="col-sm-11">
+                  <mat-checkbox [checked]="Data.Q_A_Permission" [disabled]="true" color="theme" class="Checkbox_Design"> Q&A Permission</mat-checkbox>
+               </div>
+               <div class="col-sm-1"></div>
+               <div class="col-sm-11">
+                  <mat-checkbox [checked]="Data.GD_Permission" [disabled]="true" color="theme" class="Checkbox_Design"> GD Permission</mat-checkbox>
+               </div>
+               <div class="col-sm-1"></div>
+               <div class="col-sm-11">
+                  <mat-checkbox [checked]="Data.Technical_Permission" [disabled]="true" color="theme" class="Checkbox_Design"> Technical Permission</mat-checkbox>
+               </div>
+               <div class="col-sm-1"></div>
+               <div class="col-sm-11">
+                  <mat-checkbox [checked]="Data.Hr_Permission" [disabled]="true" color="theme" class="Checkbox_Design"> HR Permission</mat-checkbox>
+               </div>
+               <div class="col-sm-1"></div>
+               <div class="col-sm-11">
+                  <mat-checkbox [checked]="Data.OnlineExamUpdate_Permission" [disabled]="true" color="theme" class="Checkbox_Design"> Online Exam Result Update Permission</mat-checkbox>
+               </div>
+               <div class="col-sm-1"></div>
+               <div class="col-sm-11">
+                  <mat-checkbox  [checked]="Data.ApplicationManagement_Permission" color="theme" class="Checkbox_Design"> Application Accept, Forward, Exam Assign and Delete Permissions </mat-checkbox>
+               </div>
+               <div class="col-sm-1"></div>
+               <div class="col-sm-11">
+                  <mat-checkbox [checked]="Data.BasicConfig_Permission" [disabled]="true" color="theme" class="Checkbox_Design"> Vacancies, Categories, Exam Config And Exam Details Managing Permissions </mat-checkbox>
+               </div>
+               <div class="col-sm-1"></div>
+               <div class="col-sm-11">
+                  <mat-checkbox [checked]="Data.AdvancedConfig_Permission" [disabled]="true" color="theme" class="Checkbox_Design"> Department, Designation And Institution Config Permissions </mat-checkbox>
+               </div>
+               <div class="col-sm-1"></div>
+               <div class="col-sm-11">
+                  <mat-checkbox [checked]="Data.UserManagement_Permission" [disabled]="true" color="theme" class="Checkbox_Design"> User Management Permissions </mat-checkbox>
+               </div>
+            </div>
+         </div>
+      </div>
+     
+   </div>
+</div>

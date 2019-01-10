@@ -34,9 +34,14 @@ export class ExamDetailsComponent implements OnInit {
 
    UpdateOptions: any[] = ['Pass', 'Fail'];
 
-   User_Id;
-   User_Type;
-   Candidate_Id;
+   User_Id: any;
+   Application_Management: any;
+   OnlineExam_Management: any;
+   GD_Management: any;
+   Technical_Management: any;
+   Hr_Management: any;
+   Candidate_Id: any;
+
    If_Pass: Boolean = false;
    If_PassOne: Boolean = false;
    MinDate: Date = new Date();
@@ -57,7 +62,13 @@ export class ExamDetailsComponent implements OnInit {
                public Login_Service: LoginService,
                private modalService: BsModalService
             ) {   this.User_Id = this.Login_Service.LoginUser_Info()['_id'];
-                  this.User_Type = this.Login_Service.LoginUser_Info()['User_Type'];
+
+                  this.Application_Management = this.Login_Service.LoginUser_Info()['ApplicationManagement_Permission'];
+                  this.OnlineExam_Management = this.Login_Service.LoginUser_Info()['OnlineExamUpdate_Permission'];
+                  this.GD_Management = this.Login_Service.LoginUser_Info()['GD_Permission'];
+                  this.Technical_Management = this.Login_Service.LoginUser_Info()['Technical_Permission'];
+                  this.Hr_Management = this.Login_Service.LoginUser_Info()['Hr_Permission'];
+
                   this.active_route.url.subscribe((u) => {
                      this.Candidate_Id = this.active_route.snapshot.params['Candidate_Id'];
                      const Data = {'User_Id' : this.User_Id, Candidate_Id: this.Candidate_Id };
@@ -182,6 +193,20 @@ export class ExamDetailsComponent implements OnInit {
                const CryptoBytes  = CryptoJS.AES.decrypt(ResponseData['Response'], 'SecretKeyOut@123');
                const DecryptedData = JSON.parse(CryptoBytes.toString(CryptoJS.enc.Utf8));
                this.Exam_Data = DecryptedData;
+               this.Exam_Data['ExamConfig']['Config'] = this.Exam_Data['ExamConfig']['Config'].map(obj => {
+                                                            obj.Answered = 0;
+                                                            obj.CorrectAnswer = 0;
+                                                            const Filter_Arr = this.Exam_Data['Questions'].filter(obj_1 => obj_1.Category === obj.Category['_id']);
+                                                            Filter_Arr.map(obj_1 => {
+                                                               if (obj_1.Status === 'Answered') {
+                                                                  obj.Answered = obj.Answered + 1;
+                                                               }
+                                                               if (obj_1.Answer === obj_1.CandidateAnswer) {
+                                                                  obj.CorrectAnswer = obj.CorrectAnswer + 1;
+                                                               }
+                                                            });
+                                                            return obj;
+                                                         });
                this.CandidateData['Current_Stage'] = 'Stage_5';
             } else if (response['status'] === 400 || response['status'] === 417 && !ResponseData['Status']) {
                this.Toastr.NewToastrMessage({ Type: 'Error', Message: ResponseData['Message'] });

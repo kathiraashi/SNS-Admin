@@ -31,7 +31,6 @@ export class ViewQuestionAnswersComponent implements OnInit {
    Loader: Boolean = true;
    FilterLoading: Boolean = false;
    User_Id;
-   User_Type;
 
    _Institutions: any[] = [];
    _Departments: any[] = [];
@@ -40,6 +39,9 @@ export class ViewQuestionAnswersComponent implements OnInit {
    Institution = null;
    Department = null;
    Category = null;
+
+   Restricted_Institution: any = null;
+   Restricted_Department: any = null;
 
    _List: any[] = [];
    _FilteredList: any[] = [];
@@ -56,15 +58,16 @@ export class ViewQuestionAnswersComponent implements OnInit {
       public Institution_Service: InstitutionService,
       public Login_Service: LoginService) {
          this.User_Id = this.Login_Service.LoginUser_Info()['_id'];
-         this.User_Type = this.Login_Service.LoginUser_Info()['User_Type'];
+         this.Restricted_Institution = this.Login_Service.LoginUser_Info()['Institution'];
+         this.Restricted_Department = this.Login_Service.LoginUser_Info()['Department'];
       }
 
    ngOnInit() {
       const Query = { };
-      if (this.User_Type !== 'Admin' && this.User_Type !== 'Sub-Admin') {
-         Query['Institution'] = this.Login_Service.LoginUser_Info()['Institution']['_id'];
-         if (this.User_Type !== 'Principle') {
-            Query['Department'] = this.Login_Service.LoginUser_Info()['Department']['_id'];
+      if (this.Restricted_Institution !== null && this.Restricted_Institution !== undefined) {
+         Query['Institution'] = this.Restricted_Institution['_id'];
+         if (this.Restricted_Department !== null && this.Restricted_Department !== undefined) {
+            Query['Department'] = this.Restricted_Department['_id'];
          }
       }
       const Data = { User_Id : this.User_Id, Query: Query };
@@ -100,17 +103,16 @@ export class ViewQuestionAnswersComponent implements OnInit {
             this.Toastr.NewToastrMessage({ Type: 'Error', Message: 'Categories List Getting Error!, But not Identify!' });
          }
       });
-      if (this.User_Type === 'Admin' || this.User_Type === 'Sub-Admin' || this.User_Type === 'Principle') {
+      if (this.Restricted_Department === null || this.Restricted_Department === undefined) {
          this.Institution_Service.Institution_List({'Info': Info}).subscribe( response => {
             const ResponseData = JSON.parse(response['_body']);
             if (response['status'] === 200 && ResponseData['Status'] ) {
                const CryptoBytes  = CryptoJS.AES.decrypt(ResponseData['Response'], 'SecretKeyOut@123');
                const DecryptedData = JSON.parse(CryptoBytes.toString(CryptoJS.enc.Utf8));
-               if (this.User_Type === 'Principle') {
-                  this._Institutions = [this.Login_Service.LoginUser_Info()['Institution']];
-                  const _index = DecryptedData.findIndex(obj => obj._id === this._Institutions[0]['_id'] );
-                  this._Departments = DecryptedData[_index].Departments;
-                  this.Institution = this._Institutions[0]['_id'];
+               if (this.Restricted_Institution !== null && this.Restricted_Institution !== undefined) {
+                  this._Institutions = DecryptedData.filter(obj => obj._id === this.Restricted_Institution['_id'] );
+                  this._Departments = this._Institutions[0].Departments;
+                  this.Institution = this.Restricted_Institution['_id'];
                } else {
                   this._Institutions = DecryptedData;
                }
@@ -123,32 +125,26 @@ export class ViewQuestionAnswersComponent implements OnInit {
             }
          });
       } else {
-         this.UserPermissionBased();
+         this._Institutions = [this.Restricted_Institution];
+         setTimeout(() => {
+            this.Institution = this.Restricted_Institution['_id'];
+         }, 100);
+         this._Departments = [this.Restricted_Department];
+         setTimeout(() => {
+            this.Department = this.Restricted_Department['_id'];
+         }, 100);
       }
    }
 
 
-   UserPermissionBased() {
-      setTimeout(() => {
-         this._Institutions = [this.Login_Service.LoginUser_Info()['Institution']];
-         const Institution = this.Login_Service.LoginUser_Info()['Institution']['_id'];
-         setTimeout(() => {
-            this.Institution = Institution;
-         }, 100);
-         this._Departments = [this.Login_Service.LoginUser_Info()['Department']];
-         const Department = this.Login_Service.LoginUser_Info()['Department']['_id'];
-         setTimeout(() => {
-            this.Department = Department;
-         }, 100);
-      }, 200);
-   }
-
    InstitutionChange() {
       this.Department = null;
       this._Departments = [];
-      if (this.User_Type === 'Admin' || this.User_Type === 'Sub-Admin' && this.Institution !== '' && this.Institution !== null && this.Institution !== undefined) {
-         const _index = this._Institutions.findIndex(obj => obj._id === this.Institution );
-         this._Departments = this._Institutions[_index].Departments;
+      if (this.Institution !== '' && this.Institution !== null && this.Institution !== undefined) {
+         if ((this.Restricted_Institution === null || this.Restricted_Institution === undefined) && (this.Restricted_Institution === null || this.Restricted_Institution === undefined))  {
+            const _index = this._Institutions.findIndex(obj => obj._id === this.Institution );
+            this._Departments = this._Institutions[_index].Departments;
+         }
       }
    }
 

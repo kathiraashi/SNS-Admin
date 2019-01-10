@@ -21,7 +21,7 @@
                </div>
                <div class="Data">
                   <div class="Title"> Applied Position <span> : </span> </div>
-                  <div class="Value"> {{CandidateData['Basic_Info']?.Post_Applied}} </div>
+                  <div class="Value"> {{CandidateData['Basic_Info']?.Post_Applied?.Designation}} </div>
                </div>
                <div class="Data">
                   <div class="Title"> Applied Department <span> : </span> </div>
@@ -98,19 +98,19 @@
                <div class="Data" style="align-items: unset;">
                   <div class="Title"> Photo  <span> : </span> </div>
                   <div class="Value"> 
-                     <img style="max-width:120px;" src="http://localhost:5000/API/Uploads/CandidatePhotos/{{CandidateData['Files']?.Photo?.filename}}" alt=""> 
+                     <img style="max-width:120px;" src="http://139.59.59.41:5000/API/Uploads/CandidatePhotos/{{CandidateData['Files']?.Photo?.filename}}" alt=""> 
                   </div>
                </div>
                <div class="Data" style="align-items: unset;">
                   <div class="Title"> Signature  <span> : </span> </div>
                   <div class="Value"> 
-                     <img style="max-height:40px;" src="http://localhost:5000/API/Uploads/CandidateSignatures/{{CandidateData['Files']?.Signature?.filename}}" alt=""> 
+                     <img style="max-height:40px;" src="http://139.59.59.41:5000/API/Uploads/CandidateSignatures/{{CandidateData['Files']?.Signature?.filename}}" alt=""> 
                   </div>
                </div>
                <div class="Data">
                   <div class="Title"> Cover Letter  <span> : </span> </div>
                   <div class="Value"> 
-                     <a target="blank" href="http://localhost:5000/API/Uploads/CandidateCoverLater/{{CandidateData['Files']?.Cover_Later?.filename}}" alt=""> View Cover Letter </a>
+                     <a target="blank" href="http://139.59.59.41:5000/API/Uploads/CandidateCoverLater/{{CandidateData['Files']?.Cover_Later?.filename}}" alt=""> View Cover Letter </a>
                   </div>
                </div>
             </div>

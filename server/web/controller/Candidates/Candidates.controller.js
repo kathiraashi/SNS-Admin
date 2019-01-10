@@ -3,6 +3,7 @@ var QA_Model = require('./../../models/Q&A/QuestionAndAnswer.model.js');
 var ExamConfigModel = require('./../../models/Settings/ExamConfig.model');
 var CategoryModel = require('./../../models/Settings/Category.model');
 var DepartmentModel = require('./../../models/Settings/Department.model');
+var DesignationModel = require('./../../models/Settings/Designation.model');
 var ErrorManagement = require('./../../../handling/ErrorHandling.js');
 var mongoose = require('mongoose');
 var CryptoJS = require("crypto-js");
@@ -56,7 +57,7 @@ exports.CandidatesList = function(req, res) {
    if(!ReceivingData.User_Id || ReceivingData.User_Id === '' ) {
       res.status(400).send({Status: false, Message: "User Details can not be empty" });
    }else {
-      var FindQuery = {Status: 'Active' };
+      var FindQuery = { Status: 'Active' };
       if (ReceivingData.Query['Institution']) {
          FindQuery['Basic_Info.Institution'] = mongoose.Types.ObjectId(ReceivingData.Query['Institution']);
       }
@@ -65,6 +66,7 @@ exports.CandidatesList = function(req, res) {
       }
 
       CandidateModel.CandidatesSchema.find(FindQuery, {Activity_Info: 0, Education_Info: 0, Files: 0, Reference_Info: 0}, {})
+      .populate({path: "Basic_Info.Post_Applied", select:"Designation" })
       .populate({path: "Basic_Info.Department", select:["Department", 'Department_Code']})
       .populate({path: "Basic_Info.Institution", select:["Institution", "Institution_Code"]})
       .populate({path: "Referred_To.Institution", select:["Institution", "Institution_Code"]})
@@ -94,6 +96,7 @@ exports.Candidate_View = function(req, res) {
    }else {
       CandidateModel.CandidatesSchema
       .findOne({_id: ReceivingData.Candidate_Id, Status: 'Active' }, {}, {})
+      .populate({path: "Basic_Info.Post_Applied", select:"Designation" })
       .populate({path: "Basic_Info.Department", select:["Department", 'Department_Code']})
       .populate({path: "Basic_Info.Institution", select:["Institution", "Institution_Code"]})
       .populate({path: "Referred_To.Institution", select:["Institution", "Institution_Code"]})
@@ -123,6 +126,7 @@ exports.Accept_Candidate = function(req, res) {
       res.status(400).send({Status: false, Message: "User Details can not be empty" });
    }else {
       CandidateModel.CandidatesSchema.findOne({'_id': ReceivingData.Candidate_Id}, {}, {})
+      .populate({path: "Basic_Info.Post_Applied", select:"Designation"})
       .populate({path: "Basic_Info.Department", select:"Department"})
       .exec(function(err, result) { // Candidate FindOne Query
          if(err) {
@@ -143,7 +147,7 @@ exports.Accept_Candidate = function(req, res) {
                         from: 'SNS Institutions <sns.info@gmail.com>',
                         to: result.Personal_Info.Email,
                         subject: 'Your Online Application Accepted Confirmation – reg;',
-                        html: TemplateOne(result.Personal_Info.Name, result.Basic_Info.Post_Applied, result_2.Basic_Info.Department.Department, result.Ref_ID )
+                        html: TemplateOne(result.Personal_Info.Name, result_1.Basic_Info.Post_Applied.Designation, result_1.Basic_Info.Department.Department, result.Ref_ID )
                      };
                      mailgun.messages().send(SendData, function (error, body) {
                         if (error) {
@@ -152,6 +156,40 @@ exports.Accept_Candidate = function(req, res) {
                            res.status(200).send({Status: true, Message: 'Candidate Successfully Move To Next Stage' });
                         }
                      });
+                  }
+               });
+            } else {
+               res.status(400).send({Status: false, Message: "Candidate Details can not be valid!" });
+            }
+         }
+      });
+   }
+};
+
+
+exports.Delete_Candidate = function(req, res) {
+   var CryptoBytes  = CryptoJS.AES.decrypt(req.body.Info, 'SecretKeyIn@123');
+   var ReceivingData = JSON.parse(CryptoBytes.toString(CryptoJS.enc.Utf8));
+
+   if(!ReceivingData.Candidate_Id || ReceivingData.Candidate_Id === '' ) {
+      res.status(400).send({Status: false, Message: "Candidate Details can not be empty" });
+   } else if (!ReceivingData.Modified_By || ReceivingData.Modified_By === ''  ) {
+      res.status(400).send({Status: false, Message: "Modified User Details can not be empty" });
+   }else {
+      CandidateModel.CandidatesSchema.findOne({'_id': mongoose.Types.ObjectId(ReceivingData.Candidate_Id)}, {}, {}, function(err, result) {
+         if(err) {
+            ErrorManagement.ErrorHandling.ErrorLogCreation(req, 'Candidate FindOne Query Error', 'Candidate.controller.js', err);
+            res.status(417).send({status: false, Error:err, Message: "Some error occurred while Find The Question Answer!."});
+         } else {
+            if (result !== null) {
+               result.Status = 'InActive';
+               result.Last_Modified_By = mongoose.Types.ObjectId(ReceivingData.Modified_By);
+               result.save(function(err_1, result_1) { // Candidate Delete Query
+                  if(err_1) {
+                     ErrorManagement.ErrorHandling.ErrorLogCreation(req, 'Candidate Update Query Error', 'Candidate.controller.js');
+                     res.status(417).send({Status: false, Error: err_1, Message: "Some error occurred while Delete the Candidate!."});
+                  } else {
+                     res.status(200).send({Status: true, Message: 'Successfully Deleted' });
                   }
                });
             } else {
@@ -324,6 +362,7 @@ exports.AssignExam = function(req, res) {
 
                      CandidateModel.CandidatesSchema
                      .findOne({_id: result_1.Candidate }, {}, {})
+                     .populate({path: "Basic_Info.Post_Applied", select:"Designation"})
                      .populate({path: "Basic_Info.Department", select:"Department"})
                      .exec(function(err_3, result_3) {
                         if(err_3) {
@@ -334,7 +373,7 @@ exports.AssignExam = function(req, res) {
                               from: 'SNS Institutions <sns.info@gmail.com>',
                               to: result_3.Personal_Info.Email,
                               subject: 'Call for Online Test – reg;',
-                              html: TemplateTwo(result_3.Personal_Info.Name, result_3.Basic_Info.Post_Applied, result_3.Basic_Info.Department.Department, result_3.Ref_ID, result_1._id, result_1.OTP)
+                              html: TemplateTwo(result_3.Personal_Info.Name, result_3.Basic_Info.Post_Applied.Designation, result_3.Basic_Info.Department.Department, result_3.Ref_ID, result_1._id, result_1.OTP)
                            };
                            mailgun.messages().send(SendData, function (error, body) {
                               if (error) {
@@ -370,9 +409,9 @@ exports.Candidate_ExamView = function(req, res) {
       CandidateModel.OnlineExamSchema
       .findOne({Candidate: ReceivingData.Candidate_Id, If_Deleted: false }, {}, {})
       .populate({path: "ExamConfig", select:"Config" })
-      .populate({path: "User_Id", select:["Name", "User_Type"]})
-      .populate({path: "ExamResult_UpdateUser", select:["Name", "User_Type"]})
-      .populate({path: "InterviewResult_UpdateUser", select:["Name", "User_Type"]})
+      .populate({path: "User_Id", select:"Name"})
+      .populate({path: "ExamResult_UpdateUser", select:"Name"})
+      .populate({path: "InterviewResult_UpdateUser", select:"Name"})
       .exec(function(err, result) {
          if(err) {
             ErrorManagement.ErrorHandling.ErrorLogCreation(req, 'Candidate Data Find Query Error', 'Candidates.controller.js', err);
@@ -446,34 +485,42 @@ exports.ExamResult_Update = function(req, res) {
                                  } else {
                                     CandidateModel.OnlineExamSchema
                                     .findOne({'_id': mongoose.Types.ObjectId(ReceivingData.Exam_Id)}, {}, {})
-                                    .populate({path: "User_Id", select:["Name", "User_Type"]})
-                                    .populate({path: "ExamResult_UpdateUser", select:["Name", "User_Type"]})
+                                    .populate({path: "ExamConfig", select:"Config" })
+                                    .populate({path: "User_Id", select:"Name"})
+                                    .populate({path: "ExamResult_UpdateUser", select:"Name"})
                                     .exec(function(err_5, result_5) {
                                        if(err_5) {
                                           ErrorManagement.ErrorHandling.ErrorLogCreation(req, 'Candidate Data Find Query Error', 'Candidates.controller.js', err_5);
                                           res.status(417).send({status: false, Message: "Some error occurred while Find Candidate Data!."});
                                        } else {
-                                          if (ReceivingData.ExamResult === 'Pass') {
-                                             var SendData = {
-                                                from: 'SNS Institutions <sns.info@gmail.com>',
-                                                to: result.Personal_Info.Email,
-                                                subject: 'Call for Group Discussion, Demo Class & Technical/HR Interview – reg;',
-                                                html: TemplateThree(result.Personal_Info.Name, ReceivingData.InterviewDate, ReceivingData.Place )
-                                             };
-                                             mailgun.messages().send(SendData, function (error, body) {
-                                                if (error) {
-                                                   res.status(417).send({ Status: false, Error:error, Message: "Some error occurred while send The E-mail " });
-                                                } else {
-                                                   var ReturnData = CryptoJS.AES.encrypt(JSON.stringify(result_5), 'SecretKeyOut@123');
-                                                   ReturnData = ReturnData.toString();
-                                                   res.status(200).send({Status: true, Response: ReturnData });
-                                                }
-                                             });
-                                          } else {
-                                             var ReturnData = CryptoJS.AES.encrypt(JSON.stringify(result_5), 'SecretKeyOut@123');
-                                             ReturnData = ReturnData.toString();
-                                             res.status(200).send({Status: true, Response: ReturnData });
-                                          }
+                                          Promise.all(
+                                             result_5.ExamConfig.Config.map( async (obj) => {
+                                                obj.Category = await CategoryModel.CategorySchema.findOne({'_id': mongoose.Types.ObjectId(obj.Category) }, {Category: 1}).exec();
+                                                return obj;
+                                             })
+                                          ).then(response => {
+                                             if (ReceivingData.ExamResult === 'Pass') {
+                                                var SendData = {
+                                                   from: 'SNS Institutions <sns.info@gmail.com>',
+                                                   to: result.Personal_Info.Email,
+                                                   subject: 'Call for Group Discussion, Demo Class & Technical/HR Interview – reg;',
+                                                   html: TemplateThree(result.Personal_Info.Name, ReceivingData.InterviewDate, ReceivingData.Place )
+                                                };
+                                                mailgun.messages().send(SendData, function (error, body) {
+                                                   if (error) {
+                                                      res.status(417).send({ Status: false, Error:error, Message: "Some error occurred while send The E-mail " });
+                                                   } else {
+                                                      var ReturnData = CryptoJS.AES.encrypt(JSON.stringify(result_5), 'SecretKeyOut@123');
+                                                      ReturnData = ReturnData.toString();
+                                                      res.status(200).send({Status: true, Response: ReturnData });
+                                                   }
+                                                });
+                                             } else {
+                                                var ReturnData = CryptoJS.AES.encrypt(JSON.stringify(result_5), 'SecretKeyOut@123');
+                                                ReturnData = ReturnData.toString();
+                                                res.status(200).send({Status: true, Response: ReturnData });
+                                             }
+                                          })
                                        }
                                     });
                                  }
@@ -514,6 +561,7 @@ exports.GDResult_Update = function(req, res) {
          } else {
             if (result !== null) {
                result.Current_Stage = 'Stage_6';
+               result.Current_Status = 'GD Completed';
                result.Last_Modified_By = mongoose.Types.ObjectId(ReceivingData.User_Id);
                result.save(function(err_1, result_1) {
                   if(err_1) {
@@ -536,8 +584,8 @@ exports.GDResult_Update = function(req, res) {
                                  } else {
                                     CandidateModel.OnlineExamSchema
                                     .findOne({'_id': mongoose.Types.ObjectId(ReceivingData.Exam_Id)}, {}, {})
-                                    .populate({path: "User_Id", select:["Name", "User_Type"]})
-                                    .populate({path: "ExamResult_UpdateUser", select:["Name", "User_Type"]})
+                                    .populate({path: "User_Id", select:"Name"})
+                                    .populate({path: "ExamResult_UpdateUser", select:"Name"})
                                     .exec(function(err_5, result_5) {
                                        if(err_5) {
                                           ErrorManagement.ErrorHandling.ErrorLogCreation(req, 'Candidate Data Find Query Error', 'Candidates.controller.js', err_5);
@@ -586,6 +634,7 @@ exports.TechnicalResult_Update = function(req, res) {
          } else {
             if (result !== null) {
                result.Current_Stage = 'Stage_7';
+               result.Current_Status = 'Technical Completed';
                result.Last_Modified_By = mongoose.Types.ObjectId(ReceivingData.User_Id);
                result.save(function(err_1, result_1) {
                   if(err_1) {
@@ -608,8 +657,8 @@ exports.TechnicalResult_Update = function(req, res) {
                                  } else {
                                     CandidateModel.OnlineExamSchema
                                     .findOne({'_id': mongoose.Types.ObjectId(ReceivingData.Exam_Id)}, {}, {})
-                                    .populate({path: "User_Id", select:["Name", "User_Type"]})
-                                    .populate({path: "ExamResult_UpdateUser", select:["Name", "User_Type"]})
+                                    .populate({path: "User_Id", select:"Name"})
+                                    .populate({path: "ExamResult_UpdateUser", select:"Name"})
                                     .exec(function(err_5, result_5) {
                                        if(err_5) {
                                           ErrorManagement.ErrorHandling.ErrorLogCreation(req, 'Candidate Data Find Query Error', 'Candidates.controller.js', err_5);
@@ -653,6 +702,8 @@ exports.InterviewResult_Update = function(req, res) {
       res.status(400).send({Status: false, Message: "Hr Interview Result can not be empty" });
    }else {
       CandidateModel.CandidatesSchema.findOne({'_id': mongoose.Types.ObjectId(ReceivingData.Candidate_Id)}, {}, {})
+      .populate({path: "Basic_Info.Post_Applied", select:"Designation"})
+      .populate({path: "Basic_Info.Department", select:"Department"})
       .exec( function(err, result) {
          if(err) {
             ErrorManagement.ErrorHandling.ErrorLogCreation(req, 'Candidate FindOne Query Error', 'Candidates.controller.js', err);
@@ -693,9 +744,9 @@ exports.InterviewResult_Update = function(req, res) {
                                  } else {
                                     CandidateModel.OnlineExamSchema
                                     .findOne({'_id': mongoose.Types.ObjectId(ReceivingData.Exam_Id)}, {}, {})
-                                    .populate({path: "User_Id", select:["Name", "User_Type"]})
-                                    .populate({path: "ExamResult_UpdateUser", select:["Name", "User_Type"]})
-                                    .populate({path: "InterviewResult_UpdateUser", select:["Name", "User_Type"]})
+                                    .populate({path: "User_Id", select:"Name"})
+                                    .populate({path: "ExamResult_UpdateUser", select:"Name"})
+                                    .populate({path: "InterviewResult_UpdateUser", select:"Name"})
                                     .exec(function(err_5, result_5) {
                                        if(err_5) {
                                           ErrorManagement.ErrorHandling.ErrorLogCreation(req, 'Candidate Data Find Query Error', 'Candidates.controller.js', err_5);
@@ -706,7 +757,7 @@ exports.InterviewResult_Update = function(req, res) {
                                                 from: 'SNS Institutions <sns.info@gmail.com>',
                                                 to: result.Personal_Info.Email,
                                                 subject: 'Intimation of Interview results  – reg;',
-                                                html: TemplateFour(result.Personal_Info.Name, result.Basic_Info.Post_Applied, result.Basic_Info.Department.Department, ReceivingData.JoinDate )
+                                                html: TemplateFour(result.Personal_Info.Name, result.Basic_Info.Post_Applied.Designation, result.Basic_Info.Department.Department, ReceivingData.JoinDate )
                                              };
                                              mailgun.messages().send(SendData, function (error, body) {
                                                 if (error) {
@@ -798,16 +849,23 @@ exports.Refer_Candidate = function(req, res) {
                         } else {
                            DepartmentModel.DepartmentSchema.findOne({_id: mongoose.Types.ObjectId(ReceivingData.To_Department_Id)}, {}, {})
                               .exec( function(err_3, result_3 ) {
-                                 if(err_2) {
+                                 if(err_3) {
                                     ErrorManagement.ErrorHandling.ErrorLogCreation(req, 'Department Find Query Error', 'Candidates.controller.js', err_3);
                                  } else {
-                                    var SendData = {
-                                       from: 'SNS Institutions <sns.info@gmail.com>',
-                                       to: result['Personal_Info']['Email'],
-                                       subject: 'Acknowledgement for Submission of Online application – reg;',
-                                       html: TemplateFive(result['Personal_Info']['Name'], result['Basic_Info']['Post_Applied'], result_3.Department, result.Ref_ID )
-                                 };
-                                   mailgun.messages().send(SendData);
+                                    DesignationModel.DesignationSchema.findOne({_id: mongoose.Types.ObjectId(result.Basic_Info.Post_Applied)}, {}, {})
+                                       .exec( function(err_4, result_4 ) {
+                                          if(err_3) {
+                                             ErrorManagement.ErrorHandling.ErrorLogCreation(req, 'Designation Find Query Error', 'Candidates.controller.js', err_4);
+                                          } else {
+                                             var SendData = {
+                                                from: 'SNS Institutions <sns.info@gmail.com>',
+                                                to: result['Personal_Info']['Email'],
+                                                subject: 'Acknowledgement for Submission of Online application – reg;',
+                                                html: TemplateFive(result['Personal_Info']['Name'], result_4['Designation'], result_3.Department, result.Ref_ID )
+                                             };
+                                             mailgun.messages().send(SendData);
+                                          }
+                                       });
                                  }
                               })
                         }
@@ -815,6 +873,7 @@ exports.Refer_Candidate = function(req, res) {
 
                      CandidateModel.CandidatesSchema
                         .findOne({_id: mongoose.Types.ObjectId(ReceivingData.Candidate_Id), Status: 'Active' }, {}, {})
+                        .populate({path: "Basic_Info.Post_Applied", select:"Designation"})
                         .populate({path: "Basic_Info.Department", select:["Department", 'Department_Code']})
                         .populate({path: "Basic_Info.Institution", select:["Institution", "Institution_Code"]})
                         .populate({path: "Referred_To.Institution", select:["Institution", "Institution_Code"]})

@@ -4,6 +4,7 @@ import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
 
 
 import { ModelUserCreateUserManagementComponent } from './../../../../Models/Settings/UserManagement/model-user-create-user-management/model-user-create-user-management.component';
+import { ModelUserManagementViewComponent } from './../../../../Models/Settings/UserManagement/model-user-management-view/model-user-management-view.component';
 
 import { AdminService } from './../../../../Services/Admin/admin.service';
 import { LoginService } from './../../../../Services/LoginService/login.service';
@@ -23,7 +24,9 @@ export class UserManagementListComponent implements OnInit {
 
    _List: any[] = [];
    User_Id: any;
-   User_Type: string;
+
+   Restricted_Institution: any = null;
+   Restricted_Department: any = null;
 
    constructor(
                private modalService: BsModalService,
@@ -33,13 +36,14 @@ export class UserManagementListComponent implements OnInit {
             ) {
                //  Get Users List
                this.User_Id = this.Login_Service.LoginUser_Info()['_id'];
-               this.User_Type = this.Login_Service.LoginUser_Info()['User_Type'];
+               this.Restricted_Institution = this.Login_Service.LoginUser_Info()['Institution'];
+               this.Restricted_Department = this.Login_Service.LoginUser_Info()['Department'];
 
                const Query = { };
-               if (this.User_Type !== 'Admin' && this.User_Type !== 'Sub-Admin') {
-                  Query['Institution'] = this.Login_Service.LoginUser_Info()['Institution']['_id'];
-                  if (this.User_Type !== 'Principle') {
-                     Query['Department'] = this.Login_Service.LoginUser_Info()['Department']['_id'];
+               if (this.Restricted_Institution !== null && this.Restricted_Institution !== undefined) {
+                  Query['Institution'] = this.Restricted_Institution['_id'];
+                  if (this.Restricted_Department !== null && this.Restricted_Department !== undefined) {
+                     Query['Department'] = this.Restricted_Department['_id'];
                   }
                }
                const Data = { User_Id : this.User_Id, Query: Query };
@@ -72,6 +76,11 @@ export class UserManagementListComponent implements OnInit {
             this._List.splice(0, 0, response['Response']);
          }
       });
+   }
+
+   ViewUser(_index: any) {
+      const initialState = { Type: 'View', Data: this._List[_index] };
+      this.bsModalRef = this.modalService.show(ModelUserManagementViewComponent, Object.assign({initialState}, {class: 'modal-lg max-width-85' }));
    }
 
 }

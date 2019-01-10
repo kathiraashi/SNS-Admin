@@ -4,7 +4,7 @@ import { Observable, of } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
 import * as CryptoJS from 'crypto-js';
 
-const API_URL = 'http://localhost:4000/API/RegisterAndLogin/';
+const API_URL = 'http://139.59.59.41:4000/API/RegisterAndLogin/';
 
 @Injectable({
   providedIn: 'root'
@@ -24,7 +24,6 @@ export class LoginService {
             const encData = (ReceivingData['Response'].slice(0, -34));
             const CryptoBytes  = CryptoJS.AES.decrypt(encData, Security);
             const DecryptedData = JSON.parse(CryptoBytes.toString(CryptoJS.enc.Utf8));
-            console.log(DecryptedData);
             sessionStorage.setItem('Token', btoa(JSON.stringify(DecryptedData)));
             sessionStorage.setItem('SessionToken', btoa(DecryptedData._id + Security));
             sessionStorage.setItem('SessionKey', btoa(Date()));

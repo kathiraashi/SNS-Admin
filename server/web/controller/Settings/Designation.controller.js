@@ -55,8 +55,8 @@ var mongoose = require('mongoose');
             } else {
                DesignationModel.DesignationSchema
                   .findOne({'_id': result._id})
-                  .populate({ path: 'Created_By', select: ['Name', 'User_Type'] })
-                  .populate({ path: 'Last_Modified_By', select: ['Name', 'User_Type'] })
+                  .populate({ path: 'Created_By', select: 'Name' })
+                  .populate({ path: 'Last_Modified_By', select: 'Name' })
                   .exec(function(err_1, result_1) { // Designation FindOne Query
                   if(err_1) {
                      ErrorManagement.ErrorHandling.ErrorLogCreation(req, 'Settings Designation Find Query Error', 'Designation.controller.js', err_1);
@@ -81,8 +81,8 @@ var mongoose = require('mongoose');
       }else {
          DesignationModel.DesignationSchema
             .find({ 'If_Deleted': false }, {}, {sort: { updatedAt: -1 }})
-            .populate({ path: 'Created_By', select: ['Name', 'User_Type'] })
-            .populate({ path: 'Last_Modified_By', select: ['Name', 'User_Type'] })
+            .populate({ path: 'Created_By', select: 'Name' })
+            .populate({ path: 'Last_Modified_By', select: 'Name' })
             .exec(function(err, result) { // Designation FindOne Query
             if(err) {
                ErrorManagement.ErrorHandling.ErrorLogCreation(req, 'Settings Designation Find Query Error', 'Designation.controller.js', err);
@@ -142,8 +142,8 @@ var mongoose = require('mongoose');
                      } else {
                         DesignationModel.DesignationSchema
                            .findOne({'_id': result_1._id})
-                           .populate({ path: 'Created_By', select: ['Name', 'User_Type'] })
-                           .populate({ path: 'Last_Modified_By', select: ['Name', 'User_Type'] })
+                           .populate({ path: 'Created_By', select: 'Name' })
+                           .populate({ path: 'Last_Modified_By', select: 'Name' })
                            .exec(function(err_2, result_2) { // Designation FindOne Query
                            if(err_2) {
                               ErrorManagement.ErrorHandling.ErrorLogCreation(req, 'Settings Designation Find Query Error', 'Designation.controller.js', err_2);

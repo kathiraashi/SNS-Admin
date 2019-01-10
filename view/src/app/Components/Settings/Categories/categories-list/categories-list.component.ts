@@ -22,7 +22,7 @@ export class CategoriesListComponent implements OnInit {
    Loader: Boolean = true;
    _List: any[] = [];
 
-   User_Id;
+   User_Id: any;
 
    constructor(   private modalService: BsModalService,
                   private Service: CategoriesService,

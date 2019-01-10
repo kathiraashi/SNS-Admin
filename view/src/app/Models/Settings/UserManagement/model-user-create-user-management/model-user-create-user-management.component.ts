@@ -11,6 +11,8 @@ import { AdminService  } from './../../../../Services/Admin/admin.service';
 import { ToastrService } from './../../../../Services/common-services/toastr-service/toastr.service';
 import { DepartmentService } from './../../../../Services/settings/department/department.service';
 import { InstitutionService } from './../../../../Services/settings/institution/institution.service';
+import { DesignationService } from './../../../../Services/settings/Designation/designation.service';
+
 
 @Component({
   selector: 'app-model-user-create-user-management',
@@ -25,13 +27,13 @@ export class ModelUserCreateUserManagementComponent implements OnInit {
    Data: any;
    _Institutions: any[] = [];
    _Departments: any[] = [];
+   _Designations: any[] = [];
    _UserTypes: any[] =  ['Sub-Admin', 'Principle', 'HOD', 'Assistant-Professor', 'User'];
 
 
-   ShowInstitution: Boolean = false;
-   ShowDepartment: Boolean = false;
-
    User_Id: any;
+   Restricted_Institution: any = null;
+   Restricted_Department: any = null;
    User_Type: any;
 
    Form: FormGroup;
@@ -42,11 +44,12 @@ export class ModelUserCreateUserManagementComponent implements OnInit {
                public Service: AdminService,
                private Toastr: ToastrService,
                public Department_Service: DepartmentService,
-               public Institution_Service: InstitutionService
+               public Institution_Service: InstitutionService,
+               public Designation_Service: DesignationService
             ) {
                this.User_Id = this.Login_Service.LoginUser_Info()['_id'];
-               this.User_Type = this.Login_Service.LoginUser_Info()['User_Type'];
-               console.log(this.Login_Service.LoginUser_Info());
+               this.Restricted_Institution = this.Login_Service.LoginUser_Info()['Institution'];
+               this.Restricted_Department = this.Login_Service.LoginUser_Info()['Department'];
 
                const Data = {'User_Id' : this.User_Id };
                let Info = CryptoJS.AES.encrypt(JSON.stringify(Data), 'SecretKeyIn@123');
@@ -57,11 +60,45 @@ export class ModelUserCreateUserManagementComponent implements OnInit {
                      const CryptoBytes  = CryptoJS.AES.decrypt(ResponseData['Response'], 'SecretKeyOut@123');
                      const DecryptedData = JSON.parse(CryptoBytes.toString(CryptoJS.enc.Utf8));
                      this._Institutions = DecryptedData;
-                     this.UserBasedDataSet();
-                  } else if (response['status'] === 400 || response['status'] === 417 && !ResponseData['Status']) {
+                     if (this.Restricted_Institution !== null && this.Restricted_Institution !== undefined) {
+                        this._Institutions = this._Institutions.filter(obj => obj._id === this.Restricted_Institution['_id']);
+                        if (this._Designations.length > 0) {
+                           this._Designations = this._Institutions[0]['Designation'];
+                        }
+                        this._Departments = this._Institutions[0]['Departments'];
+                        this.Form.controls['Institution'].setValue(this.Restricted_Institution['_id']);
+                        this.Form.controls['Institution'].disable();
+                        this.Form.controls['Institution_Restricted'].setValue(true);
+                        this.Form.controls['Institution_Restricted'].disable();
+                        this.Form.controls['Department'].disable();
+                        if (this.Restricted_Department !== null && this.Restricted_Department !== undefined) {
+                           this._Departments = this._Departments.filter(obj => obj._id === this.Restricted_Department['_id']);
+                           this.Form.controls['Department'].setValue(this.Restricted_Department['_id']);
+                           this.Form.controls['Department'].disable();
+                           this.Form.controls['Department_Restricted'].setValue(true);
+                           this.Form.controls['Department_Restricted'].disable();
+                        } else {
+                           this.Form.controls['Department'].enable();
+                        }
+                     }
+                  } else if (response['status'] === 400 || response['status'] === 417 || response['status'] === 401 && !ResponseData['Status']) {
                      this.Toastr.NewToastrMessage({ Type: 'Error', Message: ResponseData['Message'] });
-                  } else if (response['status'] === 401 && !ResponseData['Status']) {
-                     this.Toastr.NewToastrMessage({ Type: 'Error',  Message: ResponseData['Message'] });
+                  } else {
+                     this.Toastr.NewToastrMessage({ Type: 'Error', Message: 'Institutions List Getting Error!, But not Identify!' });
+                  }
+               });
+               this.Designation_Service.Designation_SimpleList({'Info': Info}).subscribe( response => {
+                  const ResponseData = JSON.parse(response['_body']);
+                  if (response['status'] === 200 && ResponseData['Status'] ) {
+                     const CryptoBytes  = CryptoJS.AES.decrypt(ResponseData['Response'], 'SecretKeyOut@123');
+                     const DecryptedData = JSON.parse(CryptoBytes.toString(CryptoJS.enc.Utf8));
+                     this._Designations = DecryptedData;
+                     if (this.Restricted_Institution !== null && this.Restricted_Institution !== undefined && this._Institutions.length > 0) {
+                        this._Institutions = this._Institutions.filter(obj => obj._id === this.Restricted_Institution['_id']);
+                        this._Designations = this._Institutions[0]['Designation'];
+                     }
+                  } else if (response['status'] === 400 || response['status'] === 417 || response['status'] === 401 && !ResponseData['Status']) {
+                     this.Toastr.NewToastrMessage({ Type: 'Error', Message: ResponseData['Message'] });
                   } else {
                      this.Toastr.NewToastrMessage({ Type: 'Error', Message: 'Institutions List Getting Error!, But not Identify!' });
                   }
@@ -71,18 +108,6 @@ export class ModelUserCreateUserManagementComponent implements OnInit {
    ngOnInit() {
       this.onClose = new Subject();
 
-      if (this.User_Type === 'Admin') {
-         this._UserTypes =  ['Sub-Admin', 'Principle', 'HOD', 'Assistant-Professor', 'User'];
-      } else if (this.User_Type === 'Sub-Admin') {
-         this._UserTypes =  ['Principle', 'HOD', 'Assistant-Professor', 'User'];
-      } else if (this.User_Type === 'Principle') {
-         this._UserTypes =  [ 'HOD', 'Assistant-Professor', 'User'];
-      } else if (this.User_Type === 'HOD') {
-         this._UserTypes =  [ 'Assistant-Professor', 'User'];
-      } else {
-         this._UserTypes = [];
-      }
-
       this.Form = new FormGroup({
          User_Id: new FormControl(this.User_Id ),
          User_Name: new FormControl('', { validators: Validators.required,
@@ -90,26 +115,25 @@ export class ModelUserCreateUserManagementComponent implements OnInit {
                                           updateOn: 'blur' }),
          User_Password: new FormControl('', Validators.required),
          Name: new FormControl('', Validators.required ),
-         Email: new FormControl('', [Validators.required, Validators.email]),
+         Email: new FormControl('', [Validators.required, Validators.email] ),
          Phone: new FormControl(''),
-         User_Type: new FormControl(null, Validators.required),
+         Designation: new FormControl(null, Validators.required),
+         ApplicationManagement_Permission: new FormControl(false),
+         Q_A_Permission: new FormControl(false),
+         OnlineExamUpdate_Permission: new FormControl(false),
+         GD_Permission: new FormControl(false),
+         Technical_Permission: new FormControl(false),
+         Hr_Permission: new FormControl(false),
+         BasicConfig_Permission: new FormControl(false),
+         AdvancedConfig_Permission: new FormControl(false),
+         UserManagement_Permission: new FormControl(false),
+         Institution_Restricted: new FormControl(false),
+         Department_Restricted: new FormControl(false),
+         Institution: new FormControl(null),
+         Department: new FormControl(null),
       });
    }
 
-   UserBasedDataSet() {
-      if (this.User_Type !== 'Admin' && this.User_Type !== 'Sub-Admin') {
-         const Institution = this.Login_Service.LoginUser_Info()['Institution'];
-         this.ShowInstitution = true;
-         this.Form.setControl('Institution', new FormControl({value: Institution['_id'], disabled: true}, Validators.required));
-         if (this.User_Type !== 'Principle') {
-            const _index = this._Institutions.findIndex(obj => obj._id === Institution['_id']);
-            this._Departments = this._Institutions[_index].Departments;
-            const Department = this.Login_Service.LoginUser_Info()['Department'];
-            this.ShowDepartment = true;
-            this.Form.setControl('Department', new FormControl({value: Department['_id'], disabled: true}, Validators.required));
-         }
-      }
-   }
 
    UserNameAsyncValidate( control: AbstractControl ) {
       const Data = { User_Id: this.User_Id, User_Name: control.value };
@@ -125,34 +149,40 @@ export class ModelUserCreateUserManagementComponent implements OnInit {
       }));
    }
 
-   TypeChange() {
-      if (this.User_Type === 'Admin' || this.User_Type === 'Sub-Admin') {
-         const Type = this.Form.controls['User_Type'].value;
-         this.ShowDepartment = false;
-         this.ShowInstitution = false;
-         this.Form.removeControl('Department');
-         this.Form.removeControl('Institution');
-         if (Type === 'HOD' || Type === 'Assistant-Professor' || Type === 'User' || Type === 'Principle' ) {
-            this.ShowInstitution = true;
-            this.Form.setControl('Institution', new FormControl(null, Validators.required));
-         }
+   Institution_Restricted_Change() {
+      const Institution_Restricted = this.Form.controls['Institution_Restricted'].value;
+      if (Institution_Restricted) {
+         this.Form.controls['Institution'].setValidators(Validators.required);
+      } else {
+         this.Form.controls['Institution'].clearValidators();
+         this.Form.controls['Institution'].setErrors(null);
+         this.Form.controls['Institution'].setValue(null);
+         this.Form.controls['Department_Restricted'].setValue(false);
+         this.Department_Restricted_Change();
+      }
+   }
+
+   Department_Restricted_Change() {
+      const Department_Restricted = this.Form.controls['Department_Restricted'].value;
+      if (Department_Restricted) {
+         this.Form.controls['Department'].setValidators(Validators.required);
+         this.Form.controls['Department'].enable();
+      } else {
+         this.Form.controls['Department'].clearValidators();
+         this.Form.controls['Department'].setErrors(null);
+         this.Form.controls['Department'].setValue(null);
+         this.Form.controls['Department'].disable();
       }
    }
 
    InstitutionChange() {
-      if (this.User_Type === 'Admin' || this.User_Type === 'Sub-Admin') {
-         const Institution = this.Form.controls['Institution'].value;
-         const Type = this.Form.controls['User_Type'].value;
-         this.ShowDepartment = false;
-         if (Type === 'HOD' || Type === 'Assistant-Professor' || Type === 'User') {
-            this.ShowDepartment = true;
-            this.Form.setControl('Department', new FormControl(null, Validators.required));
-         } else {
-            this.ShowDepartment = false;
-            this.Form.removeControl('Department');
-         }
+      const Institution = this.Form.controls['Institution'].value;
+      this.Form.controls['Department'].setValue(null);
+      if (Institution !== '' && Institution !== null && Institution !== undefined ) {
          const _index = this._Institutions.findIndex(obj => obj._id === Institution);
          this._Departments = this._Institutions[_index].Departments;
+      } else {
+         this._Departments = [];
       }
    }
 
@@ -169,11 +199,8 @@ export class ModelUserCreateUserManagementComponent implements OnInit {
                const DecryptedData = JSON.parse(CryptoBytes.toString(CryptoJS.enc.Utf8));
                this.onClose.next({Status: true, Response: DecryptedData});
                this.bsModalRef.hide();
-            } else if (response['status'] === 400 && !ReceivingData['Status']) {
+            } else if (response['status'] === 400 || response['status'] === 417 || response['status'] === 401 && !ReceivingData['Status']) {
                this.onClose.next({Status: false, Message: 'Bad Request Error!'});
-               this.bsModalRef.hide();
-            } else if (response['status'] === 417 && !ReceivingData['Status']) {
-               this.onClose.next({Status: false, Message: 'Industry Type Query Error!'});
                this.bsModalRef.hide();
             } else {
                this.onClose.next({Status: false, Message: 'UnExpected Error!'});

@@ -96,8 +96,8 @@ var Institution_Image_Upload = multer({
                      .findOne({'_id': result._id})
                      .populate({ path: 'Designation', select: ['Designation'] })
                      .populate({ path: 'Departments', select: ['Department'] })
-                     .populate({ path: 'Created_By', select: ['Name', 'User_Type'] })
-                     .populate({ path: 'Last_Modified_By', select: ['Name', 'User_Type'] })
+                     .populate({ path: 'Created_By', select: 'Name' })
+                     .populate({ path: 'Last_Modified_By', select: 'Name' })
                      .exec(function(err_1, result_1) { // Institution FindOne Query
                      if(err_1) {
                         ErrorManagement.ErrorHandling.ErrorLogCreation(req, 'Settings Institution Find Query Error', 'Institution.controller.js', err_1);
@@ -125,8 +125,8 @@ var Institution_Image_Upload = multer({
             .find({ 'If_Deleted': false }, {}, {sort: { updatedAt: -1 }})
             .populate({ path: 'Designation', select: ['Designation'] })
             .populate({ path: 'Departments', select: ['Department', 'Department_Code'] })
-            .populate({ path: 'Created_By', select: ['Name', 'User_Type'] })
-            .populate({ path: 'Last_Modified_By', select: ['Name', 'User_Type'] })
+            .populate({ path: 'Created_By', select: 'Name' })
+            .populate({ path: 'Last_Modified_By', select: 'Name' })
             .exec(function(err, result) { // Institution FindOne Query
             if(err) {
                ErrorManagement.ErrorHandling.ErrorLogCreation(req, 'Settings Institution Find Query Error', 'Institution.controller.js', err);
@@ -215,8 +215,8 @@ var Institution_Image_Upload = multer({
                               .findOne({'_id': result_1._id})
                               .populate({ path: 'Designation', select: ['Designation'] })
                               .populate({ path: 'Departments', select: ['Department'] })
-                              .populate({ path: 'Created_By', select: ['Name', 'User_Type'] })
-                              .populate({ path: 'Last_Modified_By', select: ['Name', 'User_Type'] })
+                              .populate({ path: 'Created_By', select: 'Name' })
+                              .populate({ path: 'Last_Modified_By', select: 'Name' })
                               .exec(function(err_2, result_2) { // Institution FindOne Query
                               if(err_2) {
                                  ErrorManagement.ErrorHandling.ErrorLogCreation(req, 'Settings Institution Find Query Error', 'Institution.controller.js', err_2);

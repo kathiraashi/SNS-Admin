@@ -105,11 +105,11 @@ app.use('/API/Uploads', express.static('Uploads'));
    require('./server/web/routes/Settings/ExamDetails.routes.js')(app);
 
 
-   // app.use(express.static(__dirname + '/view/dist/view/'));
+   app.use(express.static(__dirname + '/view/dist/view/'));
 
-   // app.use(function(req, res) {
-   //    res.sendFile(path.join(__dirname, '/view/dist/view', 'index.html'));
-   // });
+   app.use(function(req, res) {
+      res.sendFile(path.join(__dirname, '/view/dist/view', 'index.html'));
+   });
 
 
 app.get('*', function(req, res){

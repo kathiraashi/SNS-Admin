@@ -33,7 +33,7 @@
                <table>
                   <thead>
                      <tr>
-                        <th>S.no</th>
+                        <th width="55px">S.no</th>
                         <th>Candidate Name</th>
                         <th>Gender & Age </th>
                         <th>Institute To</th>
@@ -41,7 +41,7 @@
                         <th>Applied Department</th>
                         <th>Status</th>
                         <th>Applied Date</th>
-                        <th>Action</th>
+                        <th width="110px">Action</th>
                      </tr>
                   </thead>
                   <tbody>
@@ -61,7 +61,7 @@
                            <span class="Style_1"> {{Candidate.Basic_Info?.Institution?.Institution}} ( {{Candidate.Basic_Info?.Institution?.Institution_Code}} ) </span>
                         </td>
                         <td>
-                           <span class="Style_1"> {{Candidate.Basic_Info?.Post_Applied}} </span>
+                           <span class="Style_1"> {{Candidate.Basic_Info?.Post_Applied?.Designation}} </span>
                         </td>
                         <td>
                            <span class="Style_1"> {{Candidate.Basic_Info?.Department?.Department}} ( {{Candidate.Basic_Info?.Department?.Department_Code}} ) </span>
@@ -74,10 +74,10 @@
                         <td>
                            <span class="Style_1"> {{Candidate.createdAt | date:'medium'}}</span>
                         </td>
-                        <td *ngIf="Candidate.If_Referred_To">
+                        <td *ngIf="Candidate.If_Referred_To || !this.Application_Handle">
                            <button mat-raised-button color="primary" (click)="SetActionId(i)" [matMenuTriggerFor]="menu" (click)="View()"> View </button>
                         </td>
-                        <td *ngIf="!Candidate.If_Referred_To">
+                        <td *ngIf="!Candidate.If_Referred_To && this.Application_Handle">
                            <ng-container *ngIf="!Candidate.BtnLoading">
                               <button mat-raised-button color="primary" (click)="SetActionId(i)" [matMenuTriggerFor]="menu" > Action </button>
                            </ng-container>

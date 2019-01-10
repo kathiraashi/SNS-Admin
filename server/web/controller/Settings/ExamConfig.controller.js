@@ -76,8 +76,8 @@ var mongoose = require('mongoose');
                   .populate({ path: 'Config.Category', select: ['Category'] })
                   .populate({ path: 'Institution', select: ['Institution'] })
                   .populate({ path: 'Department', select: ['Department'] })
-                  .populate({ path: 'Created_By', select: ['Name', 'User_Type'] })
-                  .populate({ path: 'Last_Modified_By', select: ['Name', 'User_Type'] })
+                  .populate({ path: 'Created_By', select: 'Name' })
+                  .populate({ path: 'Last_Modified_By', select: 'Name' })
                   .exec(function(err_1, result_1) { // Exam Config FindOne Query
                   if(err_1) {
                      ErrorManagement.ErrorHandling.ErrorLogCreation(req, 'Settings Exam Config Find Query Error', 'ExamConfig.controller.js', err_1);
@@ -114,8 +114,8 @@ var mongoose = require('mongoose');
             .populate({ path: 'Config.Category', select: ['Category'] })
             .populate({ path: 'Institution', select: ['Institution'] })
             .populate({ path: 'Department', select: ['Department'] })
-            .populate({ path: 'Created_By', select: ['Name', 'User_Type'] })
-            .populate({ path: 'Last_Modified_By', select: ['Name', 'User_Type'] })
+            .populate({ path: 'Created_By', select: 'Name' })
+            .populate({ path: 'Last_Modified_By', select: 'Name' })
             .exec(function(err, result) { // Exam Config FindOne Query
             if(err) {
                ErrorManagement.ErrorHandling.ErrorLogCreation(req, 'Settings Exam Config Find Query Error', 'ExamConfig.controller.js', err);
@@ -179,8 +179,8 @@ var mongoose = require('mongoose');
                            .populate({ path: 'Config.Category', select: ['Category'] })
                            .populate({ path: 'Institution', select: ['Institution'] })
                            .populate({ path: 'Department', select: ['Department'] })
-                           .populate({ path: 'Created_By', select: ['Name', 'User_Type'] })
-                           .populate({ path: 'Last_Modified_By', select: ['Name', 'User_Type'] })
+                           .populate({ path: 'Created_By', select: 'Name' })
+                           .populate({ path: 'Last_Modified_By', select: 'Name' })
                            .exec(function(err_2, result_2) { // Exam Config FindOne Query
                            if(err_2) {
                               ErrorManagement.ErrorHandling.ErrorLogCreation(req, 'Settings Exam Config Find Query Error', 'ExamConfig.controller.js', err_2);

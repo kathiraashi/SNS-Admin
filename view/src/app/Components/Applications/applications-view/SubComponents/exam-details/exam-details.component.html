@@ -171,10 +171,10 @@
          <br>
          <div class="row" *ngIf="!CandidateData['If_Referred_To']">
             <div class="col-sm-12 text-right">
-               <button *ngIf="CandidateData['Current_Stage'] === 'Stage_4'" mat-raised-button color="primary" (click)="openModal(template)"> Update Result </button>
-               <button *ngIf="CandidateData['Current_Stage'] === 'Stage_5'" mat-raised-button color="primary" (click)="openLargeModal(templateGd)"> Group Discussion Result </button>
-               <button *ngIf="CandidateData['Current_Stage'] === 'Stage_6'" mat-raised-button color="primary" (click)="openLargeModal(templateTech)"> Technical Result </button>
-               <button *ngIf="CandidateData['Current_Stage'] === 'Stage_7'" mat-raised-button color="primary" (click)="openLargeModal(templateFinal)"> Hr Interview Result </button>
+               <button *ngIf="CandidateData['Current_Stage'] === 'Stage_4' && OnlineExam_Management" mat-raised-button color="primary" (click)="openModal(template)"> Update Result </button>
+               <button *ngIf="CandidateData['Current_Stage'] === 'Stage_5' && GD_Management" mat-raised-button color="primary" (click)="openLargeModal(templateGd)"> Group Discussion Result </button>
+               <button *ngIf="CandidateData['Current_Stage'] === 'Stage_6' && Technical_Management" mat-raised-button color="primary" (click)="openLargeModal(templateTech)"> Technical Result </button>
+               <button *ngIf="CandidateData['Current_Stage'] === 'Stage_7' && Hr_Management" mat-raised-button color="primary" (click)="openLargeModal(templateFinal)"> Hr Interview Result </button>
             </div>
          </div>
       </div>

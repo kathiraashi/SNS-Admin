@@ -4,7 +4,7 @@ var Schema = mongoose.Schema;
 var CandidatesSchema = mongoose.Schema({
    Basic_Info : {
       Institution: { type: Schema.Types.ObjectId, ref: 'Institution', required : true },
-      Post_Applied: { type : String , required : true },
+      Post_Applied: { type: Schema.Types.ObjectId, ref: 'Designation', required : true },
       Department: { type: Schema.Types.ObjectId, ref: 'Department', required : true },
       Preferred_Subject_1: { type : String },
       Preferred_Subject_2: { type : String },

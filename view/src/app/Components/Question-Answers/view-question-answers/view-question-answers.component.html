@@ -46,7 +46,7 @@
                            [bindLabel]="'Institution'"
                            [bindValue]="'_id'"
                            [searchable]="true"
-                           [disabled]="User_Type !== 'Admin' && User_Type !== 'Sub-Admin'"
+                           [disabled]="Restricted_Institution !== null && Restricted_Institution !== undefined"
                            placeholder="Institution"
                            (change)="FilterChange(); InstitutionChange()">
                </ng-select>
@@ -58,7 +58,7 @@
                            [bindLabel]="'Department'"
                            [bindValue]="'_id'"
                            [searchable]="true"
-                           [disabled]="User_Type !== 'Admin' && User_Type !== 'Sub-Admin' && User_Type !== 'Principle'"
+                           [disabled]="Restricted_Department !== null && Restricted_Department !== undefined"
                            placeholder="Department"
                            (change)="FilterChange()">
                </ng-select>
@@ -97,7 +97,7 @@
                                  <span (click)="DeleteQuestion(i)"><i class="material-icons delete"> delete </i></span>
                               </span>
                            </h5>
-                        <img (mouseenter)="ImgZoom(Question['Image']?.filename)" (mouseleave)="ImgZoomHide()" style="max-width:200px; max-height: 100px;" src="http://localhost:4000/API/Uploads/Questions/{{Question['Image']?.filename}}" alt="">
+                        <img (mouseenter)="ImgZoom(Question['Image']?.filename)" (mouseleave)="ImgZoomHide()" style="max-width:200px; max-height: 100px;" src="http://139.59.59.41:4000/API/Uploads/Questions/{{Question['Image']?.filename}}" alt="">
                         <div #actualTarget></div>
                         <div class="Options">
                            <span class="option ans" *ngIf="Question.Answer === 'A'"> Answer: <span class="Differ"> A </span> </span>
@@ -136,7 +136,7 @@
 
 <div class="ImageZoom">
    <div class="ImgSection">
-      <img src="http://localhost:4000/API/Uploads/Questions/{{ZoomedImage}}" alt="">
+      <img src="http://139.59.59.41:4000/API/Uploads/Questions/{{ZoomedImage}}" alt="">
    </div>
 </div>
 

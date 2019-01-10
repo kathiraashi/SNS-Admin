@@ -55,12 +55,12 @@ var mongoose = require('mongoose');
             } else {
                CategoryModel.CategorySchema
                   .findOne({'_id': result._id})
-                  .populate({ path: 'Created_By', select: ['Name', 'User_Type'] })
-                  .populate({ path: 'Last_Modified_By', select: ['Name', 'User_Type'] })
+                  .populate({ path: 'Created_By', select: 'Name' })
+                  .populate({ path: 'Last_Modified_By', select: 'Name' })
                   .exec(function(err_1, result_1) { // Category FindOne Query
                   if(err_1) {
                      ErrorManagement.ErrorHandling.ErrorLogCreation(req, 'Settings Category Find Query Error', 'Category.controller.js', err_1);
-                     res.status(417).send({status: false, Message: "Some error occurred while Find The Categorys!."});
+                     res.status(417).send({status: false, Message: "Some error occurred while Find The Categories!."});
                   } else {
                      var ReturnData = CryptoJS.AES.encrypt(JSON.stringify(result_1), 'SecretKeyOut@123');
                         ReturnData = ReturnData.toString();
@@ -81,12 +81,12 @@ var mongoose = require('mongoose');
       }else {
          CategoryModel.CategorySchema
             .find({ 'If_Deleted': false }, {}, {sort: { updatedAt: -1 }})
-            .populate({ path: 'Created_By', select: ['Name', 'User_Type'] })
-            .populate({ path: 'Last_Modified_By', select: ['Name', 'User_Type'] })
+            .populate({ path: 'Created_By', select: 'Name' })
+            .populate({ path: 'Last_Modified_By', select: 'Name' })
             .exec(function(err, result) { // Category FindOne Query
             if(err) {
                ErrorManagement.ErrorHandling.ErrorLogCreation(req, 'Settings Category Find Query Error', 'Category.controller.js', err);
-               res.status(417).send({status: false, Error:err, Message: "Some error occurred while Find The Categorys!."});
+               res.status(417).send({status: false, Error:err, Message: "Some error occurred while Find The Category!."});
             } else {
                var ReturnData = CryptoJS.AES.encrypt(JSON.stringify(result), 'SecretKeyOut@123');
                ReturnData = ReturnData.toString();
@@ -106,7 +106,7 @@ var mongoose = require('mongoose');
          CategoryModel.CategorySchema.find({ 'If_Deleted': false }, { Category : 1 }, {sort: { updatedAt: -1 }}, function(err, result) { // Category FindOne Query
             if(err) {
                ErrorManagement.ErrorHandling.ErrorLogCreation(req, 'Settings Category Find Query Error', 'Category.controller.js', err);
-               res.status(417).send({status: false, Error:err, Message: "Some error occurred while Find The Categorys!."});
+               res.status(417).send({status: false, Error:err, Message: "Some error occurred while Find The Category!."});
             } else {
                var ReturnData = CryptoJS.AES.encrypt(JSON.stringify(result), 'SecretKeyOut@123');
                ReturnData = ReturnData.toString();
@@ -142,12 +142,12 @@ var mongoose = require('mongoose');
                      } else {
                         CategoryModel.CategorySchema
                            .findOne({'_id': result_1._id})
-                           .populate({ path: 'Created_By', select: ['Name', 'User_Type'] })
-                           .populate({ path: 'Last_Modified_By', select: ['Name', 'User_Type'] })
+                           .populate({ path: 'Created_By', select: 'Name' })
+                           .populate({ path: 'Last_Modified_By', select: 'Name' })
                            .exec(function(err_2, result_2) { // Category FindOne Query
                            if(err_2) {
                               ErrorManagement.ErrorHandling.ErrorLogCreation(req, 'Settings Category Find Query Error', 'Category.controller.js', err_2);
-                              res.status(417).send({status: false, Message: "Some error occurred while Find The Categorys!."});
+                              res.status(417).send({status: false, Message: "Some error occurred while Find The Category!."});
                            } else {
                               var ReturnData = CryptoJS.AES.encrypt(JSON.stringify(result_2), 'SecretKeyOut@123');
                                  ReturnData = ReturnData.toString();

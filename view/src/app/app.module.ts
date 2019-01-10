@@ -7,12 +7,15 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { HttpClientModule } from '@angular/common/http';
 import { RouterModule, Routes } from '@angular/router';
+
 import { AppComponent } from './app.component';
+
 import { AppRoutingModule } from './app.routing.module';
+import { AuthGuard } from './Authentication/auth.guard';
 
 import { ModalModule} from 'ngx-bootstrap';
 import { CalendarModule } from 'primeng/calendar';
-import { MatButtonModule, MatFormFieldModule, MatSelectModule, MatRadioModule, MatMenuModule, MatDatepickerModule, MatNativeDateModule } from '@angular/material';
+import { MatButtonModule, MatFormFieldModule, MatSelectModule, MatRadioModule, MatMenuModule, MatDatepickerModule, MatCheckboxModule, MatNativeDateModule } from '@angular/material';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { FroalaEditorModule, FroalaViewModule } from 'angular-froala-wysiwyg';
 
@@ -27,19 +30,8 @@ import { ReferenceDeclarationApplicationComponent } from './Components/Applicati
 import { ViewQuestionAnswersComponent } from './Components/Question-Answers/view-question-answers/view-question-answers.component';
 import { ModelEditQuestionAnswersComponent } from './Models/QuestionAnswers/model-edit-question-answers/model-edit-question-answers.component';
 import { DeleteConfirmationComponent } from './Components/Common/delete-confirmation/delete-confirmation.component';
-import { MainPostAppliedComponent } from './Components/Settings/Post-Applied/main-post-applied/main-post-applied.component';
 import { MainDepartmentComponent } from './Components/Settings/Department/main-department/main-department.component';
-import { MainPersonalInfoComponent } from './Components/Settings/Personal-Info/main-personal-info/main-personal-info.component';
-import { PersonalInfoNationalityComponent } from './Components/Settings/Personal-Info/SubComponents/personal-info-nationality/personal-info-nationality.component';
-import { PersonalInfoReligionComponent } from './Components/Settings/Personal-Info/SubComponents/personal-info-religion/personal-info-religion.component';
-import { PersonalInfoCommunityComponent } from './Components/Settings/Personal-Info/SubComponents/personal-info-community/personal-info-community.component';
-import { ModelPersonalinfoCommunityComponent } from './Models/Settings/personal-info/model-personalinfo-community/model-personalinfo-community.component';
-import { ModelPersonalinfoReligionComponent } from './Models/Settings/personal-info/model-personalinfo-religion/model-personalinfo-religion.component';
-import { ModelPersonalinfoNationalityComponent } from './Models/Settings/personal-info/model-personalinfo-nationality/model-personalinfo-nationality.component';
 import { ModelDepartmentCreateComponent } from './Models/Settings/Department/model-department-create/model-department-create.component';
-import { ModelPostCreateComponent } from './Models/Settings/Post-Applied/model-post-create/model-post-create.component';
-import { MainEducationalInfoComponent } from './Components/Settings/Educational-Info/main-educational-info/main-educational-info.component';
-import { ModelEducationalCreateComponent } from './Models/Settings/educational-info/model-educational-create/model-educational-create.component';
 import { ApplicationsListComponent } from './Components/Applications/applications-list/applications-list.component';
 import { ModelExcelUploadsViewComponent } from './Models/QuestionAnswers/model-excel-uploads-view/model-excel-uploads-view.component';
 import { UserManagementListComponent } from './Components/Settings/UserManagement/user-management-list/user-management-list.component';
@@ -59,7 +51,7 @@ import { DesignationListComponent } from './Components/Settings/Designation/desi
 import { ModelDesignationCreateComponent } from './Models/Settings/Designation/model-designation-create/model-designation-create.component';
 import { VacanciesConfigListComponent } from './Components/Settings/VacanciesConfig/vacancies-config-list/vacancies-config-list.component';
 import { ModelVacanciesConfigCreateComponent, InnerHtmlPipe } from './Models/Settings/VacanciesConfig/model-vacancies-config-create/model-vacancies-config-create.component';
-
+import { ModelUserManagementViewComponent } from './Models/Settings/UserManagement/model-user-management-view/model-user-management-view.component';
 
 
 
@@ -80,19 +72,8 @@ import { ModelVacanciesConfigCreateComponent, InnerHtmlPipe } from './Models/Set
    ViewQuestionAnswersComponent,
    ModelEditQuestionAnswersComponent,
    DeleteConfirmationComponent,
-   MainPostAppliedComponent,
    MainDepartmentComponent,
-  MainPersonalInfoComponent,
-   PersonalInfoNationalityComponent,
-   PersonalInfoReligionComponent,
-   PersonalInfoCommunityComponent,
-   ModelPersonalinfoCommunityComponent,
-   ModelPersonalinfoReligionComponent,
-   ModelPersonalinfoNationalityComponent,
    ModelDepartmentCreateComponent,
-   ModelPostCreateComponent,
-   MainEducationalInfoComponent,
-   ModelEducationalCreateComponent,
    ApplicationsListComponent,
    ModelExcelUploadsViewComponent,
    UserManagementListComponent,
@@ -112,7 +93,8 @@ import { ModelVacanciesConfigCreateComponent, InnerHtmlPipe } from './Models/Set
    ModelDesignationCreateComponent,
    VacanciesConfigListComponent,
    ModelVacanciesConfigCreateComponent,
-   InnerHtmlPipe
+   InnerHtmlPipe,
+   ModelUserManagementViewComponent
   ],
   imports: [
     BrowserModule,
@@ -129,6 +111,7 @@ import { ModelVacanciesConfigCreateComponent, InnerHtmlPipe } from './Models/Set
     MatFormFieldModule,
     MatSelectModule,
     MatRadioModule,
+    MatCheckboxModule,
     MatMenuModule,
     MatDatepickerModule,
     MatNativeDateModule,
@@ -139,12 +122,7 @@ import { ModelVacanciesConfigCreateComponent, InnerHtmlPipe } from './Models/Set
   providers: [],
   entryComponents: [ModelEditQuestionAnswersComponent,
     DeleteConfirmationComponent,
-   ModelPersonalinfoCommunityComponent,
-    ModelPersonalinfoReligionComponent,
-    ModelPersonalinfoNationalityComponent,
     ModelDepartmentCreateComponent,
-    ModelPostCreateComponent,
-    ModelEducationalCreateComponent,
     ModelExcelUploadsViewComponent,
     ModelUserCreateUserManagementComponent,
     ModelInstitutionCreateComponent,
@@ -154,7 +132,8 @@ import { ModelVacanciesConfigCreateComponent, InnerHtmlPipe } from './Models/Set
     ModelExamDetailsCreateComponent,
     ApplicationForwardComponent,
     ModelDesignationCreateComponent,
-    ModelVacanciesConfigCreateComponent
+    ModelVacanciesConfigCreateComponent,
+    ModelUserManagementViewComponent
   ],
   bootstrap: [AppComponent]
 })

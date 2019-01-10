@@ -60,3 +60,37 @@
 .cdk-overlay-container{
    z-index: 1052 !important;
 }
+
+
+
+
+
+
+
+
+
+.Checkbox_Design.mat-checkbox{
+   line-height: 40px !important;
+   font-size: 14px;
+   font-weight: 700;
+   color: #4e6a7a;
+}
+.Checkbox_Design.mat-checkbox-checked .mat-checkbox-inner-container{
+   background-color: #004c7d;
+}
+.Checkbox_Design.mat-checkbox .mat-checkbox-inner-container .mat-checkbox-frame{
+   border-color: #687e8c
+}
+.Checkbox_Design.mat-checkbox-checked .mat-checkbox-inner-container .mat-checkbox-frame{
+   border-color: #004c7d
+}
+.Checkbox_Design.mat-checkbox .mat-checkbox-layout {
+   white-space: normal;
+}
+
+.Checkbox_Design.mat-checkbox-disabled .mat-checkbox-label {
+   color: #4e6a7a;
+}
+.Checkbox_Design.mat-checkbox-disabled.mat-checkbox-checked .mat-checkbox-background{
+   background-color: inherit;
+}

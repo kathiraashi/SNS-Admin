@@ -25,29 +25,46 @@
             </a>
          </li>
          <!-- Q/A -->
-         <li class="menu-list" [routerLinkActive]="['active']">
+         <li *ngIf="Q_A_Permission" class="menu-list" [routerLinkActive]="['active']">
             <a [routerLink]="['/view_Q/A']" >
                <span> Q/A </span>
             </a>
          </li>
+         <!-- Vacancies Config -->
+         <li *ngIf="BasicConfig_Permission" class="menu-list" [routerLinkActive]="['active']">
+            <a [routerLink]="['/VacanciesConfig']" >
+               <span> Vacancies </span>
+            </a>
+         </li>
+         <!-- Exam Config  -->
+         <li *ngIf="BasicConfig_Permission" class="menu-list" [routerLinkActive]="['active']">
+            <a [routerLink]="['/ExamConfig']" >
+               <span> Exam Config </span>
+            </a>
+         </li>
+         <!-- Categories -->
+         <li *ngIf="BasicConfig_Permission" class="menu-list" [routerLinkActive]="['active']">
+            <a [routerLink]="['/Categories']" >
+               <span> Q&A Categories </span>
+            </a>
+         </li>
+         <!-- Exam Details -->
+         <li *ngIf="BasicConfig_Permission" class="menu-list" [routerLinkActive]="['active']">
+            <a [routerLink]="['/ExamDetails']" >
+               <span> Exam Details </span>
+            </a>
+         </li>
          <!-- Settings -->
-         <li class="menu-list" [routerLinkActive]="['active']">
+         <li *ngIf="UserManagement_Permission || AdvancedConfig_Permission" class="menu-list" [routerLinkActive]="['active']">
             <span class="tree-menus">
                <a>
                   <span> Settings </span>
                </a>
                <ul class="tree-view">
-                  <li *ngIf="User_Type === 'Admin' || User_Type === 'Sub-Admin'" class="tree-list" [routerLinkActive]="['active']" [routerLink]="['/Departments']"><a> Config Departments</a></li>
-                  <li class="tree-list" [routerLinkActive]="['active']" [routerLink]="['/Categories']"><a> Config Categories </a></li>
-                  <li *ngIf="User_Type === 'Admin' || User_Type === 'Sub-Admin'" class="tree-list" [routerLinkActive]="['active']" [routerLink]="['/Designation']"><a> Config Designation </a></li>
-                  <li *ngIf="User_Type === 'Admin' || User_Type === 'Sub-Admin'" class="tree-list" [routerLinkActive]="['active']" [routerLink]="['/Institutions']"><a> Institutions </a></li>
-                  <li class="tree-list" [routerLinkActive]="['active']" [routerLink]="['/VacanciesConfig']"><a> Vacancies Config </a></li>
-                  <li class="tree-list" [routerLinkActive]="['active']" [routerLink]="['/ExamConfig']"><a> Exam Config </a></li>
-                  <li class="tree-list" [routerLinkActive]="['active']" [routerLink]="['/ExamDetails']"><a> Exam Details </a></li>
-                  <!-- <li class="tree-list" [routerLinkActive]="['active']" [routerLink]="['/Post_Applied']"><a> Post Applied </a></li>
-                  <li class="tree-list" [routerLinkActive]="['active']" [routerLink]="['/Personal_Info']"><a> Personal Info </a></li>
-                  <li class="tree-list" [routerLinkActive]="['active']" [routerLink]="['/Educational_Info']"><a> Educational Info </a></li> -->
-                  <li *ngIf="User_Type !== 'Assistant-Professor' && User_Type !== 'User'" class="tree-list" [routerLinkActive]="['active']" [routerLink]="['/User_Management']"><a> User Management </a></li>
+                  <li *ngIf="AdvancedConfig_Permission" class="tree-list" [routerLinkActive]="['active']" [routerLink]="['/Departments']"><a> Departments</a></li>
+                  <li *ngIf="AdvancedConfig_Permission" class="tree-list" [routerLinkActive]="['active']" [routerLink]="['/Designation']"><a> Designation </a></li>
+                  <li *ngIf="AdvancedConfig_Permission" class="tree-list" [routerLinkActive]="['active']" [routerLink]="['/Institutions']"><a> Institutions </a></li>
+                  <li *ngIf="UserManagement_Permission" class="tree-list" [routerLinkActive]="['active']" [routerLink]="['/User_Management']"><a> User Management </a></li>
                </ul>
             </span>
          </li>

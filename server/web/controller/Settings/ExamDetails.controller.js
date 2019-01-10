@@ -31,12 +31,12 @@ var mongoose = require('mongoose');
             } else {
                ExamDetailsModel.ExamDetailsSchema
                   .findOne({'_id': result._id})
-                  .populate({ path: 'Created_By', select: ['Name', 'User_Type'] })
-                  .populate({ path: 'Last_Modified_By', select: ['Name', 'User_Type'] })
+                  .populate({ path: 'Created_By', select: 'Name' })
+                  .populate({ path: 'Last_Modified_By', select: 'Name' })
                   .exec(function(err_1, result_1) { // ExamDetails FindOne Query
                   if(err_1) {
                      ErrorManagement.ErrorHandling.ErrorLogCreation(req, 'Settings ExamDetails Find Query Error', 'ExamDetails.controller.js', err_1);
-                     res.status(417).send({status: false, Message: "Some error occurred while Find The ExamDetailss!."});
+                     res.status(417).send({status: false, Message: "Some error occurred while Find The Exam Details!."});
                   } else {
                      var ReturnData = CryptoJS.AES.encrypt(JSON.stringify(result_1), 'SecretKeyOut@123');
                         ReturnData = ReturnData.toString();
@@ -57,12 +57,12 @@ var mongoose = require('mongoose');
       }else {
          ExamDetailsModel.ExamDetailsSchema
             .find({ 'If_Deleted': false }, {}, {sort: { updatedAt: -1 }})
-            .populate({ path: 'Created_By', select: ['Name', 'User_Type'] })
-            .populate({ path: 'Last_Modified_By', select: ['Name', 'User_Type'] })
+            .populate({ path: 'Created_By', select: 'Name' })
+            .populate({ path: 'Last_Modified_By', select: 'Name' })
             .exec(function(err, result) { // ExamDetails FindOne Query
             if(err) {
                ErrorManagement.ErrorHandling.ErrorLogCreation(req, 'Settings ExamDetails Find Query Error', 'ExamDetails.controller.js', err);
-               res.status(417).send({status: false, Error:err, Message: "Some error occurred while Find The ExamDetailss!."});
+               res.status(417).send({status: false, Error:err, Message: "Some error occurred while Find The Exam Details!."});
             } else {
                var ReturnData = CryptoJS.AES.encrypt(JSON.stringify(result), 'SecretKeyOut@123');
                ReturnData = ReturnData.toString();
@@ -86,7 +86,7 @@ var mongoose = require('mongoose');
          ExamDetailsModel.ExamDetailsSchema.findOne({'_id': ReceivingData.ExamDetails_Id}, {}, {}, function(err, result) { // ExamDetails FindOne Query
             if(err) {
                ErrorManagement.ErrorHandling.ErrorLogCreation(req, 'Settings ExamDetails FindOne Query Error', 'ExamDetails.controller.js', err);
-               res.status(417).send({status: false, Error:err, Message: "Some error occurred while Find The ExamDetails!."});
+               res.status(417).send({status: false, Error:err, Message: "Some error occurred while Find The Exam Details!."});
             } else {
                if (result !== null) {
                   result.ExamDetails = ReceivingData.ExamDetails;
@@ -98,12 +98,12 @@ var mongoose = require('mongoose');
                      } else {
                         ExamDetailsModel.ExamDetailsSchema
                            .findOne({'_id': result_1._id})
-                           .populate({ path: 'Created_By', select: ['Name', 'User_Type'] })
-                           .populate({ path: 'Last_Modified_By', select: ['Name', 'User_Type'] })
+                           .populate({ path: 'Created_By', select: 'Name' })
+                           .populate({ path: 'Last_Modified_By', select: 'Name' })
                            .exec(function(err_2, result_2) { // ExamDetails FindOne Query
                            if(err_2) {
                               ErrorManagement.ErrorHandling.ErrorLogCreation(req, 'Settings ExamDetails Find Query Error', 'ExamDetails.controller.js', err_2);
-                              res.status(417).send({status: false, Message: "Some error occurred while Find The ExamDetailss!."});
+                              res.status(417).send({status: false, Message: "Some error occurred while Find The Exam Details!."});
                            } else {
                               var ReturnData = CryptoJS.AES.encrypt(JSON.stringify(result_2), 'SecretKeyOut@123');
                                  ReturnData = ReturnData.toString();

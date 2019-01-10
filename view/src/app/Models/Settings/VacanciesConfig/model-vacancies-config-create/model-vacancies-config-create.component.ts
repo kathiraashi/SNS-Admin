@@ -30,8 +30,9 @@ export class ModelVacanciesConfigCreateComponent implements OnInit {
    Uploading: Boolean = false;
    Form: FormGroup;
    User_Id: any;
-   User_Type: any;
 
+   Restricted_Institution: any = null;
+   Restricted_Department: any = null;
 
    public options: Object = {
       charCounterCount: true,
@@ -42,7 +43,7 @@ export class ModelVacanciesConfigCreateComponent implements OnInit {
                         '|', 'insertLink', 'insertTable', // insertImage
                         '|', 'specialCharacters', 'print', 'fullscreen'],
       // imageUploadParam: 'my_editor',
-      // imageUploadURL: 'http://localhost:4000/API/Settings/VacanciesConfig/Demo_Upload',
+      // imageUploadURL: 'http://139.59.59.41:4000/API/Settings/VacanciesConfig/Demo_Upload',
       // imageUploadParams: {info: ''},
       // imageUploadMethod: 'POST',
       // imageMaxSize: 5 * 1024 * 1024,
@@ -52,7 +53,7 @@ export class ModelVacanciesConfigCreateComponent implements OnInit {
       //          console.log('initialized');
       //       },
       //       'froalaEditor.image.uploaded':  function  (e,  editor,  response) {
-      //          const img_url = 'http://localhost:4000/API/Uploads/Demos/' ;
+      //          const img_url = 'http://139.59.59.41:4000/API/Uploads/Demos/' ;
       //          console.log(JSON.parse(response));
       //          editor.image.insert(img_url +  JSON.parse(response)['Response'], false, null, editor.image.get());
       //          return false;
@@ -67,7 +68,8 @@ export class ModelVacanciesConfigCreateComponent implements OnInit {
                 public Service: VacanciesConfigService
             ) {
                this.User_Id = this.Login_Service.LoginUser_Info()['_id'];
-               this.User_Type = this.Login_Service.LoginUser_Info()['User_Type'];
+               this.Restricted_Institution = this.Login_Service.LoginUser_Info()['Institution'];
+               this.Restricted_Department = this.Login_Service.LoginUser_Info()['Department'];
             }
 
    ngOnInit() {
@@ -82,42 +84,40 @@ export class ModelVacanciesConfigCreateComponent implements OnInit {
             if (response['status'] === 200 && ResponseData['Status'] ) {
                const CryptoBytes  = CryptoJS.AES.decrypt(ResponseData['Response'], 'SecretKeyOut@123');
                const DecryptedData = JSON.parse(CryptoBytes.toString(CryptoJS.enc.Utf8));
-               if (this.Type === 'Create' && this.User_Type !== 'Admin' && this.User_Type !== 'Sub-Admin') {
-                  this._Institutions = [this.Login_Service.LoginUser_Info()['Institution']];
-                  const _index = DecryptedData.findIndex(obj => obj._id === this._Institutions[0]['_id'] );
-                  this._Designations = DecryptedData[_index].Designation;
-                  this.Form.controls['Institution'].setValue(this._Institutions[0]['_id']);
-                  if (this.User_Type !== 'HOD') {
-                     this._Departments = DecryptedData[_index].Departments;
-                     this.Form.controls['Department'].enable();
+               if (this.Restricted_Institution !== null && this.Restricted_Institution !== undefined) {
+                  this._Institutions = DecryptedData.filter(obj => obj._id === this.Restricted_Institution['_id'] );
+                  this.Form.controls['Institution'].setValue(this.Restricted_Institution['_id']);
+                  this.Form.controls['Institution'].disable();
+                  this._Designations = this._Institutions[0].Designation;
+                  if (this.Restricted_Department !== null && this.Restricted_Department !== undefined) {
+                     this._Departments = [this.Restricted_Department];
+                     this.Form.controls['Department'].setValue(this.Restricted_Department['_id']);
+                     this.Form.controls['Designation'].enable();
+                     if (this.Type === 'Edit') {
+                        this.Form.controls['Designation'].setValue(this.Data.Designation._id);
+                        this.Form.controls['Designation'].disable();
+                     }
                   } else {
-                     this._Departments = [this.Login_Service.LoginUser_Info()['Department']];
-                     const Department = this.Login_Service.LoginUser_Info()['Department']['_id'];
-                     setTimeout(() => {
-                        this.Form.controls['Department'].setValue(Department);
-                     }, 100);
+                     this._Departments = this._Institutions[0].Departments;
+                     this.Form.controls['Department'].enable();
+                     if (this.Type === 'Edit') {
+                        this.Form.controls['Department'].setValue(this.Data.Department._id);
+                        this.Form.controls['Department'].disable();
+                        this.Form.controls['Designation'].setValue(this.Data.Designation._id);
+                     }
                   }
                } else {
                   this._Institutions = DecryptedData;
-                  if (this.Type !== 'Edit') {
-                     this.Form.controls['Institution'].enable();
-                  }
-               }
-               if (this.Type === 'Edit') {
-                  this.Form.controls['Institution'].setValue(this.Data.Institution._id);
-                  const _index = DecryptedData.findIndex(obj => obj._id === this.Data.Institution._id );
-                  this._Designations = DecryptedData[_index].Designation;
-                  this.Form.controls['Designation'].setValue(this.Data.Designation._id);
-                  if (this.User_Type !== 'HOD') {
+                  this.Form.controls['Institution'].enable();
+                  if (this.Type === 'Edit') {
+                     this.Form.controls['Institution'].setValue(this.Data.Institution._id);
+                     this.Form.controls['Institution'].disable();
+                     const _index = this._Institutions.findIndex(obj => obj._id === this.Data.Institution._id );
                      this._Departments = DecryptedData[_index].Departments;
+                     this._Designations = DecryptedData[_index].Designation;
                      this.Form.controls['Department'].setValue(this.Data.Department._id);
-                  } else {
-                     this._Departments = [this.Login_Service.LoginUser_Info()['Department']];
-                     setTimeout(() => {
-                        this.Form.controls['Department'].setValue(this.Data.Department._id);
-                     }, 100);
+                     this.Form.controls['Designation'].setValue(this.Data.Designation._id);
                   }
-                  console.log(this.Form.getRawValue());
                }
             } else if (response['status'] === 400 || response['status'] === 417 || response['status'] === 401 && !ResponseData['Status']) {
                this.Toastr.NewToastrMessage({ Type: 'Error', Message: ResponseData['Message'] });
@@ -158,7 +158,7 @@ export class ModelVacanciesConfigCreateComponent implements OnInit {
 
    InstitutionChange() {
       const Institution = this.Form.controls['Institution'].value;
-      if (this.Type !== 'Edit' && (this.User_Type === 'Admin' || this.User_Type === 'Sub-Admin') && Institution !== null && Institution !== '' && Institution !== undefined ) {
+      if (this.Type !== 'Edit' && (this.Restricted_Institution === null || this.Restricted_Institution === undefined) && Institution !== null && Institution !== '' && Institution !== undefined ) {
          const _index = this._Institutions.findIndex(obj => obj._id === Institution );
          this._Departments = this._Institutions[_index].Departments;
          this._Designations = this._Institutions[_index].Designation;
@@ -178,8 +178,11 @@ export class ModelVacanciesConfigCreateComponent implements OnInit {
    DepartmentChange() {
       const Department = this.Form.controls['Department'].value;
       if (this.Type !== 'Edit' && Department !== null && Department !== '' && Department !== undefined ) {
+         this.Form.controls['Designation'].setValue(null);
          this.Form.controls['Designation'].enable();
-      } else {
+      }
+      if ( Department === null || Department === '' || Department === undefined ) {
+         this.Form.controls['Designation'].setValue(null);
          this.Form.controls['Designation'].disable();
       }
    }
@@ -219,8 +222,6 @@ export class ModelVacanciesConfigCreateComponent implements OnInit {
 
    // Submit New Vacancies Config
    submit() {
-      console.log(this.Form.getRawValue());
-
       if (this.Form.valid && !this.Uploading ) {
          this.Uploading = true;
          const Data = this.Form.getRawValue();
