@@ -9,7 +9,7 @@ var ErrorHandling = {
             var logger = log4js.getLogger('Error');
             
             if(req !== ''){
-                var Ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress || req.socket.remoteAddress || req.connection.socket.remoteAddress;
+                var Ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress || req.socket.remoteAddress;
                 var DeviceInfo = parser(req.headers['user-agent']);
                     logger.error(JSON.stringify({
                         Error_Name : Name,
