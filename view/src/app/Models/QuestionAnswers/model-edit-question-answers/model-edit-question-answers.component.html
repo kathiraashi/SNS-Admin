@@ -125,7 +125,7 @@
                         <span  *ngIf="Form.controls['Option_D'].errors.required"> Option D is required</span>
                      </p>
                   </div>
-                  <div class="col-sm-4 Form_Input"  [ngClass]="{'Form_Err': Form.controls['Option_E'].errors && !Form.controls['Option_E'].pristine, 'Form_Success': Form.controls['Option_E'].valid && !Form.controls['Option_E'].pristine }">
+                  <!-- <div class="col-sm-4 Form_Input"  [ngClass]="{'Form_Err': Form.controls['Option_E'].errors && !Form.controls['Option_E'].pristine, 'Form_Success': Form.controls['Option_E'].valid && !Form.controls['Option_E'].pristine }">
                      <label>option E:</label>
                      <input type="text" formControlName="Option_E"> 
                      <p class="error" *ngIf="Form.controls['Option_E'].errors && !Form.controls['Option_E'].pristine">
@@ -138,7 +138,7 @@
                      <p class="error" *ngIf="Form.controls['Option_F'].errors && !Form.controls['Option_F'].pristine">
                         <span  *ngIf="Form.controls['Option_F'].errors.required"> Option F is required</span>
                      </p>
-                  </div>
+                  </div> -->
                </div>
                <!-- option design -->
                <div class="row" *ngIf="ActiveTab === 'Question' || ActiveTab === 'Image'">
@@ -151,8 +151,8 @@
                         <mat-radio-button class="AnswerGroupOption" value="B"> B </mat-radio-button>
                         <mat-radio-button class="AnswerGroupOption" value="C"> C </mat-radio-button>
                         <mat-radio-button class="AnswerGroupOption" value="D"> D </mat-radio-button>
-                        <mat-radio-button class="AnswerGroupOption" value="E"> E </mat-radio-button>
-                        <mat-radio-button class="AnswerGroupOption" value="F"> F </mat-radio-button>
+                        <!-- <mat-radio-button class="AnswerGroupOption" value="E"> E </mat-radio-button>
+                        <mat-radio-button class="AnswerGroupOption" value="F"> F </mat-radio-button> -->
                      </mat-radio-group>
                      <p class="error" *ngIf="Form.controls['Answer'].errors && !Form.controls['Answer'].pristine">
                         <span  *ngIf="Form.controls['Answer'].errors.required"> Answer is required</span>

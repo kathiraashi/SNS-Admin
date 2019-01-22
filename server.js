@@ -27,8 +27,8 @@ var app = express();
 
 
 // DB Connection
-   // mongoose.connect('mongodb://kathiraashi:kathir143@ds263161.mlab.com:63161/sns');
-   mongoose.connect('mongodb://snsAdmin:Admin123@localhost:27017/Sns-Career-Portal');
+   mongoose.connect('mongodb://kathiraashi:kathir143@ds263161.mlab.com:63161/sns');
+   // mongoose.connect('mongodb://snsAdmin:Admin123@localhost:27017/Sns-Career-Portal');
    mongoose.connection.on('error', function(err) {
       ErrorManagement.ErrorHandling.ErrorLogCreation('', 'Mongodb Connection Error', 'Server.js', err);
    });

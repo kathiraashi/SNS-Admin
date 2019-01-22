@@ -58,8 +58,7 @@ export class EducationInfoApplicationComponent implements OnInit {
             this.CandidateData['Education_Info']['PHD_Percentage'] !== '' ||
             this.CandidateData['Education_Info']['PHD_Medium'] !== ''
          ) { this.PHD_Course = true;  }
-      if (  this.CandidateData['Education_Info']['Bed_Course'] !== '' ||
-            this.CandidateData['Education_Info']['Bed_Department'] !== '' ||
+      if (  this.CandidateData['Education_Info']['Bed_Department'] !== '' ||
             this.CandidateData['Education_Info']['Bed_Class'] !== '' ||
             this.CandidateData['Education_Info']['Bed_Year_Of_Passing'] !== '' ||
             this.CandidateData['Education_Info']['Bed_College_Name'] !== '' ||
@@ -67,8 +66,7 @@ export class EducationInfoApplicationComponent implements OnInit {
             this.CandidateData['Education_Info']['Bed_Percentage'] !== '' ||
             this.CandidateData['Education_Info']['Bed_Medium'] !== ''
          ) { this.BED_Course = true;  }
-      if (  this.CandidateData['Education_Info']['Med_Course'] !== '' ||
-            this.CandidateData['Education_Info']['Med_Department'] !== '' ||
+      if (  this.CandidateData['Education_Info']['Med_Department'] !== '' ||
             this.CandidateData['Education_Info']['Med_Class'] !== '' ||
             this.CandidateData['Education_Info']['Med_Year_Of_Passing'] !== '' ||
             this.CandidateData['Education_Info']['Med_College_Name'] !== '' ||
