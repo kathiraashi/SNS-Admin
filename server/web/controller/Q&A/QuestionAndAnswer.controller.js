@@ -51,6 +51,10 @@ exports.Questions_Create = function(req, res) {
          res.status(400).send({Status: false, Message: "Option C can not be empty" });
       } else if( ( !ReceivingData.Option_D || ReceivingData.Option_D === '' ) && ReceivingData.Type === 'Question' ) {
          res.status(400).send({Status: false, Message: "Option D can not be empty" });
+      // } else if( ( !ReceivingData.Option_E || ReceivingData.Option_E === '' ) && ReceivingData.Type === 'Question' ) {
+      //    res.status(400).send({Status: false, Message: "Option E can not be empty" });
+      // } else if( ( !ReceivingData.Option_F || ReceivingData.Option_F === '' ) && ReceivingData.Type === 'Question' ) {
+      //    res.status(400).send({Status: false, Message: "Option F can not be empty" });
       } else if(!ReceivingData.Answer || ReceivingData.Answer === '' ) {
          res.status(400).send({Status: false, Message: "Answer can not be empty" });
       } else if(ReceivingData.Type === 'Image' && (req.file === null || req.file === undefined || req.file === '' || Object.keys(_Image).length < 3) ) {
@@ -66,8 +70,8 @@ exports.Questions_Create = function(req, res) {
             Option_B: ReceivingData.Option_B || '',
             Option_C: ReceivingData.Option_C || '',
             Option_D: ReceivingData.Option_D || '',
-            Option_E: null,
-            Option_F: null,
+            // Option_E: ReceivingData.Option_E || '',
+            // Option_F: ReceivingData.Option_F || '',
             Answer:  ReceivingData.Answer,
             Type: ReceivingData.Type,
             Image: _Image,
@@ -119,8 +123,8 @@ exports.Questions_Import_Append = function(req, res) {
             Option_B: Obj.Option_B,
             Option_C: Obj.Option_C,
             Option_D: Obj.Option_D,
-            Option_E: null,
-            Option_F: null,
+            // Option_E: Obj.Option_E,
+            // Option_F: Obj.Option_F,
             Answer:  Obj.Ans,
             Type: 'Question',
             Image: {},
@@ -179,8 +183,8 @@ exports.Questions_Import_Replace = function(req, res) {
                Option_B: Obj.Option_B,
                Option_C: Obj.Option_C,
                Option_D: Obj.Option_D,
-               Option_E: null,
-               Option_F: null,
+               // Option_E: Obj.Option_E,
+               // Option_F: Obj.Option_F,
                Answer:  Obj.Ans,
                Type: 'Question',
                Image: {},

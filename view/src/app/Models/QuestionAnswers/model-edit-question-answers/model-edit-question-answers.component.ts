@@ -160,8 +160,8 @@ export class ModelEditQuestionAnswersComponent implements OnInit {
       this.Form.setControl('Option_B', new FormControl('', Validators.required));
       this.Form.setControl('Option_C', new FormControl('', Validators.required));
       this.Form.setControl('Option_D', new FormControl('', Validators.required));
-      // this.Form.setControl('Option_E', new FormControl(null));
-      // this.Form.setControl('Option_F', new FormControl(null));
+      // this.Form.setControl('Option_E', new FormControl('', Validators.required));
+      // this.Form.setControl('Option_F', new FormControl('', Validators.required));
       this.Form.updateValueAndValidity();
    }
 
