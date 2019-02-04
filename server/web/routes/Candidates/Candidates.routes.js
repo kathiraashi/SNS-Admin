@@ -2,6 +2,9 @@ module.exports = function(app) {
 
    var Controller = require('./../../controller/Candidates/Candidates.controller.js');
 
+   app.post('/API/Candidates/Email_AsyncValidate', Controller.Email_AsyncValidate);
+   app.post('/API/Candidates/Contact_AsyncValidate', Controller.Contact_AsyncValidate);
+   app.post('/API/Candidates/Candidate_Add', Controller.Candidate_Add);
 
    app.post('/API/Candidates/CandidatesList', Controller.CandidatesList);
    app.post('/API/Candidates/Candidate_View', Controller.Candidate_View);

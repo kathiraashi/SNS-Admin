@@ -52,6 +52,7 @@ import { ModelDesignationCreateComponent } from './Models/Settings/Designation/m
 import { VacanciesConfigListComponent } from './Components/Settings/VacanciesConfig/vacancies-config-list/vacancies-config-list.component';
 import { ModelVacanciesConfigCreateComponent, InnerHtmlPipe } from './Models/Settings/VacanciesConfig/model-vacancies-config-create/model-vacancies-config-create.component';
 import { ModelUserManagementViewComponent } from './Models/Settings/UserManagement/model-user-management-view/model-user-management-view.component';
+import { AddApplicationComponent } from './Models/Applications/add-application/add-application.component';
 
 
 
@@ -94,7 +95,8 @@ import { ModelUserManagementViewComponent } from './Models/Settings/UserManageme
    VacanciesConfigListComponent,
    ModelVacanciesConfigCreateComponent,
    InnerHtmlPipe,
-   ModelUserManagementViewComponent
+   ModelUserManagementViewComponent,
+   AddApplicationComponent
   ],
   imports: [
     BrowserModule,
@@ -133,7 +135,8 @@ import { ModelUserManagementViewComponent } from './Models/Settings/UserManageme
     ApplicationForwardComponent,
     ModelDesignationCreateComponent,
     ModelVacanciesConfigCreateComponent,
-    ModelUserManagementViewComponent
+    ModelUserManagementViewComponent,
+    AddApplicationComponent
   ],
   bootstrap: [AppComponent]
 })

@@ -128,7 +128,7 @@ export class ModelEditQuestionAnswersComponent implements OnInit {
       this.Form.controls['Department'].setValue(null);
       this._Departments = [];
       if (Institution !== '' && Institution !== null && Institution !== undefined) {
-         if ((this.Restricted_Institution === null || this.Restricted_Institution === undefined) && (this.Restricted_Institution === null || this.Restricted_Institution === undefined))  {
+         if ((this.Restricted_Institution === null || this.Restricted_Institution === undefined) && (this.Restricted_Department === null || this.Restricted_Department === undefined))  {
             const _index = this._Institutions.findIndex(obj => obj._id === Institution );
             this._Departments = this._Institutions[_index].Departments;
          }

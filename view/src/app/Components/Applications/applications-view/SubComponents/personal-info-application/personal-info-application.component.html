@@ -52,30 +52,32 @@
                   <div class="Title"> Gender <span> : </span> </div>
                   <div class="Value"> {{CandidateData['Personal_Info']?.Gender}} </div>
                </div>
-               <div class="Data">
-                  <div class="Title"> Place of Birth <span> : </span> </div>
-                  <div class="Value"> {{CandidateData['Personal_Info']?.Place_of_Birth}} </div>
-               </div>
-               <div class="Data">
-                  <div class="Title"> Nationality <span> : </span> </div>
-                  <div class="Value"> {{CandidateData['Personal_Info']?.Nationality}} </div>
-               </div>
-               <div class="Data">
-                  <div class="Title"> Religion <span> : </span> </div>
-                  <div class="Value"> {{CandidateData['Personal_Info']?.Religion}} </div>
-               </div>
-               <div class="Data">
-                  <div class="Title"> Community <span> : </span> </div>
-                  <div class="Value"> {{CandidateData['Personal_Info']?.Community}} </div>
-               </div>
-               <div class="Data">
-                  <div class="Title"> Caste <span> : </span> </div>
-                  <div class="Value"> {{CandidateData['Personal_Info']?.Caste}} </div>
-               </div>
-               <div class="Data">
-                  <div class="Title"> Aadhar No <span> : </span> </div>
-                  <div class="Value"> {{CandidateData['Personal_Info']?.Aadhar_No}} </div>
-               </div>
+               <ng-container *ngIf="!CandidateData['ApplicationFromAdmin']">
+                  <div class="Data">
+                     <div class="Title"> Place of Birth <span> : </span> </div>
+                     <div class="Value"> {{CandidateData['Personal_Info']?.Place_of_Birth}} </div>
+                  </div>
+                  <div class="Data">
+                     <div class="Title"> Nationality <span> : </span> </div>
+                     <div class="Value"> {{CandidateData['Personal_Info']?.Nationality}} </div>
+                  </div>
+                  <div class="Data">
+                     <div class="Title"> Religion <span> : </span> </div>
+                     <div class="Value"> {{CandidateData['Personal_Info']?.Religion}} </div>
+                  </div>
+                  <div class="Data">
+                     <div class="Title"> Community <span> : </span> </div>
+                     <div class="Value"> {{CandidateData['Personal_Info']?.Community}} </div>
+                  </div>
+                  <div class="Data">
+                     <div class="Title"> Caste <span> : </span> </div>
+                     <div class="Value"> {{CandidateData['Personal_Info']?.Caste}} </div>
+                  </div>
+                  <div class="Data">
+                     <div class="Title"> Aadhar No <span> : </span> </div>
+                     <div class="Value"> {{CandidateData['Personal_Info']?.Aadhar_No}} </div>
+                  </div>
+               </ng-container>
                <div class="Data">
                   <div class="Title"> Email Address  <span> : </span> </div>
                   <div class="Value"> {{CandidateData['Personal_Info']?.Email}} </div>
@@ -84,17 +86,19 @@
                   <div class="Title"> Contact No  <span> : </span> </div>
                   <div class="Value"> {{CandidateData['Personal_Info']?.Contact_No}} </div>
                </div>
-               <div class="Data">
-                  <div class="Title"> PAN No  <span> : </span> </div>
-                  <div class="Value"> {{CandidateData['Personal_Info']?.PAN_No}} </div>
-               </div>
+               <ng-container *ngIf="!CandidateData['ApplicationFromAdmin']">
+                  <div class="Data">
+                     <div class="Title"> PAN No  <span> : </span> </div>
+                     <div class="Value"> {{CandidateData['Personal_Info']?.PAN_No}} </div>
+                  </div>
+               </ng-container>
             </div>
          </div><!-- Section End -->
       </div>
       <div class="col-sm-6">
          <div class="Section"> <!-- Section Start-->
             <div class="Section_Identity"> <h5 class="Identity"> Uploads </h5> </div>
-            <div class="Section_Data">
+            <div class="Section_Data"  *ngIf="!CandidateData['ApplicationFromAdmin']">
                <div class="Data" style="align-items: unset;">
                   <div class="Title"> Photo  <span> : </span> </div>
                   <div class="Value"> 
@@ -114,8 +118,16 @@
                   </div>
                </div>
             </div>
+            <div class="Section_Data" *ngIf="CandidateData['ApplicationFromAdmin']">
+               <div class="Data">
+                  <div class="Title"> Resume  <span> : </span> </div>
+                  <div class="Value"> 
+                     <a href="http://139.59.59.41:4000/API/Uploads/Resumes/{{CandidateData['Resume']?.filename}}" download="{{CandidateData['Resume']?.filename}}"> Download Resume </a>
+                  </div>
+               </div>
+            </div>
          </div><!-- Section End -->
-         <div class="Section"> <!-- Section Start-->
+         <div class="Section" *ngIf="!CandidateData['ApplicationFromAdmin']"> <!-- Section Start-->
             <div class="Section_Identity"> <h5 class="Identity"> Permanent Address</h5> </div>
             <div class="Section_Data">
                <div class="Data">
@@ -140,7 +152,7 @@
                </div>
             </div>
          </div><!-- Section End -->
-         <div class="Section"> <!-- Section Start-->
+         <div class="Section" *ngIf="!CandidateData['ApplicationFromAdmin']"> <!-- Section Start-->
             <div class="Section_Identity"> <h5 class="Identity"> Present Address</h5> </div>
             <div class="Section_Data">
                <div class="Data">
@@ -165,7 +177,7 @@
                </div>
             </div>
          </div><!-- Section End -->
-         <div class="Section"> <!-- Section Start-->
+         <div class="Section" *ngIf="!CandidateData['ApplicationFromAdmin']"> <!-- Section Start-->
             <div class="Section_Identity"> <h5 class="Identity"> Family Information </h5> </div>
             <div class="Section_Data">
                <div class="Data">
@@ -183,7 +195,7 @@
             </div>
          </div><!-- Section End -->
       </div>
-      <div class="col-sm-12">
+      <div class="col-sm-12" *ngIf="!CandidateData['ApplicationFromAdmin']">
          <div class="Section"> <!-- Section Start-->
             <div class="Section_Identity"> <h5 class="Identity"> Family Details </h5> </div>
             <div class="Section_Table">

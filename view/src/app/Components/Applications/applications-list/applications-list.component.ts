@@ -12,6 +12,7 @@ import { ApplicationForwardComponent } from '../../../Models/Applications/applic
 import { ToastrService } from './../../../Services/common-services/toastr-service/toastr.service';
 import { CandidatesService } from './../../../Services/Applications/candidates.service';
 import { LoginService } from './../../../Services/LoginService/login.service';
+import { AddApplicationComponent } from './../../../Models/Applications/add-application/add-application.component';
 
 @Component({
   selector: 'app-applications-list',
@@ -39,6 +40,10 @@ export class ApplicationsListComponent implements OnInit {
                      { name: 'Refer', activity: 'Refer', show: true }];
    Temp_Menu: any[] = [];
    ActionId: any;
+
+   _Institutions: any[] = [];
+   _Departments: any[] = [];
+   _Categories: any[] = [];
 
    constructor( public Service: CandidatesService,
                private Toastr: ToastrService,
@@ -109,6 +114,9 @@ export class ApplicationsListComponent implements OnInit {
          this.Temp_Menu = [   { name: 'Accept Referral', activity: 'AcceptRefer', show: true },
                               { name: 'Delete', activity: 'Delete', show: true }
                            ];
+      }
+      if (this._List[_index].ApplicationFromAdmin) {
+         this.Temp_Menu = this.Temp_Menu.filter(obj => obj.name !== 'Refer');
       }
    }
 
@@ -306,6 +314,20 @@ export class ApplicationsListComponent implements OnInit {
                   this.Toastr.NewToastrMessage({ Type: 'Error', Message: 'Candidate Exam Assign Error!, But not Identify!' });
                }
             });
+         }
+      });
+   }
+
+
+   CreateApplication() {
+      const initialState = {
+         Type: 'Create'
+      };
+      this.bsModalRef = this.modalService.show(AddApplicationComponent, Object.assign({initialState}, {ignoreBackdropClick: true, class: 'modal-lg max-width-70' }));
+      this.bsModalRef.content.onClose.subscribe(response => {
+         if (response.Status) {
+            response.Response['BtnLoading'] = false;
+            this._List.splice(0, 0, response.Response);
          }
       });
    }

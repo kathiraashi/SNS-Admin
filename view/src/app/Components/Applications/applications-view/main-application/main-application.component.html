@@ -36,9 +36,9 @@
                   <span class="Left_Section">
                      <ul class="List">
                         <li class="Item" [ngClass]="{'active': Active_Tab === 'Basic&Personal_info' }" (click)="Active_Tab_Change('Basic&Personal_info')"> <span> Basic and Personal Info </span>  </li>
-                        <li class="Item" [ngClass]="{'active': Active_Tab === 'educational_info' }" (click)="Active_Tab_Change('educational_info')"> <span> Educational Info </span>  </li>
-                        <li class="Item" [ngClass]="{'active': Active_Tab === 'experience&activities' }" (click)="Active_Tab_Change('experience&activities')"> <span> Experience & Activities </span>  </li>
-                        <li class="Item" [ngClass]="{'active': Active_Tab === 'reference&declaration' }" (click)="Active_Tab_Change('reference&declaration')"> <span> Reference & Declaration </span>  </li>
+                        <li *ngIf="!_Data['ApplicationFromAdmin']" class="Item" [ngClass]="{'active': Active_Tab === 'educational_info' }" (click)="Active_Tab_Change('educational_info')"> <span> Educational Info </span>  </li>
+                        <li *ngIf="!_Data['ApplicationFromAdmin']" class="Item" [ngClass]="{'active': Active_Tab === 'experience&activities' }" (click)="Active_Tab_Change('experience&activities')"> <span> Experience & Activities </span>  </li>
+                        <li *ngIf="!_Data['ApplicationFromAdmin']" class="Item" [ngClass]="{'active': Active_Tab === 'reference&declaration' }" (click)="Active_Tab_Change('reference&declaration')"> <span> Reference & Declaration </span>  </li>
                         <li *ngIf="_Data['Current_Stage'] !== 'Stage_1' && _Data['Current_Stage'] !== 'Stage_2' " class="Item" [ngClass]="{'active': Active_Tab === 'ExamResult' }" (click)="Active_Tab_Change('ExamResult')"> <span> Exam Status </span>  </li>
                      </ul>
                   </span>

@@ -1,0 +1,123 @@
+<div class="Modal_Content">
+   <div class="Modal_Header">
+      <p> Add Canditate </p>
+      <span  *ngIf="!Uploading" data-dismiss="modal" (click)="bsModalRef.hide()">&times;</span>
+   </div>
+   <form [formGroup]="Form" (ngSubmit)="onSubmit()">
+      <div class="Model_Body">
+         <div class="row">
+            <div class="col-sm-6 Form_Input" [ngClass]="{'Form_Err': Form.controls['Name'].errors && !Form.controls['Name'].pristine, 'Form_Success': Form.controls['Name'].valid && !Form.controls['Name'].pristine }">
+               <label>Name:</label>
+               <input type="text" formControlName="Name">
+               <p class="error" *ngIf="Form.controls['Name'].errors && !Form.controls['Name'].pristine">
+                  <span *ngIf="Form.controls['Name'].errors.required"> Name is required</span>
+               </p>
+            </div>
+            <div class="col-sm-6 Form_Input" [ngClass]="{'Form_Err': Form.controls['DOB'].errors && !Form.controls['DOB'].pristine, 'Form_Success': Form.controls['DOB'].valid && !Form.controls['DOB'].pristine }">
+               <label>DOB:</label>
+               <input type="text" formControlName="DOB" [matDatepicker]="Datepicker" (ngModelChange)="CalculateAge()" (click)="Datepicker.open()" (keypress)="NotAllow()" (keydown)="NotAllow()">
+               <mat-datepicker #Datepicker></mat-datepicker>
+               <p class="error" *ngIf="Form.controls['DOB'].errors && !Form.controls['DOB'].pristine">
+                  <span *ngIf="Form.controls['DOB'].errors.required"> Date Of Birth is required</span>
+               </p>
+            </div>
+            <div class="col-sm-6 Form_Input">
+               <label>Age:</label>
+               <input type="text" formControlName="Age">
+               <p class="error" *ngIf="Form.controls['Age'].errors && !Form.controls['Age'].pristine">
+                  <span *ngIf="Form.controls['Age'].errors.required"> Age is required</span>
+               </p>
+            </div>
+            <div class="col-sm-6 Form_Input" style="display:flex; margin-top: 35px;">
+               <label>Gender:</label>
+               <mat-radio-group formControlName="Gender">
+                  <mat-radio-button value="Male" style="margin-left: 20px;">Male</mat-radio-button>
+                  <mat-radio-button value="Female" style="margin-left: 20px;">Female</mat-radio-button>
+               </mat-radio-group>
+            </div>
+            <div class="col-sm-6 Form_Input" [ngClass]="{'Form_Err': Form.controls['Email'].errors && !Form.controls['Email'].pristine, 'Form_Success': Form.controls['Email'].valid && !Form.controls['Email'].pristine }">
+               <label>Email:</label>
+               <input type="text" formControlName="Email">
+               <p class="error" *ngIf="Form.controls['Email'].errors && !Form.controls['Email'].pristine">
+                  <span *ngIf="Form.controls['Email'].errors.required"> Email is required</span>
+                  <span *ngIf="Form.controls['Email'].errors.Email_NotAvailable"> Email already exist</span>
+               </p>
+            </div>
+            <div class="col-sm-6 Form_Input" [ngClass]="{'Form_Err': Form.controls['Contact'].errors && !Form.controls['Contact'].pristine, 'Form_Success': Form.controls['Contact'].valid && !Form.controls['Contact'].pristine }">
+               <label>Contact Number:</label>
+               <input type="text" formControlName="Contact">
+               <p class="error" *ngIf="Form.controls['Contact'].errors && !Form.controls['Contact'].pristine">
+                  <span *ngIf="Form.controls['Contact'].errors.required"> Contact is required</span>
+                  <span *ngIf="Form.controls['Contact'].errors.Contact_NotAvailable"> Contact Number already exist</span>
+               </p>
+            </div>
+            <div class="col-sm-6 Form_Select">
+               <label>Institution:</label>
+               <ng-select class="NgSelect ValueBold"
+                           formControlName="Institution"
+                           [items]="_Institutions"
+                           [bindLabel]="'Institution'"
+                           [bindValue]="'_id'"
+                           [searchable]="true"
+                           (change)="InstitutionChange()"
+                           placeholder="Institution">
+               </ng-select>
+               <p class="error" *ngIf="Form.controls['Institution'].errors && !Form.controls['Institution'].pristine">
+                  <span *ngIf="Form.controls['Institution'].errors.required"> Institution is required</span>
+               </p>
+            </div>
+            <div class="col-sm-6 Form_Select">
+               <label> Department: </label>
+               <ng-select class="NgSelect ValueBold"
+                           formControlName="Department"
+                           [items]="_Departments"
+                           bindLabel="Department"
+                           bindValue="_id"
+                           [searchable]="true"
+                           (change)="DepartmentChange()"
+                           placeholder="Department">
+               </ng-select>
+               <p class="error" *ngIf="Form.controls['Department'].errors && !Form.controls['Department'].pristine">
+                  <span *ngIf="Form.controls['Department'].errors.required"> Department is required</span>
+               </p>
+            </div>
+            <div class="col-sm-6 Form_Select">
+               <label>Designation:</label>
+               <ng-select class="NgSelect ValueBold"
+                           formControlName="Designation"
+                           [items]="_Designations"
+                           bindLabel="Designation"
+                           bindValue="_id"
+                           [searchable]="true"
+                           placeholder="Designation">
+               </ng-select>
+               <p class="error" *ngIf="Form.controls['Designation'].errors && !Form.controls['Designation'].pristine">
+                  <span *ngIf="Form.controls['Designation'].errors.required"> Designation is required</span>
+               </p>
+            </div>
+            <div *ngIf="ShowSubject" class="col-sm-6 Form_Input">
+               <label>Preferred Subject 1:</label>
+               <input type="text" formControlName="Subject_1">
+            </div>
+            <div *ngIf="ShowSubject" class="col-sm-6 Form_Input" >
+               <label>Preferred Subject 2:</label>
+               <input type="text" formControlName="Subject_2">
+            </div>
+            <div *ngIf="ShowSubject" class="col-sm-6 Form_Input" >
+                  <label>Preferred Subject 3:</label>
+                  <input type="text" formControlName="Subject_2">
+               </div>
+            <div class="col-sm-6 Form_Input">
+               <label>Resume:</label>
+               <input type="file" (change)="onFileChange($event)" accept=".PDF, .pdf, .doc, .DOC, .docx, .DOCX" #fileInput>
+            </div>
+         </div>
+      </div>
+      <div class="Model_Footer">
+         <button type="submit" [disabled]="Form.status !== 'VALID' || Uploading || !File_Added" mat-raised-button color="primary">
+            <span *ngIf="!Uploading">Submit</span>
+            <span *ngIf="Uploading" class="UploadingBtn"> <i class="fa fa-refresh fa-spin"></i> Loading... </span>
+         </button>
+      </div>
+   </form>
+</div>

@@ -7,11 +7,14 @@ var DesignationModel = require('./../../models/Settings/Designation.model');
 var ErrorManagement = require('./../../../handling/ErrorHandling.js');
 var mongoose = require('mongoose');
 var CryptoJS = require("crypto-js");
+var multer = require('multer');
+var path = require("path");
 
 
 var api_key = 'key-1018902c1f72fc21e3dc109706b593e3';
 var domain = 'www.inscube.com';
 var mailgun = require('mailgun-js')({apiKey: api_key, domain: domain});
+
 
 
 function TemplateOne(User, Applied, Department, Ref_Id) {
@@ -48,6 +51,164 @@ function TemplateFive(User, Applied, Department, Ref_Id) {
    return '<div style="background-color:#f6f6f6;font-size:14px;height:100%;line-height:1.6;margin:0;padding:0;width:100%" bgcolor="#f6f6f6" height="100%" width="100%"><table style="background-color:#f6f6f6;border-collapse:separate;border-spacing:0;box-sizing:border-box;width:100%"width="100%" bgcolor="#f6f6f6"><tbody><tr> <td style="box-sizing:border-box;display:block;font-size:14px;font-weight:normal;margin:0 auto;max-width:600px;padding:10px;text-align:center;width:auto" valign="top" align="center" width="auto"> <div style="background-color:#dedede; box-sizing:border-box;display:block;margin:0 auto;max-width:600px;padding:10px;text-align:left" align="left"><table style="background:#fff;border:1px solid #e9e9e9;border-collapse:separate;border-radius:3px;border-spacing:0;box-sizing:border-box;width:100%"><tbody><tr><td style="box-sizing:border-box;font-size:14px;font-weight:normal;margin:0;padding:30px;vertical-align:top" valign="top"><table style="border-collapse:separate;border-spacing:0;box-sizing:border-box;width:100%" width="100%"><tbody><tr style="font-family: sans-serif; line-height:20px"><td style="box-sizing:border-box;font-size:14px;font-weight:normal;margin:0;vertical-align:top" valign="top"><img src="'+ Img +'" style="width:40%; margin-left:30%" alt="SNS Logo"> <p style="font-size:18px;font-weight:700;color:#717171;font-family: inherit;"> Dear <b> <i style="color: #f4962f; text-decoration: underline;"> ' +  User +' </i> </b> </p> <p style="font-size:14px;color:#717171;font-family: inherit;"> Greetings from SNS Group of Institutions! </p> <p style="font-size:14px;color:#717171;font-family: inherit;"> This is in response to your application for vacancy position at  <b> SNS Institutions  </b> </p> <p style="font-size:14px;color:#717171;font-family: inherit;">  <b> Your online application for the post of <b> <i style="color: #f4962f; text-decoration: underline;"> ' + Applied + ' </i> </b> in the department of <b> <i style="color: #f4962f; text-decoration: underline;"> ' + Department + ' </i> </b> is received.  </b> </p><p style="font-size:14px;color:#717171;font-family: inherit;">  <b> Your Reference Number : <b> <i style="color: #f4962f; text-decoration: underline;"> ' + Ref_Id + ' </i> </b>  </b> </p> <p style="font-size:14px;color:#717171;font-family: inherit;">  <b> You will be informed the status of your application after the scrutiny process. </b> </p><p style="font-size:14px;color:#717171;font-family: inherit;">  <b> Thanks for your interest in SNS Institutions. </b> </p><br><br><p style="font-size:14px;font-weight:normal;margin:0;margin-bottom:15px;padding:0;color: #717171;font-family: inherit;text-align: right;">With Regards, <br> HR Team </p></td></tr></tbody></table></td></tr></tbody></table></div></td></tr></tbody></table></div>';
   
 }
+
+
+var Resume_Storage = multer.diskStorage({
+   destination: (req, file, cb) => { cb(null, './Uploads/Resumes'); },
+   filename: (req, file, cb) => {   let extArray = file.mimetype.split("/");
+                                    let extension = extArray[extArray.length - 1];
+                                    cb(null, 'Res_' + Date.now() +  path.extname(file.originalname)); }
+});
+var Resume_Upload = multer({
+   storage: Resume_Storage,
+   fileFilter: function (req, file, callback) {
+       let extArray = file.originalname.split(".");
+       let extension = (extArray[extArray.length - 1]).toLowerCase();
+       if(extension !== 'pdf' && extension !== 'doc' && extension !== 'docx') {
+           return callback("Only 'pdf, doc and docx' files are allowed");
+       }
+       callback(null, true);
+   }
+}).single('resume');
+
+
+
+exports.Email_AsyncValidate = function(req, res) {
+   var CryptoBytes  = CryptoJS.AES.decrypt(req.body.Info, 'SecretKeyIn@123');
+   var ReceivingData = JSON.parse(CryptoBytes.toString(CryptoJS.enc.Utf8));
+
+   if(!ReceivingData.Email || ReceivingData.Email === '' ) {
+      res.status(400).send({Status: false, Message: "Email can not be empty" });
+   } else if (!ReceivingData.User_Id || ReceivingData.User_Id === ''  ) {
+      res.status(400).send({Status: false, Message: "User Details can not be empty" });
+   }else {
+      CandidateModel.CandidatesSchema.findOne({ 'Personal_Info.Email': ReceivingData.Institution, 'If_Deleted': false }, {}, {}, function(err, result) {
+         if(err) {
+            ErrorManagement.ErrorHandling.ErrorLogCreation(req, 'Email Validate Query Error', 'Candidates.controller.js', err);
+            res.status(417).send({status: false, Message: "Some error occurred while Validate Email!."});
+         } else {
+            if ( result !== null) {
+               res.status(200).send({Status: true, Available: false });
+            } else {
+               res.status(200).send({Status: true, Available: true });
+            }
+         }
+      });
+   }
+};
+
+exports.Contact_AsyncValidate = function(req, res) {
+   var CryptoBytes  = CryptoJS.AES.decrypt(req.body.Info, 'SecretKeyIn@123');
+   var ReceivingData = JSON.parse(CryptoBytes.toString(CryptoJS.enc.Utf8));
+
+   if(!ReceivingData.Contact || ReceivingData.Contact === '' ) {
+      res.status(400).send({Status: false, Message: "Contact Number can not be empty" });
+   } else if (!ReceivingData.User_Id || ReceivingData.User_Id === ''  ) {
+      res.status(400).send({Status: false, Message: "User Details can not be empty" });
+   }else {
+      CandidateModel.CandidatesSchema.findOne({ 'Personal_Info.Contact_No': ReceivingData.Contact, 'If_Deleted': false }, {}, {}, function(err, result) {
+         if(err) {
+            ErrorManagement.ErrorHandling.ErrorLogCreation(req, 'Contact Number Validate Query Error', 'Candidates.controller.js', err);
+            res.status(417).send({status: false, Message: "Some error occurred while Validate Contact Number!."});
+         } else {
+            if ( result !== null) {
+               res.status(200).send({Status: true, Available: false });
+            } else {
+               res.status(200).send({Status: true, Available: true });
+            }
+         }
+      });
+   }
+}; 
+
+
+exports.Candidate_Add = function(req, res) {
+   Resume_Upload(req, res, function(upload_err) {
+      var CryptoBytes  = CryptoJS.AES.decrypt(req.body.Info, 'SecretKeyIn@123');
+      var ReceivingData = JSON.parse(CryptoBytes.toString(CryptoJS.enc.Utf8));
+
+      if(!ReceivingData.Name || ReceivingData.Name === '' ) {
+         res.status(400).send({Status: false, Message: "Name can not be empty" });
+      }else if(!ReceivingData.DOB || ReceivingData.DOB === '' ) {
+         res.status(400).send({Status: false, Message: "Date of Birth can not be empty" });
+      } else if (!ReceivingData.Age || ReceivingData.Age === '' ) {
+         res.status(400).send({Status: false, Message: "Age can not be empty" });
+      } else if (!ReceivingData.Gender || ReceivingData.Gender === '' ) {
+         res.status(400).send({Status: false, Message: "Gender can not be empty" });
+      } else if (!ReceivingData.Email || ReceivingData.Email === '' ) {
+         res.status(400).send({Status: false, Message: "Email can not be empty" });
+      } else if (!ReceivingData.Contact || ReceivingData.Contact === '' ) {
+         res.status(400).send({Status: false, Message: "Contact Number can not be empty" });
+      } else if (!ReceivingData.Institution || ReceivingData.Institution === '' ) {
+         res.status(400).send({Status: false, Message: "Institution can not be empty" });
+      } else if (!ReceivingData.Institution_Code || ReceivingData.Institution_Code === '' ) {
+         res.status(400).send({Status: false, Message: "Institution can not be empty" });
+      } else if (!ReceivingData.Department || ReceivingData.Department === '' ) {
+         res.status(400).send({Status: false, Message: "Department can not be empty" });
+      } else if (!ReceivingData.Department_Code || ReceivingData.Department_Code === '' ) {
+         res.status(400).send({Status: false, Message: "Department can not be empty" });
+      } else if (!ReceivingData.Designation || ReceivingData.Designation === '' ) {
+         res.status(400).send({Status: false, Message: "Designation can not be empty" });
+      } else if (!ReceivingData.Created_By || ReceivingData.Created_By === ''  ) {
+         res.status(400).send({Status: false, Message: "Creator Details can not be empty" });
+      }else {
+         var _Resume = {};
+         if (req.file !== null && req.file !== undefined && req.file !== '') {
+            _Resume = { filename: req.file.filename, mimetype: req.file.mimetype, size: req.file.size };
+         }
+
+         var Create_Candidate = new CandidateModel.CandidatesSchema({
+            'Basic_Info.Institution': mongoose.Types.ObjectId(ReceivingData.Institution),
+            'Basic_Info.Post_Applied': mongoose.Types.ObjectId(ReceivingData.Designation),
+            'Basic_Info.Department': mongoose.Types.ObjectId(ReceivingData.Department),
+            'Basic_Info.Preferred_Subject_1': ReceivingData.Subject_1,
+            'Basic_Info.Preferred_Subject_2': ReceivingData.Subject_2,
+            'Basic_Info.Preferred_Subject_3': ReceivingData.Subject_3,
+
+            'Personal_Info.Name' :  ReceivingData.Name,
+            'Personal_Info.DOB' : ReceivingData.DOB,
+            'Personal_Info.Age' : ReceivingData.Age,
+            'Personal_Info.Gender' : ReceivingData.Gender,
+            'Personal_Info.Contact_No' : ReceivingData.Contact,
+            'Personal_Info.Email' : ReceivingData.Email,
+            Resume: _Resume,
+            Accepted_Date: null,
+            Ref_ID:  ReceivingData.Institution_Code + '/' + ReceivingData.Department_Code + '/' + Math.floor(Date.now()).toString(),
+            FormType: ReceivingData.FormType,
+            Current_Status: 'Applied',
+            Current_Stage: 'Stage_1',
+            Status: 'Active',
+            ApplicationFromAdmin: true,
+            If_Referred_Accepted: false,
+            If_Referred_From: false,
+            If_Referred_To: false,
+         });
+         Create_Candidate.save(function(err, result) {
+            if(err) {
+               ErrorManagement.ErrorHandling.ErrorLogCreation(req, 'Candidate Creation Query Error', 'Candidates.controller.js');
+               res.status(417).send({Status: false, Message: "Some error occurred while creating the Candidate!."});
+            } else {
+               CandidateModel.CandidatesSchema.findOne({'_id': result._id}, {Activity_Info: 0, Education_Info: 0, Files: 0, Reference_Info: 0}, {})
+               .populate({path: "Basic_Info.Post_Applied", select:"Designation" })
+               .populate({path: "Basic_Info.Department", select:["Department", 'Department_Code']})
+               .populate({path: "Basic_Info.Institution", select:["Institution", "Institution_Code"]})
+               .populate({path: "Referred_To.Institution", select:["Institution", "Institution_Code"]})
+               .populate({path: "Referred_From.Institution", select:["Institution", "Institution_Code"]})
+               .exec(function(err_1, result_1) {
+                  if(err_1) {
+                     ErrorManagement.ErrorHandling.ErrorLogCreation(req, 'Candidates List Find Query Error', 'Candidates.controller.js', err_1);
+                     res.status(417).send({status: false, Message: "Some error occurred while Find Candidates Data!."});
+                  } else {
+                     var ReturnData = CryptoJS.AES.encrypt(JSON.stringify(result_1), 'SecretKeyOut@123');
+                     ReturnData = ReturnData.toString();
+                     res.status(200).send({Status: true, Response: ReturnData });
+                  }
+               });
+            }
+         });
+      };
+   });
+};
 
 
 exports.CandidatesList = function(req, res) {
