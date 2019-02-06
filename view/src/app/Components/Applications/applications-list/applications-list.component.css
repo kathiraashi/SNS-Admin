@@ -69,6 +69,11 @@
     font-size: 14px;
     margin-left: 3%;
  }
+ .Table_Activities{
+    display: grid;
+    grid-gap: 10px;
+    grid-template-columns: auto 88px;
+ }
  /* ---------- Search Section ----------- */
  .Search_Section{
     position: relative;
@@ -105,6 +110,7 @@
    border: 1px solid lightgray;
    width: 100%;
    box-shadow: 2px 2px 3px rgba(0,0,0,.24), 0 0 2px rgba(0,0,0,.12);
+   position: relative;
  }
  /* ********************************************** Table Header Section *********************************** */
    .Table_Section table thead {
@@ -178,3 +184,145 @@
    .UploadingBtn i{
       color: #4f6a7a;
    }
+
+   /* **********************************************    Table Footer Section ********************************** */
+   .Table_Section table tfoot{
+    background-color: #ffffff;
+ }
+ .Table_Section table tfoot .Table_Footer_Section {
+    display: flex;
+    align-items: center;
+    width: 100%;
+ }
+ .Table_Footer_Section .Footer_Left {
+    padding: 0px 10px;
+    width: 50%;
+ }
+ .Table_Footer_Section .Footer_Left p {
+    margin: 0px;
+    color: #4c6a7a;
+    font-weight: 400;
+    font-size: 14px;
+ }
+ .Table_Footer_Section .Footer_Left p span {
+    font-weight: 700;
+ }
+ .Table_Footer_Section .Footer_Right {
+    width: 50%;
+    float: right;
+ }
+ .Table_Footer_Section .Footer_Right .Pagination {
+    padding: 0px;
+    line-height: 45px;
+ }
+ .Table_Footer_Section .Footer_Right .Pagination ul {
+    list-style-type: none;
+    padding: 0px;
+    display: flex;
+    margin: 0px;
+    float: right;
+    margin-right: 10px;
+    align-items: center;
+ }
+ .Table_Footer_Section .Footer_Right .Pagination ul li{
+    margin-right: 10px;
+ }
+ .Table_Footer_Section .Footer_Right .Pagination ul li.PagePrev_Enabled,
+ .Table_Footer_Section .Footer_Right .Pagination ul li.PageNext_Enabled{
+    font-size: 14px;
+    font-weight: 500;
+    color: #4ab65f;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+ }
+ .Table_Footer_Section .Footer_Right .Pagination ul li.PagePrev_Disabled,
+ .Table_Footer_Section .Footer_Right .Pagination ul li.PageNext_Disabled{
+    font-size: 14px;
+    font-weight: 500;
+    color: #4ab65f;
+    display: flex;
+    align-items: center;
+    cursor: not-allowed;
+    pointer-events: none;
+    color: #c1c1c1;
+ }
+ .Table_Footer_Section .Footer_Right .Pagination ul li.PagePrev_Enabled span.arrow,
+ .Table_Footer_Section .Footer_Right .Pagination ul li.PageNext_Enabled span.arrow{
+    display: inline-flex;
+    letter-spacing: -2px;
+    font-size: 10px;
+    margin-left: 3px;
+    margin-right: 4px;
+    transform: scale(1, 1.5);
+    margin-top: 0px;
+ }
+ .Table_Footer_Section .Footer_Right .Pagination ul li.Number {
+    height: 27px;
+    width: 27px;
+    text-align: center;
+    border-radius: 30px;
+    line-height: 24px;
+    cursor: pointer;
+    background-color: rgba(77, 106, 122, 0.13);
+ }
+ .Table_Footer_Section .Footer_Right .Pagination ul li.Number span {
+    font-size: 14px;
+    font-weight: 600;
+    color: #4c6a7a;
+ }
+ .Table_Footer_Section .Footer_Right .Pagination ul li.Number:hover {
+    background-color: rgba(77, 106, 122, 0.23);
+ }
+ .Table_Footer_Section .Footer_Right .Pagination ul li.Number.active {
+    background-color: #4ab65f;
+    border-color: #4ab65f;
+    cursor: not-allowed;
+    pointer-events: none;
+ }
+ .Table_Footer_Section .Footer_Right .Pagination ul li.Number.active span {
+    color: #ffffff;
+ }
+ .Table_Footer_Section .Footer_Right .Pagination ul li.dots {
+    height: 24px;
+    width: 12px;
+    text-align: center;
+    border-radius: 30px;
+    line-height: 20px;
+    color: #51657075;
+    margin-left: -3px;
+ }
+ .TableLoader{
+    display: none;
+    position: absolute;
+    width: 100%;
+    background: rgba(255, 255, 255, 0.7);
+ }
+ .TableLoader:hover{
+    background: rgba(255, 255, 255, 0.7) !important;
+ }
+ .Tr_Loader {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #3DAF54;
+    font-size: 2.5em;
+    text-shadow: 2px 2px 10px rgba(0,0,0,0.2);
+}
+ @keyframes dots {
+    50% {
+       transform: translateY(-.4rem);
+    }
+    100% {
+       transform: translateY(0);
+    }
+    }
+    .dot {
+       animation: dots 1.5s ease-out infinite;
+    }
+    .dot-2 {
+       animation-delay: .5s;
+    }
+    .dot-3 {
+       animation-delay: 1s;
+    }

@@ -218,6 +218,10 @@ exports.CandidatesList = function(req, res) {
    if(!ReceivingData.User_Id || ReceivingData.User_Id === '' ) {
       res.status(400).send({Status: false, Message: "User Details can not be empty" });
    }else {
+      const Skip_Count = parseInt(ReceivingData.Skip_Count, 0) || 0;
+      const Limit_Count = parseInt(ReceivingData.Limit_Count, 0) || 10;
+      const Last_Creation = new Date(ReceivingData.Last_Creation) || new Date();
+
       var FindQuery = { Status: 'Active' };
       if (ReceivingData.Query['Institution']) {
          FindQuery['Basic_Info.Institution'] = mongoose.Types.ObjectId(ReceivingData.Query['Institution']);
@@ -225,25 +229,69 @@ exports.CandidatesList = function(req, res) {
       if (ReceivingData.Query['Department']) {
          FindQuery['Basic_Info.Department'] = mongoose.Types.ObjectId(ReceivingData.Query['Department']);
       }
+      if (Last_Creation) {
+         FindQuery['createdAt'] = { $lte: Last_Creation };
+      }
 
-      CandidateModel.CandidatesSchema.find(FindQuery, {Activity_Info: 0, Education_Info: 0, Files: 0, Reference_Info: 0}, {})
-      .populate({path: "Basic_Info.Post_Applied", select:"Designation" })
-      .populate({path: "Basic_Info.Department", select:["Department", 'Department_Code']})
-      .populate({path: "Basic_Info.Institution", select:["Institution", "Institution_Code"]})
-      .populate({path: "Referred_To.Institution", select:["Institution", "Institution_Code"]})
-      .populate({path: "Referred_From.Institution", select:["Institution", "Institution_Code"]})
-      .exec(function(err, result) {
-         if(err) {
-            ErrorManagement.ErrorHandling.ErrorLogCreation(req, 'Candidates List Find Query Error', 'Candidates.controller.js', err);
-            res.status(417).send({status: false, Message: "Some error occurred while Find Candidates List!."});
-         } else {
-            var ReturnData = CryptoJS.AES.encrypt(JSON.stringify(result), 'SecretKeyOut@123');
-            ReturnData = ReturnData.toString();
-            res.status(200).send({Status: true, Response: ReturnData });
-         }
+      Promise.all([
+         CandidateModel.CandidatesSchema
+            .find(FindQuery, {Activity_Info: 0, Education_Info: 0, Files: 0, Reference_Info: 0}, { 'skip': Skip_Count, 'limit': Limit_Count, 'sort': { updatedAt: -1 } } )
+            .populate({path: "Basic_Info.Post_Applied", select:"Designation" })
+            .populate({path: "Basic_Info.Department", select:["Department", 'Department_Code']})
+            .populate({path: "Basic_Info.Institution", select:["Institution", "Institution_Code"]})
+            .populate({path: "Referred_To.Institution", select:["Institution", "Institution_Code"]})
+            .populate({path: "Referred_From.Institution", select:["Institution", "Institution_Code"]})
+            .exec(),
+         CandidateModel.CandidatesSchema.count({Status: 'Active', 'createdAt': { $lte: Last_Creation } }).exec(),
+         CandidateModel.CandidatesSchema.count({Status: 'Active', 'createdAt' : { $gt: Last_Creation } } ).exec()
+      ]).then(result => {         
+         var ReturnData = CryptoJS.AES.encrypt(JSON.stringify(result[0]), 'SecretKeyOut@123');
+         ReturnData = ReturnData.toString();
+         const SubResult = { Total_Datas: result[1], New_Datas: result[2] };
+         var SubReturnData = CryptoJS.AES.encrypt(JSON.stringify(SubResult), 'SecretKeyOut@123');
+         SubReturnData = SubReturnData.toString();
+         res.status(200).send({Status: true, Response: ReturnData, SubResponse: SubReturnData });
+      }).catch(err => {
+         ErrorManagement.ErrorHandling.ErrorLogCreation(req, 'Candidates List Find Query Error', 'Candidates.controller.js', err);
+         res.status(417).send({status: false, Error:err, Message: "Some error occurred while Find Candidates List!."});
       });
    }
 };
+
+exports.Complete_CandidatesList = function(req, res) {
+   var CryptoBytes  = CryptoJS.AES.decrypt(req.body.Info, 'SecretKeyIn@123');
+   var ReceivingData = JSON.parse(CryptoBytes.toString(CryptoJS.enc.Utf8));
+
+   if(!ReceivingData.User_Id || ReceivingData.User_Id === '' ) {
+      res.status(400).send({Status: false, Message: "User Details can not be empty" });
+   }else {
+      var FindQuery = { Status: 'Active' };
+      if (ReceivingData.Query['Institution']) {
+         FindQuery['Basic_Info.Institution'] = mongoose.Types.ObjectId(ReceivingData.Query['Institution']);
+      }
+      if (ReceivingData.Query['Department']) {
+         FindQuery['Basic_Info.Department'] = mongoose.Types.ObjectId(ReceivingData.Query['Department']);
+      }
+      CandidateModel.CandidatesSchema
+         .find(FindQuery, {Activity_Info: 0, Education_Info: 0, Files: 0, Reference_Info: 0}, { 'sort': { updatedAt: -1 } } )
+         .populate({path: "Basic_Info.Post_Applied", select:"Designation" })
+         .populate({path: "Basic_Info.Department", select:["Department", 'Department_Code']})
+         .populate({path: "Basic_Info.Institution", select:["Institution", "Institution_Code"]})
+         .populate({path: "Referred_To.Institution", select:["Institution", "Institution_Code"]})
+         .populate({path: "Referred_From.Institution", select:["Institution", "Institution_Code"]})
+         .exec( function(err, result) {
+            if (err) {
+               ErrorManagement.ErrorHandling.ErrorLogCreation(req, 'Candidates List Find Query Error', 'Candidates.controller.js', err);
+               res.status(417).send({status: false, Error:err, Message: "Some error occurred while Find Candidates List!."});
+            } else {
+               var ReturnData = CryptoJS.AES.encrypt(JSON.stringify(result), 'SecretKeyOut@123');
+               ReturnData = ReturnData.toString();
+               res.status(200).send({Status: true, Response: ReturnData });
+            }
+         });
+   }
+};
+
 
 
 exports.Candidate_View = function(req, res) {

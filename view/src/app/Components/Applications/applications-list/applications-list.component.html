@@ -28,21 +28,32 @@
             </div>
          </div>
          <div class="LoadedDataStyle_1" [ngClass]="{'Show': !Loader}">
-            <div class="row" style="margin-bottom: 15px;">
-               <div class="col-sm-3">
-                  <button mat-raised-button color="primary" (click)="CreateApplication()" > + Add </button>
+            <div class="row header_part" style="margin-bottom: 15px;">
+               <div class="col-sm-4">
+                  <button style="margin-right: 15px;" mat-raised-button color="primary" (click)="CreateApplication()" > + Add </button>
+                  &emsp;
+                  <button style="margin-right: 15px;" mat-raised-button color="primary" (click)="exportAsXLSX()" > Export Table</button>
+                  <button mat-raised-button [disabled]="AllExporting" color="primary" (click)="Complete_Export()" >
+                     <span *ngIf="AllExporting" > Exporting... </span> 
+                     <span *ngIf="!AllExporting"> Export All </span>  </button>
                </div>
-               <div class="col-sm-3 Form_Select">
-               </div>
-               <div class="col-sm-3 Form_Select">
-               </div>
-               <div class="col-sm-3 Form_Select">
+               <div class="col-sm-8">
+                  <div class="Table_Activities">
+                     <div> </div>
+                     <button mat-raised-button [matMenuTriggerFor]="Short"> {{Limit_Count}} </button>
+                     <mat-menu class="PaginationShort" #Short="matMenu" [overlapTrigger]="false">
+                        <button mat-menu-item [ngClass]="{'active': Limit_Count === 5}" (click)="Short_Change(5)"> 5 </button>
+                        <button mat-menu-item [ngClass]="{'active': Limit_Count === 10}" (click)="Short_Change(10)"> 10 </button>
+                        <button mat-menu-item [ngClass]="{'active': Limit_Count === 20}" (click)="Short_Change(20)"> 20 </button>
+                        <button mat-menu-item [ngClass]="{'active': Limit_Count === 50}" (click)="Short_Change(50)"> 50 </button>
+                     </mat-menu>
+                  </div>
                </div>
             </div>
             <!-- Table Section -->
             <div class="Table_Section">
-               <table>
-                  <thead>
+               <table #TableSection>
+                  <thead #TableHeaderSection>
                      <tr>
                         <th width="55px">S.no</th>
                         <th>Candidate Name</th>
@@ -55,7 +66,7 @@
                         <th width="110px">Action</th>
                      </tr>
                   </thead>
-                  <tbody>
+                  <tbody #TableBodySection>
                      <tr *ngFor="let Candidate of _List; let i=index">
                         <td>
                            <span class="S_no"> {{i + 1}} </span>
@@ -97,7 +108,38 @@
                            </ng-container>
                         </td>
                      </tr>
+                     <tr class="TableLoader" #TableLoaderSection >
+                        <td colspan="100%" class="Tr_Loader">  Loading<span class="dot">.</span><span class="dot-2">.</span><span class="dot-3">.</span> </td>
+                     </tr>
                   </tbody>
+                  <tfoot #TableFooterSection>
+                     <tr>
+                        <td colspan="100">
+                           <div class="Table_Footer_Section">
+                              <div class="Footer_Left">
+                                 <p [innerHTML]="Showing_Text"> </p>
+                              </div>
+                              <div class="Footer_Right">
+                                 <div class="Pagination">
+                                    <ul>
+                                       <li class="{{Page_Previous['Class']}}" (click)="Pagination_Action(Page_Previous['Value'])" >
+                                          <span class="arrow"> << </span>
+                                          <span> Previous </span>
+                                       </li>
+                                       <li *ngFor="let Page of Pages_Array; let i=index" class="{{Page.Class}}" [ngClass]="{'active': Page.Active}" (click)="Pagination_Action(Page.Value)" > 
+                                          <span> {{Page.Text}} </span>
+                                       </li> 
+                                       <li class="{{Page_Next['Class']}}" (click)="Pagination_Action(Page_Next['Value'])">
+                                          <span> Next </span>
+                                          <span class="arrow"> >> </span>
+                                       </li>
+                                    </ul>
+                                 </div>
+                              </div>
+                           </div>
+                        </td>
+                     </tr>
+                  </tfoot>
                </table>
             </div>
          </div>

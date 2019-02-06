@@ -75,7 +75,9 @@
                </div>
                <div class="Data">
                   <div class="Title"> Correct Answers <span> : </span> </div>
-                  <div class="Value"> {{Exam_Data['CorrectAnsweredQuestions']}} </div>
+                  <div class="Value"> {{Exam_Data['CorrectAnsweredQuestions']}} 
+                     <a *ngIf="Exam_Data['If_Completed']" (click)="openLargeModal(templateThree)">  View Full Result </a>
+                  </div>
                </div>
                <div class="Data">
                   <div class="Title"> Completed Date  <span> : </span> </div>
@@ -83,9 +85,7 @@
                </div>
                <div class="Data">
                   <div class="Title"> Exam Result <span> : </span> </div>
-                  <div class="Value"> {{Exam_Data['ExamResult'] }}
-                     <a *ngIf="Exam_Data['ExamResult'] !== undefined" (click)="openLargeModal(templateThree)">  View Full Result </a>
-                  </div>
+                  <div class="Value"> {{Exam_Data['ExamResult'] }} </div>
                </div>
                <div class="Data">
                   <div class="Title"> Exam Result Updated By<span> : </span> </div>

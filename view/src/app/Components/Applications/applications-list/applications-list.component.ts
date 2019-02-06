@@ -1,6 +1,7 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, ViewEncapsulation, ElementRef, Renderer } from '@angular/core';
 import { Router } from '@angular/router';
 import {MatMenuTrigger} from '@angular/material';
+import { formatDate  } from '@angular/common';
 
 import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
 
@@ -14,19 +15,42 @@ import { CandidatesService } from './../../../Services/Applications/candidates.s
 import { LoginService } from './../../../Services/LoginService/login.service';
 import { AddApplicationComponent } from './../../../Models/Applications/add-application/add-application.component';
 
+import { ExcelService } from './../../../Services/excel-export/excel-export.service';
+
 @Component({
   selector: 'app-applications-list',
   templateUrl: './applications-list.component.html',
-  styleUrls: ['./applications-list.component.css']
+  styleUrls: ['./applications-list.component.css'],
+  encapsulation: ViewEncapsulation.None,
 })
 export class ApplicationsListComponent implements OnInit {
 
    @ViewChild(MatMenuTrigger) trigger: MatMenuTrigger;
+   @ViewChild('TableSection') TableSection: ElementRef;
+   @ViewChild('TableHeaderSection') TableHeaderSection: ElementRef;
+   @ViewChild('TableBodySection') TableBodySection: ElementRef;
+   @ViewChild('TableFooterSection') TableFooterSection: ElementRef;
+   @ViewChild('TableLoaderSection') TableLoaderSection: ElementRef;
+
+
+      // Pagination Keys
+      Current_Index = 1;
+      Skip_Count = 0;
+      Limit_Count = 10;
+      Showing_Text = 'Showing <span>0</span> to <span>0</span> out of <span>0</span> entries';
+      Pages_Array = [];
+      Total_Rows = 0;
+      New_Rows = 0;
+      Last_Creation: Date = new Date();
+      Page_Previous: Object = { Disabled: true, value : 0, Class: 'PagePrev_Disabled'};
+      Page_Next: Object = { Disabled: true, value : 0, Class: 'PageNext_Disabled'};
+      SubLoader: Boolean = false;
 
    bsModalRef: BsModalRef;
    bsModalRef_StageOne: BsModalRef;
 
    Loader: Boolean = true;
+   AllExporting: Boolean = false;
    User_Id: any;
 
    Restricted_Institution: any = null;
@@ -35,6 +59,7 @@ export class ApplicationsListComponent implements OnInit {
 
 
    _List: any[] = [];
+   _CompleteList: any[] = [];
    _Menus: any[] = [ { name: 'Verify & Accepted', activity: 'Accepted', show: true },
                      { name: 'Assign Online Exam', activity: 'AssignExam', show: true },
                      { name: 'Refer', activity: 'Refer', show: true }];
@@ -49,46 +74,185 @@ export class ApplicationsListComponent implements OnInit {
                private Toastr: ToastrService,
                private router: Router,
                public Login_Service: LoginService,
-               private modalService: BsModalService
+               private modalService: BsModalService,
+               private excelService: ExcelService,
+               private renderer: Renderer,
             ) {
                   this.User_Id = this.Login_Service.LoginUser_Info()['_id'];
                   this.Restricted_Institution = this.Login_Service.LoginUser_Info()['Institution'];
                   this.Restricted_Department = this.Login_Service.LoginUser_Info()['Department'];
                   this.Application_Handle = this.Login_Service.LoginUser_Info()['ApplicationManagement_Permission'];
 
-                  const Query = { };
-                  if (this.Restricted_Institution !== null && this.Restricted_Institution !== undefined) {
-                     Query['Institution'] = this.Restricted_Institution['_id'];
-                     if (this.Restricted_Department !== null && this.Restricted_Department !== undefined) {
-                        Query['Department'] = this.Restricted_Department['_id'];
-                     }
-                  }
-                  const Data = { User_Id : this.User_Id, Query: Query };
-                  let Info = CryptoJS.AES.encrypt(JSON.stringify(Data), 'SecretKeyIn@123');
-                  Info = Info.toString();
-                  this.Service.CandidatesList({ 'Info': Info }).subscribe(response => {
-                     const ResponseData = JSON.parse(response['_body']);
-                     this.Loader = false;
-                     if (response['status'] === 200 && ResponseData['Status'] ) {
-                        const CryptoBytes  = CryptoJS.AES.decrypt(ResponseData['Response'], 'SecretKeyOut@123');
-                        const DecryptedData = JSON.parse(CryptoBytes.toString(CryptoJS.enc.Utf8));
-                        this._List = DecryptedData;
-                        this._List = this._List.map(obj => {
-                           obj.BtnLoading = false;
-                           return obj;
-                        });
-                     } else if (response['status'] === 400 || response['status'] === 417 && !ResponseData['Status']) {
-                        this.Toastr.NewToastrMessage({ Type: 'Error', Message: ResponseData['Message'] });
-                     } else if (response['status'] === 401 && !ResponseData['Status']) {
-                        this.Toastr.NewToastrMessage({ Type: 'Error', Message: ResponseData['Message'] });
-                     } else {
-                        this.Toastr.NewToastrMessage({ Type: 'Error', Message: 'Candidate List Getting Error!, But not Identify!' });
-                     }
-                  });
+                  this.Service_Loader();
        }
 
    ngOnInit() {
 
+   }
+
+
+   Service_Loader() {
+      const Query = { };
+      if (this.Restricted_Institution !== null && this.Restricted_Institution !== undefined) {
+         Query['Institution'] = this.Restricted_Institution['_id'];
+         if (this.Restricted_Department !== null && this.Restricted_Department !== undefined) {
+            Query['Department'] = this.Restricted_Department['_id'];
+         }
+      }
+      const Data = { 'User_Id' : this.User_Id,
+                     'Skip_Count': this.Skip_Count,
+                     'Limit_Count': this.Limit_Count,
+                     'Last_Creation' : this.Last_Creation,
+                     'Query': Query };
+      let Info = CryptoJS.AES.encrypt(JSON.stringify(Data), 'SecretKeyIn@123');
+      Info = Info.toString();
+      this.Service.CandidatesList({'Info': Info}).subscribe( response => {
+         const ResponseData = JSON.parse(response['_body']);
+         this.Loader = false;
+         this.renderer.setElementStyle(this.TableLoaderSection.nativeElement, 'display', 'none');
+         if (response['status'] === 200 && ResponseData['Status'] ) {
+            const CryptoBytes  = CryptoJS.AES.decrypt(ResponseData['Response'], 'SecretKeyOut@123');
+            const DecryptedData = JSON.parse(CryptoBytes.toString(CryptoJS.enc.Utf8));
+            const SubCryptoBytes  = CryptoJS.AES.decrypt(ResponseData['SubResponse'], 'SecretKeyOut@123');
+            const SubDecryptedData = JSON.parse(SubCryptoBytes.toString(CryptoJS.enc.Utf8));
+            this._List = DecryptedData;
+            this._List = this._List.map(obj => {
+               obj.BtnLoading = false;
+               return obj;
+            });
+            this.Total_Rows = SubDecryptedData['Total_Datas'];
+            this.New_Rows = SubDecryptedData['New_Datas'];
+            this.Pagination_Affect();
+         } else if (response['status'] === 400 || response['status'] === 417 || response['status'] === 401 && !ResponseData['Status']) {
+            this.Toastr.NewToastrMessage({ Type: 'Error', Message: ResponseData['Message'] });
+         } else {
+            this.Toastr.NewToastrMessage({ Type: 'Error', Message: 'Candidate List Getting Error!, But not Identify!' });
+         }
+      });
+   }
+
+   Pagination_Affect() {
+      const NoOfArrays = Math.ceil(this.Total_Rows / this.Limit_Count);
+      const Prev_Class = (this.Current_Index > 1 ? 'PagePrev_Enabled' : 'PagePrev_Disabled');
+      this.Page_Previous = { Disabled: !(this.Current_Index > 1), Value : (this.Current_Index - 1), Class: Prev_Class};
+      const Next_Class = (this.Current_Index < NoOfArrays ? 'PageNext_Enabled' : 'PageNext_Disabled');
+      this.Page_Next = { Disabled: !(this.Current_Index < NoOfArrays), Value : (this.Current_Index + 1), Class: Next_Class};
+      this.Pages_Array = [];
+      for (let index = 1; index <= NoOfArrays ; index++) {
+         if (index === 1) {
+            this.Pages_Array.push({Text: '1', Class: 'Number', Value: 1, Show: true, Active: (this.Current_Index === index ) });
+         }
+         if (index > 1 && NoOfArrays > 2 && index < NoOfArrays ) {
+            if (index === (this.Current_Index - 2)) {
+               this.Pages_Array.push({Text: '...', Class: 'Dots', Show: true, Active: false });
+            }
+            if (index === (this.Current_Index - 1) ) {
+               this.Pages_Array.push({Text: (this.Current_Index - 1).toString(), Class: 'Number',  Value: index, Show: true, Active: false });
+            }
+            if (index === this.Current_Index) {
+               this.Pages_Array.push({Text: this.Current_Index.toString(), Class: 'Number', Value: index, Show: true, Active: true });
+            }
+            if (index === (this.Current_Index + 1) ) {
+               this.Pages_Array.push({Text: (this.Current_Index + 1).toString(), Class: 'Number', Value: index, Show: true, Active: false });
+            }
+            if (index === (this.Current_Index + 2)) {
+               this.Pages_Array.push({Text: '...', Class: 'Dots', Show: true, Active: false });
+            }
+         }
+         if (index === NoOfArrays && NoOfArrays > 1) {
+            this.Pages_Array.push({Text: NoOfArrays.toString(), Class: 'Number', Value: NoOfArrays, Show: true, Active: (this.Current_Index === index ) });
+         }
+      }
+      let To_Count = this.Skip_Count + this.Limit_Count;
+      if (To_Count > this.Total_Rows) { To_Count = this.Total_Rows; }
+      this.Showing_Text = 'Showing <span>' + this.Skip_Count + '</span> to <span>' + To_Count + '</span> out of <span>' + this.Total_Rows + '</span>  entries';
+   }
+
+   Short_Change(Num) {
+      if (this.Limit_Count !== Num) {
+         this.Limit_Count = Num;
+         this.Pagination_Action(1);
+      }
+   }
+   Pagination_Action(_index) {
+      this.Current_Index = _index;
+      this.Skip_Count = this.Limit_Count * (this.Current_Index - 1);
+      this.Service_Loader();
+      setTimeout(() => {
+         const Top = this.TableHeaderSection.nativeElement.offsetHeight + 2;
+         const Height = this.TableBodySection.nativeElement.offsetHeight - 1;
+         this.renderer.setElementStyle(this.TableLoaderSection.nativeElement, 'display', 'block');
+         this.renderer.setElementStyle(this.TableLoaderSection.nativeElement, 'height', Height + 'px');
+         this.renderer.setElementStyle(this.TableLoaderSection.nativeElement, 'line-height', Height + 'px');
+         this.renderer.setElementStyle(this.TableLoaderSection.nativeElement, 'top', Top + 'px');
+      }, 10);
+   }
+
+   exportAsXLSX(): void {
+
+      const data = [];
+      this._List.map(obj => {
+         const return_obj = {};
+         return_obj['Name'] = obj['Personal_Info']['Name'];
+         return_obj['Date-of-Birth'] = formatDate(obj['Personal_Info']['DOB'], 'dd-MM-yyyy', 'en-US', '+0530');
+         return_obj['Age'] = obj['Personal_Info']['Age'];
+         return_obj['Gender'] = obj['Personal_Info']['Gender'];
+         return_obj['Email'] = obj['Personal_Info']['Email'];
+         return_obj['Mobile'] = obj['Personal_Info']['Contact_No'];
+         return_obj['Institution'] = obj['Basic_Info']['Institution']['Institution'];
+         return_obj['Department'] = obj['Basic_Info']['Department']['Department'];
+         return_obj['Designation'] = obj['Basic_Info']['Post_Applied']['Designation'];
+         return_obj['Reference-Id'] = obj['Ref_ID'];
+         return_obj['Status'] = obj['Current_Status'];
+         return_obj['Created-Date'] = formatDate(obj['createdAt'], 'dd-MM-yyyy hh:mm a', 'en-US', '+0530');
+         data.push(return_obj);
+      });
+      this.excelService.exportAsExcelFile(data, 'Candidates');
+    }
+
+   Complete_Export() {
+      this.AllExporting = true;
+      const Query = { };
+      if (this.Restricted_Institution !== null && this.Restricted_Institution !== undefined) {
+         Query['Institution'] = this.Restricted_Institution['_id'];
+         if (this.Restricted_Department !== null && this.Restricted_Department !== undefined) {
+            Query['Department'] = this.Restricted_Department['_id'];
+         }
+      }
+      const Data = { 'User_Id' : this.User_Id, 'Query': Query };
+      let Info = CryptoJS.AES.encrypt(JSON.stringify(Data), 'SecretKeyIn@123');
+      Info = Info.toString();
+      this.Service.Complete_CandidatesList({'Info': Info}).subscribe( response => {
+         const ResponseData = JSON.parse(response['_body']);
+         if (response['status'] === 200 && ResponseData['Status'] ) {
+            const CryptoBytes  = CryptoJS.AES.decrypt(ResponseData['Response'], 'SecretKeyOut@123');
+            const DecryptedData = JSON.parse(CryptoBytes.toString(CryptoJS.enc.Utf8));
+            this._CompleteList = DecryptedData;
+            const data = [];
+            this._CompleteList.map(obj => {
+               const return_obj = {};
+               return_obj['Name'] = obj['Personal_Info']['Name'];
+               return_obj['Date-of-Birth'] = formatDate(obj['Personal_Info']['DOB'], 'dd-MM-yyyy', 'en-US', '+0530');
+               return_obj['Age'] = obj['Personal_Info']['Age'];
+               return_obj['Gender'] = obj['Personal_Info']['Gender'];
+               return_obj['Email'] = obj['Personal_Info']['Email'];
+               return_obj['Mobile'] = obj['Personal_Info']['Contact_No'];
+               return_obj['Institution'] = obj['Basic_Info']['Institution']['Institution'];
+               return_obj['Department'] = obj['Basic_Info']['Department']['Department'];
+               return_obj['Designation'] = obj['Basic_Info']['Post_Applied']['Designation'];
+               return_obj['Reference-Id'] = obj['Ref_ID'];
+               return_obj['Status'] = obj['Current_Status'];
+               return_obj['Created-Date'] = formatDate(obj['createdAt'], 'dd-MM-yyyy hh:mm a', 'en-US', '+0530');
+               data.push(return_obj);
+            });
+            this.AllExporting = false;
+            this.excelService.exportAsExcelFile(data, 'Candidates');
+         } else if (response['status'] === 400 || response['status'] === 417 || response['status'] === 401 && !ResponseData['Status']) {
+            this.Toastr.NewToastrMessage({ Type: 'Error', Message: ResponseData['Message'] });
+         } else {
+            this.Toastr.NewToastrMessage({ Type: 'Error', Message: 'Candidate List Getting Error!, But not Identify!' });
+         }
+      });
    }
 
    SetActionId(_index) {

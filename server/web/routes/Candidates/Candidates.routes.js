@@ -7,6 +7,7 @@ module.exports = function(app) {
    app.post('/API/Candidates/Candidate_Add', Controller.Candidate_Add);
 
    app.post('/API/Candidates/CandidatesList', Controller.CandidatesList);
+   app.post('/API/Candidates/Complete_CandidatesList', Controller.Complete_CandidatesList);
    app.post('/API/Candidates/Candidate_View', Controller.Candidate_View);
    app.post('/API/Candidates/Accept_Candidate', Controller.Accept_Candidate);
    app.post('/API/Candidates/Delete_Candidate', Controller.Delete_Candidate);

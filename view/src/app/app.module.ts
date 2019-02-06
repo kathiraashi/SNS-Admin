@@ -55,7 +55,7 @@ import { ModelUserManagementViewComponent } from './Models/Settings/UserManageme
 import { AddApplicationComponent } from './Models/Applications/add-application/add-application.component';
 
 
-
+import { ExcelService } from './Services/excel-export/excel-export.service';
 
 
 
@@ -121,7 +121,7 @@ import { AddApplicationComponent } from './Models/Applications/add-application/a
     FroalaEditorModule.forRoot(),
     FroalaViewModule.forRoot()
   ],
-  providers: [],
+  providers: [ExcelService],
   entryComponents: [ModelEditQuestionAnswersComponent,
     DeleteConfirmationComponent,
     ModelDepartmentCreateComponent,
