@@ -13,6 +13,7 @@ module.exports = function(app) {
    app.post('/API/Candidates/Delete_Candidate', Controller.Delete_Candidate);
    app.post('/API/Candidates/QuestionAvailable_Check', Controller.QuestionAvailable_Check);
    app.post('/API/Candidates/AssignExam', Controller.AssignExam);
+   app.post('/API/Candidates/ReAssign_Exam', Controller.ReAssign_Exam);
    app.post('/API/Candidates/Candidate_ExamView', Controller.Candidate_ExamView);
    app.post('/API/Candidates/ExamResult_Update', Controller.ExamResult_Update);
    app.post('/API/Candidates/GDResult_Update', Controller.GDResult_Update);

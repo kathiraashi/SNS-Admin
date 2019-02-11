@@ -268,7 +268,8 @@ export class ApplicationsListComponent implements OnInit {
                               { name: 'Delete', activity: 'Delete', show: true } ];
       }
       if (this._List[_index].Current_Stage !== 'Stage_1' && this._List[_index].Current_Stage !== 'Stage_2' ) {
-         this.Temp_Menu = [   { name: 'Refer', activity: 'Refer', show: true },
+         this.Temp_Menu = [   { name: 'Reassign', activity: 'Reassign', show: true },
+                              { name: 'Refer', activity: 'Refer', show: true },
                               { name: 'Delete', activity: 'Delete', show: true } ];
       }
       if (this._List[_index].If_Referred_To) {
@@ -347,6 +348,51 @@ export class ApplicationsListComponent implements OnInit {
                         const initialState_1 = { Type: 'Alert',
                                        Header: 'Questions Not Available',
                                        LineOne: 'Add More Questions to this Candidate Applied Institution and Department after Assign the Exam!.' };
+                        this.Alert_Function(initialState_1);
+                     }
+                  } else if (response['status'] === 200 && !ResponseData['Status']) {
+                     const initialState_1 = { Type: 'Alert',
+                                                Header: 'Exam Config Not Create',
+                                                LineOne: 'Exam Configuration Not Create For This Candidate Applied Institution and Department!.' };
+                     this.Alert_Function(initialState_1);
+                  } else if (response['status'] === 400 || response['status'] === 417 || response['status'] === 401 && !ResponseData['Status']) {
+                     this.Toastr.NewToastrMessage({ Type: 'Error', Message: ResponseData['Message'] });
+                     this._List[_index].BtnLoading = false;
+                  } else {
+                     this.Toastr.NewToastrMessage({ Type: 'Error', Message: 'Questions Available Check Error!, But not Identify!' });
+                     this._List[_index].BtnLoading = false;
+                  }
+               });
+            } else {
+               this._List[_index].BtnLoading = false;
+            }
+         });
+      }
+
+
+      if (Action === 'Reassign') {
+         const initialState = { Type: 'Confirmation',
+                                 Header: 'Reassign Online Exam',
+                                 LineOne: 'Are you Sure?',
+                                 LineTwo: 'You Want to Reassign the Online Exam to this Candidate' };
+         this.bsModalRef = this.modalService.show(ConfirmationComponent, Object.assign({initialState}, {ignoreBackdropClick: true, class: 'modal-sm' }));
+         this.bsModalRef.content.onClose.subscribe(confirmation => {
+            if (confirmation.Status) {
+               const Data = {'User_Id' : this.User_Id, 'Candidate_Id': this.ActionId };
+               let Info = CryptoJS.AES.encrypt(JSON.stringify(Data), 'SecretKeyIn@123');
+               Info = Info.toString();
+               this.Service.QuestionAvailable_Check({ 'Info': Info }).subscribe(response => {
+                  const ResponseData = JSON.parse(response['_body']);
+                  if (response['status'] === 200 && ResponseData['Status']) {
+                     if (ResponseData['Available']) {
+                        this._List[_index].BtnLoading = false;
+                        const CryptoBytes  = CryptoJS.AES.decrypt(ResponseData['Response'], 'SecretKeyOut@123');
+                        const DecryptedData = JSON.parse(CryptoBytes.toString(CryptoJS.enc.Utf8));
+                        this.Reassign_Confirmed(_index, this.ActionId, DecryptedData['ExamDuration'], DecryptedData['TotalQuestion'], DecryptedData['Config_Info'], DecryptedData['ExamConfig'] );
+                     } else {
+                        const initialState_1 = { Type: 'Alert',
+                                       Header: 'Questions Not Available',
+                                       LineOne: 'Add More Questions to this Candidate Applied Institution and Department after Reassign the Exam!.' };
                         this.Alert_Function(initialState_1);
                      }
                   } else if (response['status'] === 200 && !ResponseData['Status']) {
@@ -481,6 +527,47 @@ export class ApplicationsListComponent implements OnInit {
          }
       });
    }
+
+
+
+   Reassign_Confirmed(_index, Candidate_Id, ExamDuration, TotalQuestion, Config_Info, ExamConfig) {
+      const initialState = { Type: 'Confirmation',
+                              Header: 'Assigned Exam Config',
+                              LineOne: 'No of Questions: ' + TotalQuestion + ', \n Exam Duration: ' + ExamDuration + 'Mins. \n ',
+                              LineTwo: 'Final Confirm to Reassign Online Exam' };
+      this.bsModalRef = this.modalService.show(ConfirmationComponent, Object.assign({initialState}, {ignoreBackdropClick: true, class: 'modal-sm min-width-350' }));
+      this.bsModalRef.content.onClose.subscribe(confirmation => {
+         if (confirmation.Status) {
+
+            const Data = { 'User_Id' : this.User_Id,
+                           'Candidate_Id': Candidate_Id,
+                           Ref_ID: this._List[_index]['Ref_ID'],
+                           Config: Config_Info,
+                           ExamConfig_Id: ExamConfig,
+                           ExamDuration: ExamDuration,
+                           Institution_Id: this._List[_index]['Basic_Info']['Institution']['_id'],
+                           Department_Id: this._List[_index]['Basic_Info']['Department']['_id'],
+                        };
+            let Info = CryptoJS.AES.encrypt(JSON.stringify(Data), 'SecretKeyIn@123');
+            Info = Info.toString();
+            this.Service.ReAssign_Exam({ 'Info': Info }).subscribe(response => {
+               const ResponseData = JSON.parse(response['_body']);
+               if (response['status'] === 200 && ResponseData['Status'] ) {
+                  this._List[_index].Current_Status = 'Reassigned';
+                  this._List[_index].Current_Stage = 'Stage_3';
+                  this.Toastr.NewToastrMessage({ Type: 'Success', Message: 'online Exam Successfully Reassigned' });
+               } else if (response['status'] === 400 || response['status'] === 417 && !ResponseData['Status']) {
+                  this.Toastr.NewToastrMessage({ Type: 'Error', Message: ResponseData['Message'] });
+               } else if (response['status'] === 401 && !ResponseData['Status']) {
+                  this.Toastr.NewToastrMessage({ Type: 'Error', Message: ResponseData['Message'] });
+               } else {
+                  this.Toastr.NewToastrMessage({ Type: 'Error', Message: 'Candidate Exam Reassign Error!, But not Identify!' });
+               }
+            });
+         }
+      });
+   }
+
 
 
    CreateApplication() {
