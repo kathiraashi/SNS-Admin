@@ -30,12 +30,13 @@
          <div class="LoadedDataStyle_1" [ngClass]="{'Show': !Loader}">
             <div class="row header_part" style="margin-bottom: 15px;">
                <div class="col-sm-4">
-                  <button style="margin-right: 15px;" mat-raised-button color="primary" (click)="CreateApplication()" > + Add </button>
-                  &emsp;
-                  <button style="margin-right: 15px;" mat-raised-button color="primary" (click)="exportAsXLSX()" > Export Table</button>
-                  <button mat-raised-button [disabled]="AllExporting" color="primary" (click)="Complete_Export()" >
-                     <span *ngIf="AllExporting" > Exporting... </span> 
-                     <span *ngIf="!AllExporting"> Export All </span>  </button>
+                  <ng-container *ngIf="Application_Create">
+                     <button style="margin-right: 15px;" mat-raised-button color="primary" (click)="CreateApplication()" > + Add </button> &emsp;
+                     <button style="margin-right: 15px;" mat-raised-button color="primary" (click)="exportAsXLSX()" > Export Table</button>
+                     <button mat-raised-button [disabled]="AllExporting" color="primary" (click)="Complete_Export()" >
+                        <span *ngIf="AllExporting" > Exporting... </span> 
+                        <span *ngIf="!AllExporting"> Export All </span>  </button>
+                  </ng-container>
                </div>
                <div class="col-sm-8">
                   <div class="Table_Activities">

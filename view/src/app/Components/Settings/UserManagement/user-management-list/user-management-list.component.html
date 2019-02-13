@@ -63,6 +63,15 @@
                   <button (click)="ViewUser(i)" class="Table_Action_mini Bg_Info" mat-mini-fab color="primary">
                      <i class="material-icons">zoom_in</i>
                   </button>
+                  <button (click)="EditUser(i)" class="Table_Action_mini Bg_warning" mat-mini-fab color="primary">
+                     <i class="material-icons">edit</i>
+                  </button>
+                  <button *ngIf="!item.Active_Status" (click)="ActivateUser(i)" class="Table_Action_mini Bg_Danger" mat-mini-fab color="primary">
+                     <i class="material-icons">block</i>
+                  </button>
+                  <button *ngIf="item.Active_Status" (click)="DeactivateUser(i)" class="Table_Action_mini Bg_Success" mat-mini-fab color="primary">
+                     <i class="material-icons">check_circle_outline</i>
+                  </button>
                </td>
             </tr>
          </tbody>

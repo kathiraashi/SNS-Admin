@@ -14,7 +14,6 @@ export class ModelUserManagementViewComponent implements OnInit {
    constructor(public bsModalRef: BsModalRef) { }
 
    ngOnInit() {
-      console.log(this.Data);
    }
 
 }

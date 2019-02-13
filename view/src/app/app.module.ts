@@ -56,6 +56,7 @@ import { AddApplicationComponent } from './Models/Applications/add-application/a
 
 
 import { ExcelService } from './Services/excel-export/excel-export.service';
+import { ModelUserManagementEditComponent } from './Models/Settings/UserManagement/model-user-management-edit/model-user-management-edit.component';
 
 
 
@@ -96,7 +97,8 @@ import { ExcelService } from './Services/excel-export/excel-export.service';
    ModelVacanciesConfigCreateComponent,
    InnerHtmlPipe,
    ModelUserManagementViewComponent,
-   AddApplicationComponent
+   AddApplicationComponent,
+   ModelUserManagementEditComponent
   ],
   imports: [
     BrowserModule,
@@ -136,7 +138,8 @@ import { ExcelService } from './Services/excel-export/excel-export.service';
     ModelDesignationCreateComponent,
     ModelVacanciesConfigCreateComponent,
     ModelUserManagementViewComponent,
-    AddApplicationComponent
+    AddApplicationComponent,
+    ModelUserManagementEditComponent
   ],
   bootstrap: [AppComponent]
 })

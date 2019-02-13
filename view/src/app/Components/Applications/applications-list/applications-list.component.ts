@@ -56,6 +56,7 @@ export class ApplicationsListComponent implements OnInit {
    Restricted_Institution: any = null;
    Restricted_Department: any = null;
    Application_Handle: Boolean = false;
+   Application_Create: Boolean = false;
 
 
    _List: any[] = [];
@@ -82,7 +83,7 @@ export class ApplicationsListComponent implements OnInit {
                   this.Restricted_Institution = this.Login_Service.LoginUser_Info()['Institution'];
                   this.Restricted_Department = this.Login_Service.LoginUser_Info()['Department'];
                   this.Application_Handle = this.Login_Service.LoginUser_Info()['ApplicationManagement_Permission'];
-
+                  this.Application_Create = this.Login_Service.LoginUser_Info()['ApplicationCreate_Permission'];
                   this.Service_Loader();
        }
 

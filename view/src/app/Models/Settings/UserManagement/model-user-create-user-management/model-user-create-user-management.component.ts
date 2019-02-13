@@ -118,6 +118,7 @@ export class ModelUserCreateUserManagementComponent implements OnInit {
          Email: new FormControl('', [Validators.required, Validators.email] ),
          Phone: new FormControl(''),
          Designation: new FormControl(null, Validators.required),
+         ApplicationCreate_Permission: new FormControl(false),
          ApplicationManagement_Permission: new FormControl(false),
          Q_A_Permission: new FormControl(false),
          OnlineExamUpdate_Permission: new FormControl(false),

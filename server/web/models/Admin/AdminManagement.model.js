@@ -10,6 +10,7 @@ var UserManagementSchema = mongoose.Schema({
    Email: { type : String , required : true },
    User_Type: { type : String },
    Designation: { type: Schema.Types.ObjectId, ref: 'Designation' },
+   ApplicationCreate_Permission: { type : Boolean },
    ApplicationManagement_Permission: { type : Boolean },
    Q_A_Permission: { type : Boolean },
    OnlineExamUpdate_Permission: { type : Boolean },

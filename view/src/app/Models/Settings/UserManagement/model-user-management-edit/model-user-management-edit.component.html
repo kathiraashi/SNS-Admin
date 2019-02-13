@@ -1,6 +1,6 @@
 <div class="Modal_Content">
    <div class="Modal_Header">
-      <p> Create User</p>
+      <p> Edit User</p>
       <span data-dismiss="modal" (click)="bsModalRef.hide()">&times;</span>
    </div>
    <div class="Model_Body">
@@ -13,21 +13,6 @@
                   <span *ngIf="Form.controls['Name'].errors.required">Name is required</span>
                </p>
             </div><br>
-            <div class="col-sm-6 Form_Input">
-               <label> User Name :</label>
-               <input type="text" formControlName="User_Name"> 
-               <p class="error" *ngIf="Form.controls['User_Name'].errors && !Form.controls['User_Name'].pristine">
-                  <span *ngIf="Form.controls['User_Name'].errors.required"> User Name is required</span>
-                  <span *ngIf="Form.controls['User_Name'].errors.UserName_NotAvailable"> User Name Already Exist</span>
-               </p>
-            </div>
-            <div class="col-sm-6 Form_Input">
-               <label> User Password :</label>
-               <input type="password" formControlName="User_Password" >
-               <p class="error" *ngIf="Form.controls['User_Password'].errors && !Form.controls['User_Password'].pristine">
-                  <span *ngIf="Form.controls['User_Password'].errors.required"> User Password is required</span>
-               </p>
-            </div>
             <div class="col-sm-6 Form_Input">
                <label> Email :</label>
                <input type="email" formControlName="Email" >
@@ -123,6 +108,6 @@
       </form>
    </div>
    <div class="Model_Footer">
-      <button mat-raised-button (click)="submit()" [disabled]="!Form.valid" color="primary" > Submit </button>
+      <button mat-raised-button (click)="submit()" [disabled]="!Form.valid" color="primary" > Update </button>
    </div>
 </div>

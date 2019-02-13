@@ -4,7 +4,10 @@ import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
 
 
 import { ModelUserCreateUserManagementComponent } from './../../../../Models/Settings/UserManagement/model-user-create-user-management/model-user-create-user-management.component';
+import { ModelUserManagementEditComponent } from './../../../../Models/Settings/UserManagement/model-user-management-edit/model-user-management-edit.component';
 import { ModelUserManagementViewComponent } from './../../../../Models/Settings/UserManagement/model-user-management-view/model-user-management-view.component';
+
+import { ConfirmationComponent } from './../../../Common/confirmation/confirmation.component';
 
 import { AdminService } from './../../../../Services/Admin/admin.service';
 import { LoginService } from './../../../../Services/LoginService/login.service';
@@ -78,9 +81,71 @@ export class UserManagementListComponent implements OnInit {
       });
    }
 
+   EditUser(_index: any) {
+      const initialState = { Type: 'Edit', Data: this._List[_index] };
+      this.bsModalRef = this.modalService.show(ModelUserManagementEditComponent, Object.assign({initialState}, {ignoreBackdropClick: true, class: 'modal-lg' }));
+      this.bsModalRef.content.onClose.subscribe(response => {
+         if (response['Status']) {
+            this._List[_index] = response['Response'];
+         }
+      });
+   }
+
    ViewUser(_index: any) {
       const initialState = { Type: 'View', Data: this._List[_index] };
       this.bsModalRef = this.modalService.show(ModelUserManagementViewComponent, Object.assign({initialState}, {class: 'modal-lg max-width-85' }));
+   }
+
+   DeactivateUser(_index: any) {
+      const initialState = { Type: 'Confirmation',
+                              Header: 'User Blocking',
+                              LineOne: 'Are you Sure?',
+                              LineTwo: 'You Want to Block this User?' };
+      this.bsModalRef = this.modalService.show(ConfirmationComponent, Object.assign({initialState}, {ignoreBackdropClick: true, class: 'modal-sm' }));
+      this.bsModalRef.content.onClose.subscribe(confirmation => {
+         if (confirmation.Status) {
+            const Data = {'User_Id' : this._List[_index]._id, 'Modified_By': this.User_Id };
+            let Info = CryptoJS.AES.encrypt(JSON.stringify(Data), 'SecretKeyIn@123');
+            Info = Info.toString();
+            this.Service.User_Deactivate({ 'Info': Info }).subscribe(response => {
+               const ResponseData = JSON.parse(response['_body']);
+               if (response['status'] === 200 && ResponseData['Status'] ) {
+                  this._List[_index].Active_Status = false;
+                  this.Toastr.NewToastrMessage({ Type: 'Success', Message: ResponseData['Message'] });
+               } else if (response['status'] === 400 || response['status'] === 417 || response['status'] === 401 && !ResponseData['Status']) {
+                  this.Toastr.NewToastrMessage({ Type: 'Error', Message: ResponseData['Message'] });
+               } else {
+                  this.Toastr.NewToastrMessage({ Type: 'Error', Message: 'User Blocking Error!, But not Identify!' });
+               }
+            });
+         }
+      });
+   }
+
+   ActivateUser(_index: any) {
+      const initialState = { Type: 'Confirmation',
+                              Header: 'User UnBlocking',
+                              LineOne: 'Are you Sure?',
+                              LineTwo: 'You Want to UnBlock this User?' };
+      this.bsModalRef = this.modalService.show(ConfirmationComponent, Object.assign({initialState}, {ignoreBackdropClick: true, class: 'modal-sm' }));
+      this.bsModalRef.content.onClose.subscribe(confirmation => {
+         if (confirmation.Status) {
+            const Data = {'User_Id' : this._List[_index]._id, 'Modified_By': this.User_Id };
+            let Info = CryptoJS.AES.encrypt(JSON.stringify(Data), 'SecretKeyIn@123');
+            Info = Info.toString();
+            this.Service.User_Activate({ 'Info': Info }).subscribe(response => {
+               const ResponseData = JSON.parse(response['_body']);
+               if (response['status'] === 200 && ResponseData['Status'] ) {
+                  this._List[_index].Active_Status = true;
+                  this.Toastr.NewToastrMessage({ Type: 'Success', Message: ResponseData['Message'] });
+               } else if (response['status'] === 400 || response['status'] === 417 || response['status'] === 401 && !ResponseData['Status']) {
+                  this.Toastr.NewToastrMessage({ Type: 'Error', Message: ResponseData['Message'] });
+               } else {
+                  this.Toastr.NewToastrMessage({ Type: 'Error', Message: 'User UnBlocking Error!, But not Identify!' });
+               }
+            });
+         }
+      });
    }
 
 }
