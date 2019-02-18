@@ -32,7 +32,7 @@ export class ExamDetailsComponent implements OnInit {
 
    @Input() CandidateData: Object;
 
-   UpdateOptions: any[] = ['Pass', 'Fail'];
+   UpdateOptions: any[] = ['Shortlisted', 'Rejected'];
 
    User_Id: any;
    Application_Management: any;
@@ -158,20 +158,22 @@ export class ExamDetailsComponent implements OnInit {
 
    ResultChange() {
       const Result = this.Form.value.ExamResult;
-      if (Result === 'Pass') {
+      if (Result === 'Pass' || Result === 'Shortlisted') {
          this.If_Pass = true;
          this.Form.addControl('InterviewDate', new FormControl(null, Validators.required));
+         this.Form.addControl('InterviewTime', new FormControl(new Date().toLocaleTimeString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true }), Validators.required));
          this.Form.addControl('Place', new FormControl('', Validators.required));
       } else {
          this.If_Pass = false;
          this.Form.removeControl('InterviewDate');
+         this.Form.removeControl('InterviewTime');
          this.Form.removeControl('Place');
       }
    }
 
    InterviewResultChange() {
       const Result = this.FormThree.value.InterviewResult;
-      if (Result === 'Pass') {
+      if (Result === 'Pass' || Result === 'Shortlisted') {
          this.If_PassOne = true;
          this.FormThree.addControl('JoinDate', new FormControl(null, Validators.required));
       } else {
@@ -180,8 +182,37 @@ export class ExamDetailsComponent implements OnInit {
       }
    }
 
+   formatDate(date) {
+      const d = new Date(date);
+      let month = '' + (d.getMonth() + 1);
+      let day = '' + d.getDate();
+      const year = d.getFullYear();
+      if (month.length < 2) { month = '0' + month; }
+      if (day.length < 2) { day = '0' + day; }
+      return [year, month, day].join('-');
+   }
+
+   convertTime12to24(time12h) {
+      if (time12h !== null && time12h !== '') {
+         const [time, modifier] = time12h.split(' ');
+         const newTime = time.split(':');
+         if (newTime[0] === '12') { newTime[0] = '00'; }
+         if (modifier === 'pm') { newTime[0] = parseInt(newTime[0], 10) + 12; }
+         return newTime[0] + ':' + newTime[1] + ':00';
+      } else {
+         return '00:00:00';
+      }
+   }
+
    onSubmit() {
       if (this.Form.valid) {
+
+         if (this.Form.value.ExamResult  === 'Shortlisted' || this.Form.value.ExamResult === 'Pass') {
+            this.Form.controls['InterviewTime'].setValue(this.Form.controls['InterviewTime'].value.toLowerCase());
+            const ODate = this.Form.controls['InterviewDate'].value;
+            const OTime = this.Form.controls['InterviewTime'].value;
+            this.Form.controls['InterviewDate'].setValue(new Date(this.formatDate(ODate) + ' ' + this.convertTime12to24(OTime)));
+         }
          this.Uploading = true;
          let Info = CryptoJS.AES.encrypt(JSON.stringify(this.Form.value), 'SecretKeyIn@123');
          Info = Info.toString();

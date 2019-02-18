@@ -27,6 +27,7 @@ var UserManagementSchema = mongoose.Schema({
    Created_By: { type: Schema.Types.ObjectId, ref: 'User_Management' },
    Last_ModifiedBy: { type: Schema.Types.ObjectId, ref: 'User_Management' },
    Active_Status: { type : Boolean, required : true },
+   EmailToken: { type : String },
    LoginToken: { type : String },
    LoginTime: { type : Date },
    LastActiveTime: { type : Date },

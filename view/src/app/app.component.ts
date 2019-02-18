@@ -19,10 +19,14 @@ export class AppComponent {
       // Find Page Url
          router.events.subscribe(event => {
             if (event instanceof NavigationEnd ) {
-               if (event.url === '/Login' || event.url === '/') {
+               if (event.url === '/Login' || event.url === '/' ) {
                   this.UserLoggedIn = false;
                } else {
-                  this.UserLoggedIn = true;
+                  if ( event.url.split('/')[1] && event.url.split('/')[1] !== 'PasswordReset') {
+                     this.UserLoggedIn = true;
+                  } else {
+                     this.UserLoggedIn = false;
+                  }
                }
             }
          });

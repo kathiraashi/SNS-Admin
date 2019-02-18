@@ -33,9 +33,10 @@ function TemplateTwo(Candidate, Applied, Department, Ref_Id, Link_Id, OTP) {
 
 function TemplateThree(Candidate, _Date, Place) {
    _Date = new Date(_Date);
+   _Time = _Date.toLocaleTimeString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true });
    _Date = _Date.getDate() +'-'+ (_Date.getMonth() + 1) +'-'+ _Date.getFullYear();
    var Img = 'http://www.snsct.org/sites/snsct.org/themes/Montreal/img/sns_group_logo.png';
-   return '<div style="background-color:#f6f6f6;font-size:14px;height:100%;line-height:1.6;margin:0;padding:0;width:100%" bgcolor="#f6f6f6" height="100%" width="100%"> <table style="background-color:#f6f6f6;border-collapse:separate;border-spacing:0;box-sizing:border-box;width:100%" width="100%" bgcolor="#f6f6f6"> <tbody> <tr><td style="box-sizing:border-box;display:block;font-size:14px;font-weight:normal;margin:0 auto;max-width:600px;padding:10px;text-align:center;width:auto" valign="top" align="center" width="auto"> <div style="background-color:#dedede; box-sizing:border-box;display:block;margin:0 auto;max-width:600px;padding:10px;text-align:left" align="left"> <table style="background:#fff;border:1px solid #e9e9e9;border-collapse:separate;border-radius:3px;border-spacing:0;box-sizing:border-box;width:100%"> <tbody> <tr> <td style="box-sizing:border-box;font-size:14px;font-weight:normal;margin:0;padding:30px;vertical-align:top" valign="top"> <table style="border-collapse:separate;border-spacing:0;box-sizing:border-box;width:100%" width="100%"> <tbody><tr style="font-family: sans-serif; line-height:20px"> <td style="box-sizing:border-box;font-size:14px;font-weight:normal;margin:0;vertical-align:top" valign="top"> <img src="' + Img + '" style="width:40%; margin-left:30%" alt="SNS Logo"> <p style="font-size:18px;font-weight:700;color:#717171;font-family: inherit;"> Dear <b> <i style="color: #f4962f; text-decoration: underline;"> ' + Candidate + ' </i> </b> </p> <p style="font-size:14px;color:#717171;font-family: inherit;"> Greetings from SNS Group of Institutions! </p> <p style="font-size:14px;color:#717171;font-family: inherit;"> We are pleased to inform you that you have been shortlisted for next round. You are requested to appear for an Interview on  <b> Date <i style="color: #f4962f; text-decoration: underline;"> ' + _Date + ' </i> </b> at <b> Place <i style="color: #f4962f; text-decoration: underline;"> ' + Place + ' </i> Coimbatore at 09.00 am. </b> </p> <p style="font-size:14px;color:#717171;font-family: inherit;"> Kindly confirm your presence through a mail on or before date ' + _Date + ' </p> <p style="font-size:14px;color:#717171;font-family: inherit;"> You are also instructed to bring a passport size photo - 1, original credentials and copies of the same. Since the interview process may take a full day, kindly plan accordingly. </p> <p style="font-size:14px;color:#717171;font-family: inherit;"> Interview process may consist of the following rounds. </p> <p style="font-size:14px;color:#717171;font-family: inherit;"> 1. Group Discussion </p> <p style="font-size:14px;color:#717171;font-family: inherit;"> 2. Demo class </p> <p style="font-size:14px;color:#717171;font-family: inherit;"> 3. HR/Personal Interview </p> <p style="font-size:14px;color:#717171;font-family: inherit;" > Wish you all the very best.</p> <br> <br> <p style="font-size:14px;font-weight:normal;margin:0;margin-bottom:15px;padding:0;color: #717171;font-family: inherit;text-align: right;">With Regards, <br> <b> HR Team </b> </p> </td> </tr> </tbody> </table> </td> </tr> </tbody> </table> </div> </td> </tr> </tbody> </table> </div>';
+   return '<div style="background-color:#f6f6f6;font-size:14px;height:100%;line-height:1.6;margin:0;padding:0;width:100%" bgcolor="#f6f6f6" height="100%" width="100%"> <table style="background-color:#f6f6f6;border-collapse:separate;border-spacing:0;box-sizing:border-box;width:100%" width="100%" bgcolor="#f6f6f6"> <tbody> <tr><td style="box-sizing:border-box;display:block;font-size:14px;font-weight:normal;margin:0 auto;max-width:600px;padding:10px;text-align:center;width:auto" valign="top" align="center" width="auto"> <div style="background-color:#dedede; box-sizing:border-box;display:block;margin:0 auto;max-width:600px;padding:10px;text-align:left" align="left"> <table style="background:#fff;border:1px solid #e9e9e9;border-collapse:separate;border-radius:3px;border-spacing:0;box-sizing:border-box;width:100%"> <tbody> <tr> <td style="box-sizing:border-box;font-size:14px;font-weight:normal;margin:0;padding:30px;vertical-align:top" valign="top"> <table style="border-collapse:separate;border-spacing:0;box-sizing:border-box;width:100%" width="100%"> <tbody><tr style="font-family: sans-serif; line-height:20px"> <td style="box-sizing:border-box;font-size:14px;font-weight:normal;margin:0;vertical-align:top" valign="top"> <img src="' + Img + '" style="width:40%; margin-left:30%" alt="SNS Logo"> <p style="font-size:18px;font-weight:700;color:#717171;font-family: inherit;"> Dear <b> <i style="color: #f4962f; text-decoration: underline;"> ' + Candidate + ' </i> </b> </p> <p style="font-size:14px;color:#717171;font-family: inherit;"> Greetings from SNS Group of Institutions! </p> <p style="font-size:14px;color:#717171;font-family: inherit;"> We are pleased to inform you that you have been shortlisted for next round. You are requested to appear for an Interview on  <b> Date <i style="color: #f4962f; text-decoration: underline;"> ' + _Date + ' </i> </b> at <b> Place <i style="color: #f4962f; text-decoration: underline;"> ' + Place + ' </i>  </b> at <b> Time <i style="color: #f4962f; text-decoration: underline;"> ' + _Time + ' </i>. </b> </p> <p style="font-size:14px;color:#717171;font-family: inherit;"> Kindly confirm your presence through a mail on or before date ' + _Date + ' </p> <p style="font-size:14px;color:#717171;font-family: inherit;"> You are also instructed to bring a passport size photo - 1, original credentials and copies of the same. Since the interview process may take a full day, kindly plan accordingly. </p> <p style="font-size:14px;color:#717171;font-family: inherit;"> Interview process may consist of the following rounds. </p> <p style="font-size:14px;color:#717171;font-family: inherit;"> 1. Group Discussion </p> <p style="font-size:14px;color:#717171;font-family: inherit;"> 2. Demo class </p> <p style="font-size:14px;color:#717171;font-family: inherit;"> 3. HR/Personal Interview </p> <p style="font-size:14px;color:#717171;font-family: inherit;" > Wish you all the very best.</p> <br> <br> <p style="font-size:14px;font-weight:normal;margin:0;margin-bottom:15px;padding:0;color: #717171;font-family: inherit;text-align: right;">With Regards, <br> <b> HR Team </b> </p> </td> </tr> </tbody> </table> </td> </tr> </tbody> </table> </div> </td> </tr> </tbody> </table> </div>';
 }
 
 function TemplateFour(Candidate, Applied, Department, _Date) {
@@ -787,7 +788,7 @@ exports.ExamResult_Update = function(req, res) {
             res.status(417).send({status: false, Error:err, Message: "Some error occurred while Find The Candidate!."});
          } else {
             if (result !== null) {
-               if (ReceivingData.ExamResult === 'Pass') {
+               if (ReceivingData.ExamResult === 'Pass' || ReceivingData.ExamResult === 'Shortlisted') {
                   result.Current_Status = 'Interview Assigned';  
                } else {
                   result.Current_Status = 'Exam Failed';
@@ -805,7 +806,7 @@ exports.ExamResult_Update = function(req, res) {
                            res.status(417).send({status: false, Error:err, Message: "Some error occurred while Find The Online Exam!."});
                         } else {
                            if (result_3 !== null) {
-                              if (ReceivingData.ExamResult === 'Pass') {
+                              if (ReceivingData.ExamResult === 'Pass' || ReceivingData.ExamResult === 'Shortlisted') {
                                  result_3.InterviewDate = ReceivingData.InterviewDate;
                                  result_3.InterviewPlace = ReceivingData.Place;
                               }
@@ -833,7 +834,7 @@ exports.ExamResult_Update = function(req, res) {
                                                 return obj;
                                              })
                                           ).then(response => {
-                                             if (ReceivingData.ExamResult === 'Pass') {
+                                             if (ReceivingData.ExamResult === 'Pass' || ReceivingData.ExamResult === 'Shortlisted') {
                                                 var SendData = {
                                                    from: 'SNS Institutions <sns.info@gmail.com>',
                                                    to: result.Personal_Info.Email,
@@ -1044,7 +1045,7 @@ exports.InterviewResult_Update = function(req, res) {
             res.status(417).send({status: false, Error:err, Message: "Some error occurred while Find The Candidate!."});
          } else {
             if (result !== null) {
-               if (ReceivingData.InterviewResult === 'Pass') {
+               if (ReceivingData.InterviewResult === 'Pass' || ReceivingData.InterviewResult === 'Shortlisted') {
                   result.Current_Status = 'Selected ';  
                } else {
                   result.Current_Status = 'Interview Failed';
@@ -1062,7 +1063,7 @@ exports.InterviewResult_Update = function(req, res) {
                            res.status(417).send({status: false, Error:err, Message: "Some error occurred while Find The Online Exam!."});
                         } else {
                            if (result_3 !== null) {
-                              if (ReceivingData.InterviewResult === 'Pass') {
+                              if (ReceivingData.InterviewResult === 'Pass' || ReceivingData.InterviewResult === 'Shortlisted') {
                                  result_3.Joining_Date = ReceivingData.JoinDate;
                               }
                               result_3.InterviewResult_UpdateUser = mongoose.Types.ObjectId(ReceivingData.User_Id); 
@@ -1086,7 +1087,7 @@ exports.InterviewResult_Update = function(req, res) {
                                           ErrorManagement.ErrorHandling.ErrorLogCreation(req, 'Candidate Data Find Query Error', 'Candidates.controller.js', err_5);
                                           res.status(417).send({status: false, Message: "Some error occurred while Find Candidate Data!."});
                                        } else {
-                                          if (ReceivingData.InterviewResult === 'Pass') {
+                                          if (ReceivingData.InterviewResult === 'Pass' || ReceivingData.InterviewResult === 'Shortlisted') {
                                              var SendData = {
                                                 from: 'SNS Institutions <sns.info@gmail.com>',
                                                 to: result.Personal_Info.Email,

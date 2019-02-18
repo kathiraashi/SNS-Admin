@@ -5,6 +5,20 @@ var mongoose = require('mongoose');
 var crypto = require("crypto");
 
 
+
+var api_key = 'key-1018902c1f72fc21e3dc109706b593e3';
+var domain = 'www.inscube.com';
+var mailgun = require('mailgun-js')({apiKey: api_key, domain: domain});
+
+
+
+function TemplateOne(Name, User_Id, EmailToken) {
+   var Img = 'http://www.snsct.org/sites/snsct.org/themes/Montreal/img/sns_group_logo.png';
+   var link = 'http://careeradmin.snsclt.in/PasswordReset/' + User_Id + '/' + EmailToken;
+   return '<div style="background-color:#f6f6f6;font-size:14px;height:100%;line-height:1.6;margin:0;padding:0;width:100%" bgcolor="#f6f6f6" height="100%" width="100%"><table style="background-color:#f6f6f6;border-collapse:separate;border-spacing:0;box-sizing:border-box;width:100%" width="100%" bgcolor="#f6f6f6"><tbody><tr><td style="box-sizing:border-box;display:block;font-size:14px;font-weight:normal;margin:0 auto;max-width:500px;padding:10px;text-align:center;width:auto" valign="top" align="center" width="auto"><div style="background-color:#dedede; box-sizing:border-box;display:block;margin:0 auto;max-width:500px;padding:10px;text-align:left" align="left"><table style="background:#fff;border:1px solid #e9e9e9;border-collapse:separate;border-radius:3px;border-spacing:0;box-sizing:border-box;width:100%"><tbody><tr><td style="box-sizing:border-box;font-size:14px;font-weight:normal;margin:0;padding:30px;vertical-align:top" valign="top"><table style="border-collapse:separate;border-spacing:0;box-sizing:border-box;width:100%" width="100%"><tbody><tr style="font-family: sans-serif; line-height:20px"><td style="box-sizing:border-box;font-size:14px;font-weight:normal;margin:0;vertical-align:top" valign="top"> <img src="'+ Img +'" style="width:40%; margin-left:30%" alt="SNS Logo"><p style="font-size:18px;font-weight:700;color:#717171;font-family: inherit;"> Hi ' + Name +' </p> <p style="font-size:14px;color:#717171;font-family: inherit;"> To complete the email verification process, <br>Please click the link below then Reset Your Password  </p> <br><table style="border-collapse:separate;border-spacing:0;box-sizing:border-box;margin-bottom:15px;width:auto" width="auto"> <tbody><tr><td style="background-color:#4e6a7a;box-shadow: 0 1px 8px 0 hsla(0,0%,40%,.47);" valign="top" bgcolor="#ffda00" align="center"><a href="'+ link +'" data-saferedirecturl="'+ link +'" style="background-color:#4e6a7a ;box-sizing:border-box;color:#ffffff;display:inline-block;font-size:14px;font-weight:bold;margin:0;padding:12px 25px;text-decoration:none;text-transform:capitalize;cursor:pointer" bgcolor="#ffda00" target="_blank"> Verify Your E-mail</a></td> </tr> </tbody> </table> </td> </tr> </tbody> </table> </td></tr> </tbody></table></div></td></tr> </tbody></table></div>';
+}
+
+
 // -------------------------------------------------- User Name Validate -----------------------------------------------
    exports.User_Name_Validate = function(req, res) {
 
@@ -99,6 +113,8 @@ var crypto = require("crypto");
          res.status(400).send({Status: false, Message: "Name can not be empty" });
       } else if(!ReceivingData.User_Name || ReceivingData.User_Name === '' ) {
          res.status(400).send({Status: false, Message: "User Name can not be empty" });
+      } else if(!ReceivingData.Email || ReceivingData.Email === '' ) {
+         res.status(400).send({Status: false, Message: "Email can not be empty" });
       } else if(!ReceivingData.User_Password || ReceivingData.User_Password === '' ) {
          res.status(400).send({Status: false, Message: "User Password can not be empty" });
       } else if(!ReceivingData.Designation || ReceivingData.Designation === '' ) {
@@ -172,6 +188,7 @@ var crypto = require("crypto");
    };
 
 
+   // -------------------------------------------------- User Update -----------------------------------------------
    exports.User_Update = function(req, res) {
       var CryptoBytes  = CryptoJS.AES.decrypt(req.body.Info, 'SecretKeyIn@123');
       var ReceivingData = JSON.parse(CryptoBytes.toString(CryptoJS.enc.Utf8));
@@ -180,6 +197,8 @@ var crypto = require("crypto");
          res.status(400).send({Status: false, Message: "User Details can not be empty" });
       } else if(!ReceivingData.Name || ReceivingData.Name === '' ) {
          res.status(400).send({Status: false, Message: "Name can not be empty" });
+      } else if(!ReceivingData.Email || ReceivingData.Email === '' ) {
+         res.status(400).send({Status: false, Message: "Email can not be empty" });
       } else if(!ReceivingData.Designation || ReceivingData.Designation === '' ) {
          res.status(400).send({Status: false, Message: "User Type can not be empty " });
       } else if(!ReceivingData.Modified_By || ReceivingData.Modified_By === '' ) {
@@ -259,6 +278,7 @@ var crypto = require("crypto");
    };
 
 
+   // -------------------------------------------------- User Deactivate -----------------------------------------------
    exports.User_Deactivate = function(req, res) {
 
       var CryptoBytes  = CryptoJS.AES.decrypt(req.body.Info, 'SecretKeyIn@123');
@@ -285,6 +305,7 @@ var crypto = require("crypto");
    };
 
 
+   // -------------------------------------------------- User Activate -----------------------------------------------
    exports.User_Activate = function(req, res) {
 
       var CryptoBytes  = CryptoJS.AES.decrypt(req.body.Info, 'SecretKeyIn@123');
@@ -311,6 +332,100 @@ var crypto = require("crypto");
    };
 
 
+   // -------------------------------------------------- Forgot Password Request -----------------------------------------------
+   exports.Forgot_Password_Request = function(req, res) {
+
+      var CryptoBytes  = CryptoJS.AES.decrypt(req.body.Info, 'SecretKeyIn@123');
+      var ReceivingData = JSON.parse(CryptoBytes.toString(CryptoJS.enc.Utf8));
+
+      if(!ReceivingData.Email || ReceivingData.Email === '' ) {
+         res.status(400).send({Status: false, Message: "Email can not be empty" });
+      }else {
+         AdminModel.User_Management.findOne( {'Email': ReceivingData.Email}, {},  function(err, result) {
+            if(err) {
+               ErrorManagement.ErrorHandling.ErrorLogCreation(req, 'User Activate Query Error', 'AdminManagement.controller.js', err);
+               res.status(417).send({status: false, Message: "Some error occurred while Activate User!."});
+            } else {
+               if ( result === null) {
+                  res.status(200).send({Status: true, Message: "Account Not Findable!, Enter Valid Email!" });
+               } else {
+                  const EmailToken = crypto.randomBytes(16).toString("hex");
+                  AdminModel.User_Management.update({ _id : result._id }, { $set: { EmailToken : EmailToken }})
+                  .exec((err_2, result_2) => {
+                     if(err_2) {
+                        ErrorManagement.ErrorHandling.ErrorLogCreation(req, 'Forgot Password Query Error', 'RegisterAndLogin.controller.js', err_2);
+                        res.status(417).send({Status: false, Message: "Some error occurred!"});           
+                     } else {
+                        var SendData = {
+                           from: 'SNS Institutions <sns.info@gmail.com>',
+                           to: result.Email,
+                           subject: 'Your Email Verification for Password Reset Process – reg;',
+                           html: TemplateOne(result.Name, result._id, EmailToken)
+                        };
+                        mailgun.messages().send(SendData, function (error, body) {
+                           if (error) {
+                              res.status(417).send({ Status: false, Error:error, Message: "Some error occurred while send The E-mail " });
+                           } else {
+                              res.status(200).send({ Status: true,  Message: 'Check Your Email After Reset Your Password' });
+                           }
+                        });
+                     }
+                  });
+               }
+            }
+         });
+      }
+   };
+
+
+   // -------------------------------------------------- Forgot Password Request -----------------------------------------------
+   exports.Reset_Password = function(req, res) {
+
+      var CryptoBytes  = CryptoJS.AES.decrypt(req.body.Info, 'SecretKeyIn@123');
+      var ReceivingData = JSON.parse(CryptoBytes.toString(CryptoJS.enc.Utf8));
+
+      if(!ReceivingData.User_Id || ReceivingData.User_Id === '' ) {
+         res.status(400).send({Status: false, Message: "User Details can not be valid" });
+      }else if(!ReceivingData.EmailToken || ReceivingData.EmailToken === '' ) {
+         res.status(400).send({Status: false, Message: "Password Reset Details can not be valid" });
+      }else if(!ReceivingData.User_Password || ReceivingData.User_Password === '' ) {
+         res.status(400).send({Status: false, Message: "Password can not be empty" });
+      }else {
+         AdminModel.User_Management.findOne( {'_id': mongoose.Types.ObjectId(ReceivingData.User_Id)}, {},  function(err, result) {
+            if(err) {
+               ErrorManagement.ErrorHandling.ErrorLogCreation(req, 'User Find Query Error', 'AdminManagement.controller.js', err);
+               res.status(417).send({status: false, Message: "Some error occurred!."});
+            } else {
+               if ( result === null) {
+                  res.status(200).send({Status: false, Message: "Account Not Valid!, Contact our Admin!" });
+               } else {
+                  AdminModel.User_Management.findOne({'_id': mongoose.Types.ObjectId(ReceivingData.User_Id), 'EmailToken' : ReceivingData.EmailToken }, {},  function(err_1, result_1) {
+                     if(err_1) {
+                        ErrorManagement.ErrorHandling.ErrorLogCreation(req, 'User Find Query Error', 'AdminManagement.controller.js', err_1);
+                        res.status(417).send({status: false, Message: "Some error occurred!."});
+                     } else {
+                        if ( result_1 === null) {
+                           res.status(200).send({Status: false, Message: "This Link is Expired!" });
+                        } else {
+                           AdminModel.User_Management.update({ _id : result_1._id }, { $set: { EmailToken : '', User_Password: ReceivingData.User_Password }})
+                           .exec((err_2, result_2) => {
+                              if (err_2) {
+                                 ErrorManagement.ErrorHandling.ErrorLogCreation(req, 'Password update Query Error', 'AdminManagement.controller.js', err_2);
+                                 res.status(417).send({status: false, Message: "Some error occurred!."});
+                              } else {
+                                 res.status(200).send({Status: true, Message: "Password Successfully Changed" });
+                              }
+                           })
+                        }
+                     }
+                  });
+               }
+            }
+         });
+      }
+   };
+
+   
 // -------------------------------------------------- Users List -----------------------------------------------
    exports.Users_List = function(req, res) {
 

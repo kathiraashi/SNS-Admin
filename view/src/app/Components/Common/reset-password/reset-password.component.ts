@@ -1,49 +1,48 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, Validators, FormControl } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 
 import * as CryptoJS from 'crypto-js';
-import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
 
 import { LoginService } from './../../../Services/LoginService/login.service';
-import { ForgotPasswordComponent } from '../../../Models/forgot-password/forgot-password.component';
 
 import { ToastrService } from './../../../Services/common-services/toastr-service/toastr.service';
 
 
 @Component({
-  selector: 'app-login-page',
-  templateUrl: './login-page.component.html',
-  styleUrls: ['./login-page.component.css']
+  selector: 'app-reset-password',
+  templateUrl: './reset-password.component.html',
+  styleUrls: ['./reset-password.component.css']
 })
-export class LoginPageComponent implements OnInit {
+export class ResetPasswordComponent implements OnInit {
 
-   LoginForm: FormGroup;
+ LoginForm: FormGroup;
 
-   Data_1;
-
-   bsModalRef: BsModalRef;
+ User_Id: any;
+ EmailToken: any;
 
    UserRequired: Boolean = false;
    UserMinLengthErr: Boolean = false;
 
    constructor(
       private router: Router,
+      private active_route: ActivatedRoute,
       private service: LoginService,
-      private modalService: BsModalService,
       private Toastr: ToastrService,
-   ) { }
 
-   ngOnInit() {
-      this.LoginForm = new FormGroup({
-         User_Name: new FormControl('', Validators.required),
-         User_Password: new FormControl('', Validators.required),
+   ) {
+      this.active_route.url.subscribe((u) => {
+         this.User_Id = this.active_route.snapshot.params['User_Id'];
+         this.EmailToken = this.active_route.snapshot.params['EmailToken'];
       });
    }
 
-   ForgotPassword() {
-      const initialState = { };
-      this.bsModalRef = this.modalService.show(ForgotPasswordComponent, Object.assign({initialState}, { ignoreBackdropClick: true, class: '' }));
+   ngOnInit() {
+      this.LoginForm = new FormGroup({
+         User_Id: new FormControl(this.User_Id, Validators.required),
+         EmailToken: new FormControl(this.EmailToken, Validators.required),
+         User_Password: new FormControl('', Validators.required),
+      });
    }
 
    submit() {
@@ -51,10 +50,11 @@ export class LoginPageComponent implements OnInit {
             const Data = this.LoginForm.value;
             let Info = CryptoJS.AES.encrypt(JSON.stringify(Data), 'SecretKeyIn@123');
             Info = Info.toString();
-            this.service.User_Login_Validate({'Info': Info}).subscribe( response => {
+            this.service.Reset_Password({'Info': Info}).subscribe( response => {
                const ReceivingData = JSON.parse(response['_body']);
                if (response['status'] === 200 && ReceivingData.Status) {
-                  this.router.navigate(['/Applications']);
+                  this.Toastr.NewToastrMessage( { Type: 'Success', Message: ReceivingData.Message } );
+                  this.router.navigate(['/']);
                } else if (response['status'] === 200 && !ReceivingData.Status) {
                   this.Toastr.NewToastrMessage( { Type: 'Error', Message: ReceivingData.Message } );
                } else if (response['status'] === 400 && !ReceivingData.Status) {
@@ -67,5 +67,6 @@ export class LoginPageComponent implements OnInit {
             });
       }
    }
+
 
 }

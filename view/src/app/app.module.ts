@@ -18,6 +18,7 @@ import { CalendarModule } from 'primeng/calendar';
 import { MatButtonModule, MatFormFieldModule, MatSelectModule, MatRadioModule, MatMenuModule, MatDatepickerModule, MatCheckboxModule, MatNativeDateModule } from '@angular/material';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { FroalaEditorModule, FroalaViewModule } from 'angular-froala-wysiwyg';
+import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker';
 
 import { HeaderComponent } from './Components/Common/header/header.component';
 import { LoginPageComponent } from './Components/Common/login-page/login-page.component';
@@ -57,6 +58,8 @@ import { AddApplicationComponent } from './Models/Applications/add-application/a
 
 import { ExcelService } from './Services/excel-export/excel-export.service';
 import { ModelUserManagementEditComponent } from './Models/Settings/UserManagement/model-user-management-edit/model-user-management-edit.component';
+import { ForgotPasswordComponent } from './Models/forgot-password/forgot-password.component';
+import { ResetPasswordComponent } from './Components/Common/reset-password/reset-password.component';
 
 
 
@@ -98,7 +101,9 @@ import { ModelUserManagementEditComponent } from './Models/Settings/UserManageme
    InnerHtmlPipe,
    ModelUserManagementViewComponent,
    AddApplicationComponent,
-   ModelUserManagementEditComponent
+   ModelUserManagementEditComponent,
+   ForgotPasswordComponent,
+   ResetPasswordComponent
   ],
   imports: [
     BrowserModule,
@@ -121,7 +126,8 @@ import { ModelUserManagementEditComponent } from './Models/Settings/UserManageme
     MatNativeDateModule,
     NgSelectModule,
     FroalaEditorModule.forRoot(),
-    FroalaViewModule.forRoot()
+    FroalaViewModule.forRoot(),
+    NgxMaterialTimepickerModule.forRoot()
   ],
   providers: [ExcelService],
   entryComponents: [ModelEditQuestionAnswersComponent,
@@ -139,7 +145,8 @@ import { ModelUserManagementEditComponent } from './Models/Settings/UserManageme
     ModelVacanciesConfigCreateComponent,
     ModelUserManagementViewComponent,
     AddApplicationComponent,
-    ModelUserManagementEditComponent
+    ModelUserManagementEditComponent,
+    ForgotPasswordComponent
   ],
   bootstrap: [AppComponent]
 })

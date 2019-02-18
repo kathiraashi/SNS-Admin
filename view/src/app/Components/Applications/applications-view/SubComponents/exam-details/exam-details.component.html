@@ -95,12 +95,12 @@
          </div>
       </div>
       <div class="col-sm-6" *ngIf="Exam_Data['createdAt'] !== undefined">
-         <div *ngIf="Exam_Data['ExamResult'] === 'Pass'" class="Section"> <!-- Section Start-->
+         <div *ngIf="Exam_Data['ExamResult'] === 'Pass' || Exam_Data['ExamResult'] === 'Shortlisted'" class="Section"> <!-- Section Start-->
             <div class="Section_Identity"> <h5 class="Identity"> Interview Assigned Details </h5> </div>
             <div class="Section_Data">
                <div class="Data">
                   <div class="Title"> Assigned Date <span> : </span> </div>
-                  <div class="Value"> {{Exam_Data['InterviewDate'] | date:'d/M/yyyy' }} </div>
+                  <div class="Value"> {{Exam_Data['InterviewDate'] | date:'d/M/yyyy h:mm a' }} </div>
                </div>
                <div class="Data">
                   <div class="Title"> Assigned Place <span> : </span> </div>
@@ -162,7 +162,7 @@
                   <div class="Title"> Interview Result Updated By<span> : </span> </div>
                   <div class="Value"> {{Exam_Data['InterviewResult_UpdateUser']?.Name }} </div>
                </div>
-               <div *ngIf="Exam_Data['InterviewResult'] === 'Pass'" class="Data">
+               <div *ngIf="Exam_Data['InterviewResult'] === 'Pass' || Exam_Data['InterviewResult'] === 'Shortlisted'" class="Data">
                   <div class="Title"> Joining Date <span> : </span> </div>
                   <div class="Value"> {{Exam_Data['Joining_Date'] | date:'d/M/yyyy' }} </div>
                </div>
@@ -207,12 +207,20 @@
             </div>
             
             <div *ngIf="If_Pass" class="row">
-               <div class="col-sm-10 Form_Input" [ngClass]="{'Form_Err': Form.controls['InterviewDate'].errors && !Form.controls['InterviewDate'].pristine, 'Form_Success': Form.controls['InterviewDate'].valid && !Form.controls['InterviewDate'].pristine }">
+               <div class="col-sm-6 Form_Input" [ngClass]="{'Form_Err': Form.controls['InterviewDate'].errors && !Form.controls['InterviewDate'].pristine, 'Form_Success': Form.controls['InterviewDate'].valid && !Form.controls['InterviewDate'].pristine }">
                   <label> Interview Date :</label>
                   <input type="text" formControlName="InterviewDate" [min]="MinDate" [matDatepicker]="Datepicker" (click)="Datepicker.open()" (keypress)="NotAllow()" (keydown)="NotAllow()">
                   <mat-datepicker touchUi #Datepicker></mat-datepicker>
                   <p class="error" *ngIf="Form.controls['InterviewDate'].errors && !Form.controls['InterviewDate'].pristine">
                      <span *ngIf="Form.controls['InterviewDate'].errors.required">Interview Date is required</span>
+                  </p>
+               </div>
+               <div class="col-sm-6 Form_Input" [ngClass]="{'Form_Err': Form.controls['InterviewTime'].errors && !Form.controls['InterviewTime'].pristine, 'Form_Success': Form.controls['InterviewTime'].valid && !Form.controls['InterviewTime'].pristine }">
+                  <label> Interview Time :</label>
+                  <input type="text" formControlName="InterviewTime" [ngxTimepicker]="picker" (keypress)="NotAllow()" (keydown)="NotAllow()">
+                  <ngx-material-timepicker #picker></ngx-material-timepicker>
+                  <p class="error" *ngIf="Form.controls['InterviewTime'].errors && !Form.controls['InterviewTime'].pristine">
+                     <span *ngIf="Form.controls['InterviewTime'].errors.required">Interview Time is required</span>
                   </p>
                </div>
                <div class="col-sm-10 Form_Input" [ngClass]="{'Form_Err': Form.controls['Place'].errors && !Form.controls['Place'].pristine, 'Form_Success': Form.controls['Place'].valid && !Form.controls['Place'].pristine }">

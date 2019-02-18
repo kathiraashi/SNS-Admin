@@ -18,6 +18,7 @@ import { ExamConfigListComponent } from './Components/Settings/ExamConfig/exam-c
 import { ExamDetailsListComponent } from './Components/Settings/Exam_Details/exam-details-list/exam-details-list.component';
 import { DesignationListComponent } from './Components/Settings/Designation/designation-list/designation-list.component';
 import { VacanciesConfigListComponent } from './Components/Settings/VacanciesConfig/vacancies-config-list/vacancies-config-list.component';
+import { ResetPasswordComponent } from './Components/Common/reset-password/reset-password.component';
 
 
 
@@ -29,6 +30,11 @@ const appRoutes: Routes = [
    },
    { path: 'Login',
       component: LoginPageComponent,
+      data: {}
+
+   },
+   { path: 'PasswordReset/:User_Id/:EmailToken',
+      component: ResetPasswordComponent,
       data: {}
 
    },

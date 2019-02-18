@@ -35,6 +35,14 @@ export class LoginService {
       ), catchError(error => of(error)));
    }
 
+   public Forgot_Password_Request(Info: any): Observable<any[]> {
+      return this.http.post(API_URL + 'Forgot_Password_Request', Info).pipe( map(response => response),  catchError(error => of(error)));
+   }
+
+   public Reset_Password(Info: any): Observable<any[]> {
+         return this.http.post(API_URL + 'Reset_Password', Info).pipe( map(response => response),  catchError(error => of(error)));
+   }
+
    public If_LoggedIn() {
       if (sessionStorage.getItem('Token') && sessionStorage.getItem('SessionKey') && sessionStorage.getItem('SessionToken') ) {
          const LastSession = new Date(atob(sessionStorage.getItem('SessionKey'))).getTime();

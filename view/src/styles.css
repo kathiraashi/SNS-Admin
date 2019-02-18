@@ -13,6 +13,8 @@
 @import './assets/Overwrite-Css/Primeng-Overwrite.css';
 @import './assets/Overwrite-Css/material-overwrite.css';
 @import './assets/Overwrite-Css/ng-select-overwrite.css';
+@import './assets/Overwrite-Css/material-time-picker-overwrite.css';
+
 
    *{
       outline:none;

@@ -1,0 +1,63 @@
+.clock-face__clock-hand:after{
+   background-color: #384b57 !important;
+}
+.clock-face__clock-hand_minute:before{
+   border: 4px solid #384b57 !important;
+}
+.clock-face__clock-hand{
+   background-color: #384b57 !important;
+}
+.clock-face{
+   background-color: rgba(229, 229, 229, 0.7) !important;
+}
+.timepicker-button{
+   color: #384b57 !important;
+}
+ngx-material-timepicker-dial{
+   width: 100%;
+}
+.timepicker__header{
+   background-color: #384b57  !important;
+   padding: 0px 0px  !important;
+   display: flex !important;
+}
+.timepicker{
+   width: 340px !important;
+}
+.timepicker-dial{
+   width: 100% !important;
+}
+.timepicker-dial__period{
+   width: 30% !important;
+}
+.timepicker-dial__time{
+   width: 50% !important;
+}
+.timepicker-dial__item{
+   margin: 0px 10px !important;
+}
+.timepicker__actions{
+   padding: 5px !important;
+   justify-content: space-between !important;
+}
+.timepicker__actions > div{
+   box-shadow: 2px 2px 3px #acacac;
+   margin: 0px 10px;
+   border: 1px solid #f0f0f094;
+}
+.clock-face__number > span.active{
+   background-color: #384b57 !important;
+}
+.timepicker-overlay{
+   top: 25px !important;
+   align-items: unset !important;
+}
+.timepicker-overlay .timepicker{
+   position: absolute !important;
+}
+.timepicker-backdrop-overlay{
+   z-index: 1006 !important;
+}
+.timepicker-overlay{
+   z-index: 1007 !important;
+}
